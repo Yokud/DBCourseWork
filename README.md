@@ -22,5 +22,4 @@ GoodsForecast.Planning |+|-|-
 ![](/docs/imgs/ER.drawio.png)
 
 ## Архитектурные характеристики
-* Тип приложения: WPF (.Net 6)
-* Технологический стек: C# 10, PostgreSQL, NpgSQL, Entity Framework Core 6
+Архитектура проекта основана на паттерне MVVM
