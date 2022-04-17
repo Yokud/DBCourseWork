@@ -1,0 +1,10 @@
+Drop database if exists spc_lt_db;
+Create database spc_lt_db;
+
+create table cost_story
+(
+	ID serial primary key,
+	Year integer not null,
+	Month integer not null,
+	Cost integer not null
+);
