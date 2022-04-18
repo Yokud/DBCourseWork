@@ -427,7 +427,75 @@ DB2 представляет собой СУБД, которая имеет во
 
 \chapter{Конструкторский раздел}
 
-\section{title}
+\section{Проектирование базы данных}
+
+ER-диаграмма сущностей базы данных представлена на рисунке \ref{db_proj}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5525]{ER.drawio.png}
+	\caption{ER-диаграмма сущностей базы данных в нотации Чена.}
+	\label{db_proj}
+\end{figure}
+
+В базе данных будет существовать 6 таблиц, одна из которых является развязочной (Availability). Остальные таблицы на диаграмме представлены в виде сущностей.
+
+Таблица \textbf{SaleReceipt} хранит данные о товарных чеках и содержит следующие поля:
+\begin{itemize}
+	\item ID -- идентификатор товарного чека;
+	\item FIO -- ФИО покупателя;
+	\item ShopID -- идентификатор магазина, в котором была совершена покупка;
+	\item DateOfPurchase -- дата покупки;
+	\item SaleReceiptPositions -- позиции товарного чека;
+	\item SummaryCost -- суммарная стоимость в чеке.
+\end{itemize}
+
+""\newline\indent
+Таблица \textbf{Shop} хранит данные о магазинах и содержит следующие поля:
+\begin{itemize}
+	\item ID -- идентификатор магазина;
+	\item Name -- название магазина;
+	\item Description -- описание магазина;
+	\item ProductCatalog -- каталог продуктов;
+	\item SaleReceipts -- товарные чеки.
+\end{itemize}
+
+""\newline\indent
+Таблица \textbf{Product} хранит данные о продуктах и содержит следующие поля:
+\begin{itemize}
+	\item ID -- идентификатор продукта;
+	\item Name -- название продукта;
+	\item ProductType -- тип продукта;
+	\item Cost -- актуальная стоимость продукта;
+	\item CostStory -- история цены на продукт.
+\end{itemize}
+
+""\newline\indent
+Таблица \textbf{CostStory} хранит историю цен на товары в магазинах и содержит следующие поля:
+\begin{itemize}
+	\item ID -- идентификатор значения цены в конкретный год и месяц;
+	\item Year -- год;
+	\item Month -- месяц;
+	\item Cost -- значение цены в конкретный год и месяц.
+\end{itemize}
+
+""\newline\indent
+Таблица \textbf{SaleReceiptPosition} хранит информацию о позиции в чеке и содержит следующие поля:
+\begin{itemize}
+	\item ID -- идентификатор позиции чека;
+	\item AvailabilityID -- идентификатор отношения наличия товара в каталоге магазина.
+\end{itemize}
+
+""\newline\indent
+Таблица \textbf{Availability} хранит отношения наличия товара в каталоге магазина и содержит следующие поля:
+\begin{itemize}
+	\item ID -- идентификатор отношения;
+	\item ShopID -- идентификатор магазина;
+	\item ProductID -- идентификатор продукта.
+\end{itemize}
+
+""\newline\indent
+Таблица \textbf{SaleReceiptPosition} содержит поле идентификатора отношения наличия товара в каталоге магазина в целях борьбы с рассинхронизацией: товарный чек не может ссылаться на товары, которых нет в данном магазине.
 
 \section*{Вывод к конструкторскому разделу}
 \addcontentsline{toc}{section}{Вывод к конструкторскому разделу}
