@@ -1,10 +1,55 @@
-Drop database if exists spc_lt_db;
-Create database spc_lt_db;
+Drop database if exists spsr_lt_db;
+Create database spsr_lt_db;
 
-create table cost_story
+create table Shops
+(
+	ID serial primary key,
+	Name text not null,
+	Description text not null
+);
+
+create table SaleReceipts
+(
+	ID serial primary key,
+	FIO text not null,
+	ShopID integer not null,
+	DateOfPurchase date not null,
+	SummaryCost integer not null,
+	foreign key (ShopID) references Shops(ID)
+);
+
+create table Products
+(
+	ID serial primary key,
+	Name text not null,
+	ProductType text not null
+);
+
+create table Availability
+(
+	ID serial primary key,
+	ShopID integer not null,
+	ProductID integer not null,
+	foreign key (ShopID) references Shops(ID),
+	foreign key (ProductID) references Products(ID)
+);
+
+create table SaleReceiptPositions
+(
+	ID serial primary key,
+	AvailabilityID integer not null,
+	SaleReceiptID integer not null,
+	foreign key (AvailabilityID) references Availability(ID),
+	foreign key (SaleReceiptID) references SaleReceipts(ID)
+);
+
+create table CostStory
 (
 	ID serial primary key,
 	Year integer not null,
 	Month integer not null,
-	Cost integer not null
+	Cost integer not null,
+	AvailabilityID integer not null,
+	foreign key (AvailabilityID) references Availability(ID)
 );
+
