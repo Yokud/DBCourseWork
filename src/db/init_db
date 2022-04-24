@@ -53,3 +53,55 @@ create table CostStory
 	foreign key (AvailabilityID) references Availability(ID)
 );
 
+-- Триггерная функция, которая удаляет значение цены товара в магазине если она старше новой на более 18 месяцев
+create or replace function remove_too_old_coststory()
+returns trigger
+as $$
+declare
+	old_date_id integer;
+	old_date date;
+	new_date_id integer;
+	new_date date;
+	months_diff integer;
+begin
+-- Самое старое значение цены товара
+	select min(date(prod_coststory.Year, prod_coststory.Month)) into old_date
+	from (select * 
+		  from CostStory 
+		  where AvailabilityID = NEW.AvailabilityID) as prod_coststory;
+	select prod_coststory.id into old_date_id
+	from (select * 
+		  from CostStory 
+		  where AvailabilityID = NEW.AvailabilityID) as prod_coststory
+	where date(prod_coststory.Year, prod_coststory.Month) = old_date;
+
+-- Самое новое значение цены товара
+	select max(date(prod_coststory.Year, prod_coststory.Month)) into new_date
+	from (select * 
+		  from CostStory 
+		  where AvailabilityID = NEW.AvailabilityID) as prod_coststory;
+	select prod_coststory.id into new_date_id
+	from (select * 
+		  from CostStory 
+		  where AvailabilityID = NEW.AvailabilityID) as prod_coststory
+	where date(prod_coststory.Year, prod_coststory.Month) = new_date;
+	
+	select (date_part('year', new_date) - date_part('year', old_date)) * 12 + (date_part('month', new_date) - date_part('month', old_date))
+	into months_diff;
+	
+	if months_diff > 18 then
+		delete from CostStory where AvailabilityID = NEW.AvailabilityID and ID = old_date_id;
+	end if;
+end
+$$ language plpgsql;
+
+create trigger update_coststory after insert on CostStory
+	execute function remove_too_old_coststory();
+	
+create role tp_user with login;
+create role analyst with login password 'analyst';
+create role admin with login password 'admin';
+
+drop role tp_user;
+drop role analyst;
+drop role admin;
