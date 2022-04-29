@@ -98,10 +98,10 @@ $$ language plpgsql;
 create trigger update_coststory after insert on CostStory
 	execute function remove_too_old_coststory();
 	
-create role tp_user with login;
-create role analyst with login password 'analyst';
-create role admin with login password 'admin';
+create user "user";
+create user "analyst" password 'analyst';
+create user "admin" password 'admin';
 
-drop role tp_user;
-drop role analyst;
-drop role admin;
+drop user "user";
+drop user "analyst";
+drop user "admin";
