@@ -97,11 +97,46 @@ $$ language plpgsql;
 
 create trigger update_coststory after insert on CostStory
 	execute function remove_too_old_coststory();
-	
-create user "user";
-create user "analyst" password 'analyst';
-create user "admin" password 'admin';
 
-drop user "user";
-drop user "analyst";
-drop user "admin";
+create user "user";
+grant connect on database spsr_lt_db to "user";
+grant usage on schema public to "user";
+grant select on table Shops, Products, Availability;
+
+create user "analyst" with password 'analyst';
+grant connect on database spsr_lt_db to "analyst";
+grant usage on schema public to "analyst";
+grant select on table Shops, Products, Availability, CostStory;
+
+create user "admin" with password 'admin';
+grant connect on database spsr_lt_db to "admin";
+grant usage on schema public to "admin";
+grant select, insert, update, delete on all tables in schema public to "admin";
+
+drop user if exists "user";
+drop user if exists "analyst";
+drop user if exists "admin";
+
+create or replace function get_products_by_shopid(shopid integer)
+returns table()
+as $$
+declare
+	availability_id integer;
+begin
+	select ID into availability_id 
+	from Availability 
+	where ShopID = shopid;
+	
+	select Products.Name, Products.ProductType, 
+										(select Cost 
+										 from CostStory 
+										 where AvailabilityID = (select ID 
+																 from Availability 
+																 where ShopID = SAP.ShopID and ProductID = SAP.ProductID) 
+										 							and date(CostStory.Year, CostStory.Month) = (select max(date(prod_coststory.Year, prod_coststory.Month))) 
+	from (select * 
+		  from CostStory 
+		  where AvailabilityID = NEW.AvailabilityID) as prod_coststory;) as 'Cost'
+	from ((select * from Shops where ID = shopid) join Availability on Availability.ShopID = Shops.ID) as SA join Products on SA.ProductID = Product.ID as SAP;
+end
+$$ language plpgsql;
