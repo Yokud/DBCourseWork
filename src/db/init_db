@@ -14,8 +14,7 @@ create table SaleReceipts
 	FIO text not null,
 	ShopID integer not null,
 	DateOfPurchase date not null,
-	SummaryCost integer not null,
-	foreign key (ShopID) references Shops(ID)
+	foreign key (ShopID) references Shops(ID) on delete cascade
 );
 
 create table Products
@@ -30,8 +29,8 @@ create table Availability
 	ID serial primary key,
 	ShopID integer not null,
 	ProductID integer not null,
-	foreign key (ShopID) references Shops(ID),
-	foreign key (ProductID) references Products(ID)
+	foreign key (ShopID) references Shops(ID) on delete cascade,
+	foreign key (ProductID) references Products(ID) on delete cascade
 );
 
 create table SaleReceiptPositions
@@ -39,8 +38,8 @@ create table SaleReceiptPositions
 	ID serial primary key,
 	AvailabilityID integer not null,
 	SaleReceiptID integer not null,
-	foreign key (AvailabilityID) references Availability(ID),
-	foreign key (SaleReceiptID) references SaleReceipts(ID)
+	foreign key (AvailabilityID) references Availability(ID) on delete cascade,
+	foreign key (SaleReceiptID) references SaleReceipts(ID) on delete cascade
 );
 
 create table CostStory
@@ -50,8 +49,15 @@ create table CostStory
 	Month integer not null,
 	Cost integer not null,
 	AvailabilityID integer not null,
-	foreign key (AvailabilityID) references Availability(ID)
+	foreign key (AvailabilityID) references Availability(ID) on delete cascade
 );
+
+create view Costs as
+	select AvailabilityID, Cost
+	from CostStory
+	where make_date(Year, Month, 1) in (select max(make_date(Year, Month, 1))
+										from CostStory
+										group by AvailabilityID);
 
 -- Триггерная функция, которая удаляет значение цены товара в магазине если она старше новой на более 18 месяцев
 create or replace function remove_too_old_coststory()
@@ -101,12 +107,12 @@ create trigger update_coststory after insert on CostStory
 create user "user";
 grant connect on database spsr_lt_db to "user";
 grant usage on schema public to "user";
-grant select on table Shops, Products, Availability;
+grant select on table Shops, Products, Availability, Costs to "user";
 
 create user "analyst" with password 'analyst';
 grant connect on database spsr_lt_db to "analyst";
 grant usage on schema public to "analyst";
-grant select on table Shops, Products, Availability, CostStory;
+grant select on table Shops, Products, Availability, CostStory to "analyst";
 
 create user "admin" with password 'admin';
 grant connect on database spsr_lt_db to "admin";
@@ -118,25 +124,33 @@ drop user if exists "analyst";
 drop user if exists "admin";
 
 create or replace function get_products_by_shopid(shopid integer)
-returns table()
+returns table(ProdName text, ProdType text, Cost integer)
 as $$
-declare
-	availability_id integer;
 begin
-	select ID into availability_id 
-	from Availability 
-	where ShopID = shopid;
-	
-	select Products.Name, Products.ProductType, 
-										(select Cost 
-										 from CostStory 
-										 where AvailabilityID = (select ID 
-																 from Availability 
-																 where ShopID = SAP.ShopID and ProductID = SAP.ProductID) 
-										 							and date(CostStory.Year, CostStory.Month) = (select max(date(prod_coststory.Year, prod_coststory.Month))) 
-	from (select * 
-		  from CostStory 
-		  where AvailabilityID = NEW.AvailabilityID) as prod_coststory;) as 'Cost'
-	from ((select * from Shops where ID = shopid) join Availability on Availability.ShopID = Shops.ID) as SA join Products on SA.ProductID = Product.ID as SAP;
+	select ProductID, Name, ProductType, Cost
+	from ((select * from Availability where Availability.ShopID = shopid) as A 
+			join Products on A.ProductID = Product.ID) as AP join Costs on AP.ID = Costs.AvailabilityID;
+end
+$$ language plpgsql;
+
+create or replace function get_coststory_by_shopid_prodid(shopid integer, prodid integer)
+returns table(Year integer, Month integer, Cost integer)
+as $$
+begin
+	select Year, Month, Cost
+	from CostStory
+	where AvailabilityID = (select ID
+						   from Availability
+						   where ShopID = shopid and ProductID = prodid);
+end
+$$ language plpgsql;
+
+create or replace function get_salereceipts_by_shopid(shopid integer)
+returns table(FIO text, DateOfPurchase date, SummaryCost integer)
+as $$
+begin
+	select max(FIO), max(DateOfPurchase), sum(Cost) as SummaryCost
+	from ((select * from SaleReceipts where ShopID = shopid) as SR join SaleReceiptPositions on SaleReceiptPositions.SaleReceiptID = SR.ID) as S join Costs on S.AvailabilityID = Costs.AvailabilityID
+	group by SaleReceipts.ID;
 end
 $$ language plpgsql;
