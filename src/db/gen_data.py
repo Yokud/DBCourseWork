@@ -1,47 +1,158 @@
 import random as rnd
 from faker import Faker
+import csv
+from datetime import datetime
+import calendar
 
 
-class Product:
-    products = {"благоустройство" : ["плитка", "газонная трава", "сетка", "забор", "урна", "отпугиватель грызунов", "ловушка для насекомых", "брусчатка", "кафель", "бордюрный камень", "светильник", "фонарь"],
-                "бытовая техника" : ["холодильник", "электрическая плита", "газовая плита", "стиральная машина", "посудомойка", "сушильная машина", "духовой шкаф", "кофеварка", "кофемашина", "чайник", "электрический чайник", "миксер", "блендер", "гриль", "пылесос", "утюг", "вентилятор", "обогреватель"],
-                "электротехника" : ["лампа накаливания", "лампа светодиодная", "энергосберегающая лампа", "люминесцентная лампа", "светодиодная лента", "настольная лампа", "трансформатор", "удлинитель", "кабель ВВГ", "кабель ПВС", "кабель ШВВП", "акустический кабель"],
-                "галантерея" : ["ленты", "тесьма", "шнуры", "кружева", "нитки", "косынка", "галстук", "подвязка",  "гребень", "расческа", "пуговицы", "мыльница", "запонки", "игла", "булавка", "пряжка", "крючок"],
-                "детские товары" : ["детская коляска", "подгузники", "горшок", "детская смесь", "игрушка", "конструктор", "кукла", "фигурка", "настольная игра", "пазл", "платилин"],
-                "домашние животные" : ["кошка", "кот", "собака", "хомяк", "рыбка", "черепаха", "крыса", "мышь", "кролик", "лошадь", "хорёк", "лягушка", "ящерица", "попугай", "змея"],
-                "инструменты" : ["плоскогубцы", "болгарка", "дрель", "отвертка крестовая", "отвертка плоская", "шуруповёрт", "строительный нож", "рулетка", "строительная линейка", "строительный степлер", "кусачки", "гаечный ключ", "лобзик", "пила", "перфоратор", "шлифовальная машина", "отбойный молоток"],
-                "мебель" : ["диван", "кресло", "стул", "табуретка", "кровать", "кресло-кровать", "тумбочка", "шкаф", "стол", "скамейка"],
-                "медицинские изделия" : ["шпритц", "пластырь", "термометр", "одноразовые перчатки", "протез", "имплант", "бандаж", "бинт", "вата", "банка для анализов"],
-                "обувь" : ["валенки", "сапоги", "сапожки", "полусапоги", "полусапожки", "ботинки", "полуботинки", "туфли", "сандалии", "туфли комнатные", "чувяки", "мокасины", "кроссовки", "опанки", "таби"],
-                "одежда" : ["кофта", "куртка", "футболка", "штаны", "джинсы", "юбка", "носки", "худи", "толстовка", "блуза", "жилет", "трусы", "платье", "пальто", "плащ", "пиджак", "свитер", "майка", "шорты", "плавки"],
-                "оптические приборы" : ["микроскоп", "телескоп", "бинокль", "оптический прицел", "дальномер", "прожектор", "диаскоп", "спектрометр", "спекрограф"],
-                "отдых" : ["палатка", "раскладной стол", "раскладной стул", "спальник", "коврик", "термоодеяло", "рюкзак", "термокостюм", "термосумка", "термос", "мангал"],
-                "продукты питания" : ["хлеб черный", "хлеб белый", "морковь", "капуста", "огурцы", "чеснок", "лук", "помидоры", "яблоки", "бананы", "апельсины", "чечевица", "пшено", "гречка", "фасоль", "рис", "миндаль", "арахис", "сыр", "йогурт", "масло сливочное", "молоко", "яйца", "говядина", "курица", "телятина", "тунец", "креветки", "сельдь", "лосось"],
-                "промышленное оборудование" : ["фрезерный станок", "шлифовальная машина", "механический пресс", "гидравлический пресс", "электросварка", "оборудование для нанесения металлопокрытий", "лазерная сварка"],
-                "религиозные и ритуальные услуги" : ["надгробие", "венок", "крест православный", "крест католический", "гроб дубовый", "гроб еловый", "гроб березовый", "искуственные цветы"],
-                "сельское хозяйство" : [""],
-                "системы охраны и безопасности" : [],
-                "спортивные товары" : [],
-                "строительство и ремонт" : [],
-                "сырье и полезные ископаемые" : ["уголь", "железо", "золото", "алмаз", "лазурит", "древесный уголь"],
-                "текстиль" : [],
-                "товары для дома" : [],
-                "товары для личного потребления" : [],
-                "торговое оборудование" : [],
-                "транспорт" : [],
-                "техника" : [],
-                "запчасти" : [],
-                "химическая промышленность" : [],
-                "электротовары" : [],
-                "ювелирные изделия" : [],
-                "подарки" : []
-                }
+PRODUCTS_COUNT = 10000
+SHOPS_COUNT = 100 
+SR_COUNT = 2500
+ 
+def GenProductsTable(csvfilename):
+    with open(csvfilename, 'w', newline='') as csvfile:
+        fieldnames = ['ID', 'Name', 'ProductType']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
 
+        writer.writeheader()
+        with open('src_data/product_data.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=';')
+
+            i = 1
+            for row in reader:
+                if i > PRODUCTS_COUNT:
+                    break
+
+                writer.writerow({fieldnames[0] : i,
+                                 fieldnames[1] : row['product_name'],
+                                 fieldnames[2] : row['product_type']})
+                
+                i += 1
+
+
+def GenShopsTable(csvfilename):
+    def GenName(faker):
+        word = faker.word()
+        if word[-1] != 'ь' and word[-2:-1] != 'ся' and len(word) > 3:
+            return word.capitalize()
+        else:
+            return GenName(faker)
     
+    with open(csvfilename, 'w', newline='') as csvfile:
+        fieldnames = ['ID', 'Name', 'Description']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
+        faker = Faker('ru_RU')
+        writer.writeheader()
+        for i in range(SHOPS_COUNT):
+            writer.writerow({fieldnames[0] : i + 1,
+                             fieldnames[1] : GenName(faker),
+                             fieldnames[2] : faker.sentence()})
+                
+            i += 1
+
+
+def GenSRTable(csvfilename):
+    with open(csvfilename, 'w', newline='') as csvfile:
+        fieldnames = ['ID', 'FIO', 'ShopID', 'DateOfPurchase']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
+        faker = Faker('ru_RU')
+        writer.writeheader()
+        for i in range(SR_COUNT):
+            writer.writerow({fieldnames[0] : i + 1,
+                             fieldnames[1] : faker.name(),
+                             fieldnames[2] : rnd.randint(1, SHOPS_COUNT),
+                             fieldnames[3] : faker.date_between_dates(date_start=datetime(2021,1,1), date_end=datetime(2022,6,30))})
+                
+            i += 1
+
+
+def GenAvailabilityTable(csvfilename):
+    with open(csvfilename, 'w', newline='') as csvfile:
+        fieldnames = ['ID', 'ShopID', 'ProductID']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
+        writer.writeheader()
+
+        j = 1
+        for i in range(SHOPS_COUNT):
+            for _ in range(rnd.randint(1, 199)):
+                writer.writerow({fieldnames[0] : j,
+                                 fieldnames[1] : i + 1,
+                                 fieldnames[2] : rnd.randint(1, PRODUCTS_COUNT)})
+                j += 1
+                
+            i += 1
+
+
+def GenSaleReceiptPositionsTable(csvfilename):
+    avail_table_len = 0
+    with open('Availability.csv', newline='') as avail_table:
+        reader = csv.DictReader(avail_table, delimiter=';')
+        for row in reader:
+            avail_table_len += 1
     
-    def GenTable(n, csvfilename):
-        table = [0] * n
+    with open(csvfilename, 'w', newline='') as csvfile:
+        fieldnames = ['ID', 'AvailabilityID', 'SaleReceiptID']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
+        writer.writeheader()
+        j = 1
+        for i in range(SR_COUNT):
+            for _ in range(rnd.randint(1, 7)):
+                writer.writerow({fieldnames[0] : j,
+                                 fieldnames[1] : rnd.randint(1, avail_table_len),
+                                 fieldnames[2] : i + 1})
+                j += 1
 
-        for i in range(n):
-            pass
 
+def GenCostStory(csvfilename):
+    costs = [0] * PRODUCTS_COUNT
+
+    with open('src_data/product_data.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=';')
+            i = 0
+            for row in reader:
+                costs[i] = float(row['product_cost'])
+                i += 1
+    
+    with open(csvfilename, 'w', newline='') as csvfile, open('Availability.csv', newline='') as avail_table:
+        fieldnames = ['ID', 'Year', 'Month', 'Cost', 'AvailabilityID']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
+        writer.writeheader()
+
+        reader = csv.DictReader(avail_table, delimiter=';')
+        i = 0
+        j = 1
+        for row in reader:
+            prod_id = int(row['ProductID'])
+            
+            mu = costs[prod_id - 1]
+            disp = mu * 0.15
+            for date in month_year_iter(1, 2021, 6, 2022):      
+                writer.writerow({fieldnames[0] : j,
+                                 fieldnames[1] : date[0],
+                                 fieldnames[2] : date[1],
+                                 fieldnames[3] : int(rnd.gauss(mu, disp)),
+                                 fieldnames[4] : i + 1})
+                j += 1
+                    
+            i += 1
+
+
+def month_year_iter(start_month, start_year, end_month, end_year):
+    ym_start = 12 * start_year + start_month - 1
+    ym_end = 12 * end_year + end_month - 1
+    for ym in range(ym_start, ym_end + 1):
+        y, m = divmod(ym, 12)
+        yield y, m+1
+
+
+def main():
+    #GenProductsTable('Products.csv')
+    #GenShopsTable('Shops.csv')
+    #GenSRTable('SaleReceipts.csv')
+    #GenAvailabilityTable('Availability.csv')
+    #GenSaleReceiptPositionsTable('SaleReceiptPositions.csv')
+    GenCostStory('CostStory.csv')
+
+
+if __name__ == '__main__':
+    main()
