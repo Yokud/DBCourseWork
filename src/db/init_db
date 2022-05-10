@@ -115,11 +115,13 @@ create user "user";
 grant connect on database spsr_lt_db to "user";
 grant usage on schema public to "user";
 grant select on table Shops, Products, Availability, Costs to "user";
+alter user "user" with password 'user';
 
 create user "analyst" with password 'analyst';
 grant connect on database spsr_lt_db to "analyst";
 grant usage on schema public to "analyst";
 grant select on table Shops, Products, Availability, CostStory to "analyst";
+grant select on table Costs to "analyst";
 
 create user "admin" with password 'admin';
 grant connect on database spsr_lt_db to "admin";

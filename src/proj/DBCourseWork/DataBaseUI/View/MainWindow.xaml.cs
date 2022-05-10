@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace DataBaseUI
 {
@@ -23,6 +24,14 @@ namespace DataBaseUI
         public MainWindow()
         {
             InitializeComponent();
+
+            using (var db = new SpsrLtDbContext())
+            {
+                var temp = db.Costs.ToList();
+
+                foreach (var tmp in temp)
+                    Trace.WriteLine(tmp.Cost1);
+            }
         }
     }
 }
