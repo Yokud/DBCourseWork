@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataBaseUI.Models.ReposInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLShopsRepository : IRepository<Shop>
+    internal class PgSQLSaleReceiptsRepository : ISaleReceiptsRepository
     {
-        public void Create(Shop item)
+        public void Create(SaleReceipt item)
         {
             throw new NotImplementedException();
         }
@@ -23,12 +24,12 @@ namespace DataBaseUI.Models
             throw new NotImplementedException();
         }
 
-        public Shop Get(int id)
+        public SaleReceipt Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Shop> GetAll()
+        public IEnumerable<SaleReceipt> GetAll()
         {
             throw new NotImplementedException();
         }
@@ -38,7 +39,7 @@ namespace DataBaseUI.Models
             throw new NotImplementedException();
         }
 
-        public void Update(Shop item)
+        public void Update(SaleReceipt item)
         {
             throw new NotImplementedException();
         }

@@ -68,7 +68,7 @@ namespace DataBaseUI
 
                 entity.Property(e => e.Availabilityid).HasColumnName("availabilityid");
 
-                entity.Property(e => e.Cost1).HasColumnName("cost");
+                entity.Property(e => e.CostValue).HasColumnName("cost");
             });
 
             modelBuilder.Entity<CostStory>(entity =>

@@ -30,7 +30,7 @@ namespace DataBaseUI
                 var temp = db.Costs.ToList();
 
                 foreach (var tmp in temp)
-                    Trace.WriteLine(tmp.Cost1);
+                    Trace.WriteLine(tmp.CostValue);
             }
         }
     }
