@@ -29,7 +29,7 @@ GoodsForecast.Planning |+|-|-
 * Технологический стек: C# 10, PostgreSQL, NpgSQL, Entity Framework Core 6
 
 ## Диаграмма компонентов
-![](/docs/imgs/HighComponents.drawio.pdf)
+![](/docs/imgs/HighComponents.drawio.png)
 
 ## UML диаграмма классов для компонента доступа к данным и бизнес-логики
 
