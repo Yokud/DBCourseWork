@@ -32,7 +32,7 @@ GoodsForecast.Planning |+|-|-
 ![](/docs/imgs/HighComponents.drawio.png)
 
 ## UML диаграмма классов для компонента доступа к данным и бизнес-логики
-![](/docs/imgs/DABL.jpg)
+![](/docs/imgs/DABL.png)
 
 ## UML диаграммы «модельных» классов сущностей
 
