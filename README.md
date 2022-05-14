@@ -35,4 +35,11 @@ GoodsForecast.Planning |+|-|-
 ![](/docs/imgs/DABL.png)
 
 ## UML диаграммы «модельных» классов сущностей
+### Сущности базы данных
+![](/docs/imgs/ModelClassesDB.png)
+
+### Сущности системы
+
+
+### Транспортные сущности
 
