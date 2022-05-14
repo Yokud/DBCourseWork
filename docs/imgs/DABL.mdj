@@ -1034,7 +1034,7 @@
 											"top": 331,
 											"width": 167.630859375,
 											"height": 13,
-											"text": "+GetFull()",
+											"text": "+GetFullCostStory()",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3814,7 +3814,7 @@
 											"top": 584,
 											"width": 191,
 											"height": 13,
-											"text": "+GetCoefs()",
+											"text": "#GetCoefs()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7580,7 +7580,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGAvnsCne/VarU="
 							},
-							"name": "GetFull"
+							"name": "GetFullCostStory"
 						}
 					]
 				},
@@ -8313,7 +8313,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGAvtju1vh0PFA="
 							},
-							"name": "GetCoefs"
+							"name": "GetCoefs",
+							"visibility": "protected"
 						},
 						{
 							"_type": "UMLOperation",
