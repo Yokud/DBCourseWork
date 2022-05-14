@@ -8,9 +8,27 @@ namespace DataBaseUI.TrendLine
 {
     internal class PolynomialTrendLine : BaseTrendLine
     {
-        public override double[] GetLinesPoints()
+        public override List<(double, double)> GetLinePoints(List<Point> points)
         {
-            throw new NotImplementedException();
+            double CanonPolynome(double x)
+            {
+                double sum = 0;
+
+                for (int i = 0; i < coefs.Count; i++)
+                    sum += coefs[i] * Math.Pow(x, i);
+
+                return sum;
+            }
+
+            double x_min = points.Min(p => p.X);
+            double x_max = points.Max(p => p.X);
+
+            double step = Math.Abs(x_max - x_min) / 100;
+            List<(double, double)> polypts = new List<(double, double)>();
+            for (double curr = x_min; curr <= x_max; curr += step)
+                polypts.Add((curr, CanonPolynome(curr)));
+
+            return polypts;
         }
     }
 }
