@@ -43,5 +43,3 @@ GoodsForecast.Planning |+|-|-
 
 ### Транспортные сущности
 ![](/docs/imgs/SysClasses.png)
-=======
-Архитектура проекта основана на паттерне MVVM.
