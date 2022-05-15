@@ -6,7 +6,33 @@
         xmlns:local="clr-namespace:DataBaseUI"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <StackPanel>
+        <Menu>
+            <MenuItem x:Name="AccessResume" Header="Режим доступа">
+                <StackPanel>
+                    <RadioButton IsChecked="True">Пользователь</RadioButton>
+                    <RadioButton>Аналитик</RadioButton>
+                    <RadioButton>Администратор</RadioButton>
+                </StackPanel>
+            </MenuItem>
+        </Menu>
 
-    </Grid>
+        <TabControl>
+            <TabItem Header="Магазины">
+                
+            </TabItem>
+            <TabItem Header="Продукты">
+                
+            </TabItem>
+            <TabItem Header="Товарные чеки">
+                
+            </TabItem>
+            <TabItem Header="История цен">
+                
+            </TabItem>
+            <TabItem Header="Прогноз цены">
+                
+            </TabItem>
+        </TabControl>
+    </StackPanel>
 </Window>

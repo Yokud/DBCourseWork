@@ -12,16 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Diagnostics;
 
-namespace DataBaseUI
+namespace DataBaseUI.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для CostStoryView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CostStoryView : UserControl
     {
-        public MainWindow()
+        public CostStoryView()
         {
             InitializeComponent();
         }
