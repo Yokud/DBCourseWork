@@ -8,6 +8,6 @@ namespace DataBaseUI.Models
 {
     internal interface IShopsRepository : IRepository<Shop>
     {
-
+        IEnumerable<Shop> Shops { get; set; }
     }
 }

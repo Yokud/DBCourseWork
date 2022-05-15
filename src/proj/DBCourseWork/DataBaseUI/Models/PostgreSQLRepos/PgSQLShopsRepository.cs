@@ -1,46 +1,113 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLShopsRepository : IShopsRepository
+    internal class PgSQLShopsRepository : IShopsRepository, INotifyPropertyChanged
     {
-        public void Create(Shop item)
+        SpsrLtDbContext db;
+        IEnumerable<Shop> shops = null!;
+
+        public PgSQLShopsRepository()
         {
-            throw new NotImplementedException();
+            db = new SpsrLtDbContext();
+            db.Shops.Load();
+            Shops = db.Shops.Local.ToBindingList();
         }
 
-        public void Delete(int id)
+        public IEnumerable<Shop> Shops
         {
-            throw new NotImplementedException();
+            get { return shops; }
+            set 
+            { 
+                shops = value;
+                OnPropertyChanged("Shops");
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
+        public void Create(Shop item)
+        {
+            try
+            {
+                item.Id = db.Shops.Count() + 1;
+                db.Shops.Add(item);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void Delete(Shop item)
+        {
+            try
+            {
+                db.Shops.Remove(item);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            db.Dispose();
         }
 
         public Shop Get(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var elem = db.Shops.Find(id);
+
+                if (elem != null)
+                    return elem;
+                else
+                    throw new Exception("Can\t find elem");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public IEnumerable<Shop> GetAll()
         {
-            throw new NotImplementedException();
+            return db.Shops;
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            db.SaveChanges();
         }
 
         public void Update(Shop item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                db.Shops.Update(item);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }
