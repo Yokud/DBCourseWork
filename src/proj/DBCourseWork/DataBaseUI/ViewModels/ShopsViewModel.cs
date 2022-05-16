@@ -22,12 +22,7 @@ namespace DataBaseUI.ViewModels
         {
             get
             {
-                return shopsRepository.Shops;
-            }
-            set
-            {
-                shopsRepository.Shops = value;
-                OnPropertyChanged("Shops");
+                return shopsRepository.GetAll();
             }
         }
 
