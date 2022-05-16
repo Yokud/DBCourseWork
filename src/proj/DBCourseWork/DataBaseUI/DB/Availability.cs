@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataBaseUI
+namespace DataBaseUI.DB
 {
     public partial class Availability
     {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 
-namespace DataBaseUI
+namespace DataBaseUI.DB
 {
     public partial class SpsrLtDbContext : DbContext
     {

@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DataBaseUI.Models;
+using DataBaseUI.DB;
 
 namespace DataBaseUI.ViewModels
 {

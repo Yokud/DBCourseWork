@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataBaseUI.DB;
 
-namespace DataBaseUI.Models
+namespace DataBaseUI.SysEntities
 {
-    internal interface ICostStoryRepository : IRepository<CostStory>
+    internal class SaleReceiptPosition
     {
+        public Product Product { get; set; } = null!;
     }
 }
