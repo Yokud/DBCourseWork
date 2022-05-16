@@ -6,13 +6,13 @@
              xmlns:local="clr-namespace:DataBaseUI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Background="Blue">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Column="0" ItemsSource={Binding }>
+        <DataGrid Grid.Column="0" ItemsSource="{Binding}">
             
         </DataGrid>
     </Grid>
