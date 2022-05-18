@@ -58,7 +58,7 @@ namespace DataBaseUI.TrendLine
             return Gauss(matrix, power + 1);
         }
 
-        protected void GetCoefs(List<Point> points)
+        public void GetCoefs(List<Point> points)
         {
             int extremums = GetExtremumsCount(points);
 

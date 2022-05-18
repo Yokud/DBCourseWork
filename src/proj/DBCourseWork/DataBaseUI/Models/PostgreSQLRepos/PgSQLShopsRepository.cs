@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DataBaseUI.DB;
+using DataBaseUI.SysEntities;
+using System.Collections.ObjectModel;
 
 namespace DataBaseUI.Models
 {
@@ -18,18 +20,15 @@ namespace DataBaseUI.Models
         public PgSQLShopsRepository()
         {
             db = new SpsrLtDbContext();
+            shops = new ObservableCollection<Shop>();
             db.Shops.Load();
-            Shops = db.Shops.Local.ToBindingList();
+            foreach (var efshop in db.Shops)
+                ((ObservableCollection<Shop>)shops).Add(new Shop(efshop.Id, efshop.Name, efshop.Description));
         }
 
         public IEnumerable<Shop> Shops
         {
             get { return shops; }
-            set 
-            { 
-                shops = value;
-                OnPropertyChanged("Shops");
-            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -43,9 +42,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                item.Id = db.Shops.Count() + 1;
-                db.Shops.Add(item);
+                db.Shops.Add(new EFShop() { Id = db.Shops.Count() + 1 , Name = item.Name, Description = item.Description});
                 db.SaveChanges();
+                ((ObservableCollection<Shop>)shops).Add(item);
             }
             catch (Exception e)
             {
@@ -57,8 +56,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Shops.Remove(item);
+                db.Shops.Remove(new EFShop() { Id = item.Id, Name = item.Name, Description = item.Description });
                 db.SaveChanges();
+                ((ObservableCollection<Shop>)shops).Remove(item);
             }
             catch (Exception e)
             {
@@ -68,6 +68,7 @@ namespace DataBaseUI.Models
 
         public void Dispose()
         {
+            ((ObservableCollection<Shop>)shops).Clear();
             db.Dispose();
         }
 
@@ -78,7 +79,7 @@ namespace DataBaseUI.Models
                 var elem = db.Shops.Find(id);
 
                 if (elem != null)
-                    return elem;
+                    return new Shop(elem.Id, elem.Name, elem.Description);
                 else
                     throw new Exception("Can\t find elem");
             }
@@ -90,7 +91,7 @@ namespace DataBaseUI.Models
 
         public IEnumerable<Shop> GetAll()
         {
-            return db.Shops;
+            return shops;
         }
 
         public void Save()
@@ -102,8 +103,17 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Shops.Update(item);
+                EFShop shop = new EFShop() { Id = item.Id, Name = item.Name, Description = item.Description };
+
+                db.Shops.Update(shop);
                 db.SaveChanges();
+
+                for (int i = 0; i < shops.Count(); i++)
+                    if (((ObservableCollection<Shop>)shops)[i].Id == item.Id)
+                    {
+                        ((ObservableCollection<Shop>)shops)[i] = item;
+                        break;
+                    }
             }
             catch (Exception e)
             {

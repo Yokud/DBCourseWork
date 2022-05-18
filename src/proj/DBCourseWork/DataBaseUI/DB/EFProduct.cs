@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace DataBaseUI.DB
 {
-    public partial class Product
+    public partial class EFProduct
     {
-        public Product()
+        public EFProduct()
         {
-            Availabilities = new HashSet<Availability>();
+            Availabilities = new HashSet<EFAvailability>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Producttype { get; set; } = null!;
 
-        public virtual ICollection<Availability> Availabilities { get; set; }
+        public virtual ICollection<EFAvailability> Availabilities { get; set; }
     }
 }

@@ -18,13 +18,13 @@ namespace DataBaseUI.DB
         {
         }
 
-        public virtual DbSet<Availability> Availabilities { get; set; } = null!;
-        public virtual DbSet<Cost> Costs { get; set; } = null!;
-        public virtual DbSet<CostStory> CostStories { get; set; } = null!;
-        public virtual DbSet<Product> Products { get; set; } = null!;
-        public virtual DbSet<SaleReceipt> SaleReceipts { get; set; } = null!;
-        public virtual DbSet<SaleReceiptPosition> SaleReceiptPositions { get; set; } = null!;
-        public virtual DbSet<Shop> Shops { get; set; } = null!;
+        public virtual DbSet<EFAvailability> Availabilities { get; set; } = null!;
+        public virtual DbSet<EFCost> Costs { get; set; } = null!;
+        public virtual DbSet<EFCostStory> CostStories { get; set; } = null!;
+        public virtual DbSet<EFProduct> Products { get; set; } = null!;
+        public virtual DbSet<EFSaleReceipt> SaleReceipts { get; set; } = null!;
+        public virtual DbSet<EFSaleReceiptPosition> SaleReceiptPositions { get; set; } = null!;
+        public virtual DbSet<EFShop> Shops { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,7 +39,7 @@ namespace DataBaseUI.DB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Availability>(entity =>
+            modelBuilder.Entity<EFAvailability>(entity =>
             {
                 entity.ToTable("availability");
 
@@ -60,7 +60,7 @@ namespace DataBaseUI.DB
                     .HasConstraintName("availability_shopid_fkey");
             });
 
-            modelBuilder.Entity<Cost>(entity =>
+            modelBuilder.Entity<EFCost>(entity =>
             {
                 entity.HasNoKey();
 
@@ -71,7 +71,7 @@ namespace DataBaseUI.DB
                 entity.Property(e => e.CostValue).HasColumnName("cost");
             });
 
-            modelBuilder.Entity<CostStory>(entity =>
+            modelBuilder.Entity<EFCostStory>(entity =>
             {
                 entity.ToTable("coststory");
 
@@ -91,7 +91,7 @@ namespace DataBaseUI.DB
                     .HasConstraintName("coststory_availabilityid_fkey");
             });
 
-            modelBuilder.Entity<Product>(entity =>
+            modelBuilder.Entity<EFProduct>(entity =>
             {
                 entity.ToTable("products");
 
@@ -102,7 +102,7 @@ namespace DataBaseUI.DB
                 entity.Property(e => e.Producttype).HasColumnName("producttype");
             });
 
-            modelBuilder.Entity<SaleReceipt>(entity =>
+            modelBuilder.Entity<EFSaleReceipt>(entity =>
             {
                 entity.ToTable("salereceipts");
 
@@ -120,7 +120,7 @@ namespace DataBaseUI.DB
                     .HasConstraintName("salereceipts_shopid_fkey");
             });
 
-            modelBuilder.Entity<SaleReceiptPosition>(entity =>
+            modelBuilder.Entity<EFSaleReceiptPosition>(entity =>
             {
                 entity.ToTable("salereceiptpositions");
 
@@ -141,7 +141,7 @@ namespace DataBaseUI.DB
                     .HasConstraintName("salereceiptpositions_salereceiptid_fkey");
             });
 
-            modelBuilder.Entity<Shop>(entity =>
+            modelBuilder.Entity<EFShop>(entity =>
             {
                 entity.ToTable("shops");
 

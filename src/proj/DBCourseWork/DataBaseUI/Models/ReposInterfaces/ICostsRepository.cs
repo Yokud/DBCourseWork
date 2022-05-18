@@ -1,4 +1,5 @@
 ﻿using DataBaseUI.DB;
+using DataBaseUI.SysEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

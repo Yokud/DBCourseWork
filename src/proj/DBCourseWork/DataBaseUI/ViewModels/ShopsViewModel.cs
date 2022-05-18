@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Windows;
 using System.Threading.Tasks;
 using DataBaseUI.Models;
-using DataBaseUI.DB;
+using DataBaseUI.SysEntities;
 
 namespace DataBaseUI.ViewModels
 {
@@ -29,7 +31,14 @@ namespace DataBaseUI.ViewModels
 
         public void AddShop(Shop shop)
         {
-            shopsRepository.Create(shop);
+            try
+            {
+                shopsRepository.Create(shop);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public void DeleteShop(Shop shop)

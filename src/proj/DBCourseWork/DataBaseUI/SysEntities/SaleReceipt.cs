@@ -10,7 +10,7 @@ namespace DataBaseUI.SysEntities
     {
         public int Id { get; set; }
         public string Fio { get; set; } = null!;
-        public DateOnly Dateofpurchase { get; set; }
+        public DateOnly DateOfPurchase { get; set; }
         public Shop Shop { get; set; } = null!;
         public IEnumerable<SaleReceiptPosition> SaleReceiptPositions { get; set; } = null!;
     }
