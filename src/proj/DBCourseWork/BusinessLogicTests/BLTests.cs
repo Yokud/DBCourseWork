@@ -1,6 +1,6 @@
 namespace BusinessLogicTests
 {
-    public class UnitTest1
+    public class BLTests
     {
         [Fact]
         public void Test1()
