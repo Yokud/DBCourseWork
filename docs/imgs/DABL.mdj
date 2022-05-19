@@ -3834,13 +3834,30 @@
 											"height": 13,
 											"text": "+GetLinePoints()",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGA3k7Pxl85jeA=",
+											"_parent": {
+												"$ref": "AAAAAAGAvtju1vh9vM8="
+											},
+											"model": {
+												"$ref": "AAAAAAGA3k7PtF82y8Y="
+											},
+											"font": "Arial;13;0",
+											"left": 2989,
+											"top": 601,
+											"width": 191,
+											"height": 13,
+											"text": "+GetCoefs()",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 2984,
 									"top": 579,
 									"width": 201,
-									"height": 25
+									"height": 40
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -9410,6 +9427,14 @@
 								"$ref": "AAAAAAGAvtju1vh0PFA="
 							},
 							"name": "GetLinePoints"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGA3k7PtF82y8Y=",
+							"_parent": {
+								"$ref": "AAAAAAGAvtju1vh0PFA="
+							},
+							"name": "GetCoefs"
 						}
 					]
 				},
