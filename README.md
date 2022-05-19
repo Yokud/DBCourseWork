@@ -39,7 +39,7 @@ GoodsForecast.Planning |+|-|-
 ![](/docs/imgs/ModelClassesDB.png)
 
 ### Сущности системы
-![](/docs/imgs/SysClasses.png)
+![](/docs/imgs/SysEntities.png)
 
 ### Транспортные сущности
-![](/docs/imgs/SysClasses.png)
+![](/docs/imgs/TranspEntities.png)
