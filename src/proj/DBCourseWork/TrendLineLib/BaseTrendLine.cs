@@ -65,7 +65,7 @@ namespace TrendLineLib
 
             int extremums = GetExtremumsCount(points);
 
-            coefs = LeastSquares(points, Math.Min(6, extremums));
+            coefs = LeastSquares(points, Math.Min(6, extremums + 1));
 
             return coefs;
         }

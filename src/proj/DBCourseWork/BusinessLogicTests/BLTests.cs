@@ -22,16 +22,16 @@ namespace BusinessLogicTests
         public void TestQuadraticSpline()
         {
             List<Point> data = new List<Point>();
-            data.Add(new Point(0, 0));
-            data.Add(new Point(1, 2));
-            data.Add(new Point(2, 1));
-            data.Add(new Point(3, 1.2));
+            data.Add(new Point(0, 1));
+            data.Add(new Point(1, 1));
+            data.Add(new Point(2, 0.7));
+            data.Add(new Point(3, 1));
             data.Add(new Point(4, 3));
             data.Add(new Point(5, 4));
 
             BaseTrendLine line = new PolynomialTrendLine();
             var res = line.GetCoefs(data);
-            Assert.Equal(res.Select(x => Math.Round(x, 3)), new List<double>() { 0.579, 0.109, 0.111 });
+            Assert.Equal(res.Select(x => Math.Round(x, 3)), new List<double>() { 1.107, -0.659, 0.254 });
         }
 
         [Fact]
@@ -43,12 +43,11 @@ namespace BusinessLogicTests
             data.Add(new Point(2, 1));
             data.Add(new Point(3, 1.2));
             data.Add(new Point(4, 3));
-            data.Add(new Point(5, 6));
-            data.Add(new Point(6, 5));
+            data.Add(new Point(5, 4));
 
             BaseTrendLine line = new PolynomialTrendLine();
             var res = line.GetCoefs(data);
-            Assert.Equal(res.Select(x => Math.Round(x, 3)), new List<double>() { 0.576, -0.248, 0.348, -0.028 });
+            Assert.Equal(res.Select(x => Math.Round(x, 3)), new List<double>() { 0.24, 1.657, -0.737, 0.113 });
         }
 
         [Fact]
@@ -64,7 +63,7 @@ namespace BusinessLogicTests
 
             BaseTrendLine line = new PolynomialTrendLine();
             var res = line.GetCoefs(data);
-            Assert.Equal(res.Select(x => Math.Round(x, 3)), new List<double>() { 1 });
+            Assert.Equal(res.Select(x => Math.Round(x, 3)), new List<double>() { 0, 1 });
         }
 
         [Fact]
@@ -86,7 +85,7 @@ namespace BusinessLogicTests
 
             BaseTrendLine line = new PolynomialTrendLine();
             var res = line.GetCoefs(data);
-            Assert.Equal(res.Select(x => Math.Round(x, 4)), new List<double>() { -0.1344, -0.5040, 0.3348, -0.0392, -0.0071, 0.0016, -0.0001 });
+            Assert.Equal(res.Select(x => Math.Round(x, 3)), new List<double>() { -0.108, -1.194, 1.180, -0.382, 0.053, -0.003, 0 });
         }
 
         [Fact]
