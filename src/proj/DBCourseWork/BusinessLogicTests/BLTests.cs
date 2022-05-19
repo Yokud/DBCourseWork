@@ -3,7 +3,23 @@ namespace BusinessLogicTests
     public class BLTests
     {
         [Fact]
-        public void TestDefault()
+        public void TestLinearSpline()
+        {
+            List<Point> data = new List<Point>();
+            data.Add(new Point(0, 0));
+            data.Add(new Point(1, 1));
+            data.Add(new Point(2, 1.5));
+            data.Add(new Point(3, 2.2));
+            data.Add(new Point(4, 3));
+            data.Add(new Point(5, 5));
+
+            BaseTrendLine line = new PolynomialTrendLine();
+            var res = line.GetCoefs(data);
+            Assert.Equal(res.Select(x => Math.Round(x, 3)), new List<double>() { -0.148, 0.906 });
+        }
+
+        [Fact]
+        public void TestQuadraticSpline()
         {
             List<Point> data = new List<Point>();
             data.Add(new Point(0, 0));
@@ -16,6 +32,23 @@ namespace BusinessLogicTests
             BaseTrendLine line = new PolynomialTrendLine();
             var res = line.GetCoefs(data);
             Assert.Equal(res.Select(x => Math.Round(x, 3)), new List<double>() { 0.579, 0.109, 0.111 });
+        }
+
+        [Fact]
+        public void TestCubicSpline()
+        {
+            List<Point> data = new List<Point>();
+            data.Add(new Point(0, 0));
+            data.Add(new Point(1, 2));
+            data.Add(new Point(2, 1));
+            data.Add(new Point(3, 1.2));
+            data.Add(new Point(4, 3));
+            data.Add(new Point(5, 6));
+            data.Add(new Point(6, 5));
+
+            BaseTrendLine line = new PolynomialTrendLine();
+            var res = line.GetCoefs(data);
+            Assert.Equal(res.Select(x => Math.Round(x, 3)), new List<double>() { 0.576, -0.248, 0.348, -0.028 });
         }
 
         [Fact]
