@@ -8,6 +8,15 @@ namespace DataBaseUI.SysEntities
 {
     internal class SaleReceiptPosition
     {
-        public Product Product { get; set; } = null!;
+        public SaleReceiptPosition(int id, int availabilityid, int salereceiptid)
+        {
+            Id = id;
+            AvailabilityId = availabilityid;
+            SaleReceiptId = salereceiptid;
+        }
+
+        public int Id { get; set; }
+        public int AvailabilityId { get; set; }
+        public int SaleReceiptId { get; set; }
     }
 }

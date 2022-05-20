@@ -10,5 +10,6 @@ namespace DataBaseUI.Models
 {
     internal interface IProductsRepository : IRepository<Product>
     {
+        IEnumerable<Product> GetAllFromShop(Shop shop);
     }
 }

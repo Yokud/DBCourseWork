@@ -10,5 +10,6 @@ namespace DataBaseUI.Models
 {
     internal interface ICostStoryRepository : IRepository<CostStory>
     {
+        IEnumerable<CostStory> GetFullCostStory(Shop shop, Product product);
     }
 }

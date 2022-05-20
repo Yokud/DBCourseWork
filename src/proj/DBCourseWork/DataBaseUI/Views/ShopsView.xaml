@@ -8,19 +8,18 @@
              xmlns:views="clr-namespace:DataBaseUI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <DataTemplate x:Key="shopsViewTemplate" DataType="{x:Type viewmodels:ShopsViewModel}">
-            <views:ShopsView DataContext="{Binding}"/>
-        </DataTemplate>
-    </UserControl.Resources>
     <Grid Background="Aqua">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-        <ListBox Grid.Column="0" ItemsSource="{Binding Shops}"
-                 SelectedItem="{Binding SelectedShop}" Margin="25">
+        <ListBox Grid.Column="0" Grid.RowSpan="2" ItemsSource="{Binding Shops}"
+                 SelectedItem="{Binding SelectedShop}" Margin="25" BorderBrush="Black" BorderThickness="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="5">
@@ -34,9 +33,9 @@
         <StackPanel Grid.Column="1" DataContext="{Binding SelectedShop}" Margin="25">
             <TextBlock Text="Выбранный магазин" FontSize="18" />
             <TextBlock Text="Название" />
-            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
             <TextBlock Text="Описание" />
-            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
         </StackPanel>
     </Grid>
 </UserControl>

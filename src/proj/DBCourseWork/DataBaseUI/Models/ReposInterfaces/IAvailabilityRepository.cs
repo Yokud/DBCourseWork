@@ -1,14 +1,13 @@
-﻿using System;
+﻿using DataBaseUI.SysEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataBaseUI.DB;
-using DataBaseUI.SysEntities;
 
 namespace DataBaseUI.Models
 {
-    internal interface IShopsRepository : IRepository<Shop>
+    internal interface IAvailabilityRepository : IRepository<Availability>
     {
 
     }

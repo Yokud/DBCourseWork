@@ -12,8 +12,6 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Column="0" ItemsSource="{Binding}">
-            
-        </DataGrid>
+        
     </Grid>
 </UserControl>

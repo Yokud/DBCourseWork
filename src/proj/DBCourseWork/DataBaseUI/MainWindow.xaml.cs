@@ -16,7 +16,7 @@ using System.Diagnostics;
 using DataBaseUI.DB;
 using DataBaseUI.Views;
 using DataBaseUI.ViewModels;
-
+using DataBaseUI.SysEntities;
 
 namespace DataBaseUI
 {

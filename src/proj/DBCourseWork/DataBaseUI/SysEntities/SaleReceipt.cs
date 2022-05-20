@@ -8,10 +8,17 @@ namespace DataBaseUI.SysEntities
 {
     internal class SaleReceipt
     {
+        public SaleReceipt(int id, string fio, DateOnly dateOfPurchase, int shopId)
+        {
+            Id = id;
+            Fio = fio;
+            DateOfPurchase = dateOfPurchase;
+            ShopId = shopId;
+        }
+
         public int Id { get; set; }
         public string Fio { get; set; } = null!;
         public DateOnly DateOfPurchase { get; set; }
-        public Shop Shop { get; set; } = null!;
-        public IEnumerable<SaleReceiptPosition> SaleReceiptPositions { get; set; } = null!;
+        public int ShopId { get; set; }
     }
 }

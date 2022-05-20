@@ -1,47 +1,116 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataBaseUI.Models
 {
     internal class PgSQLSaleReceiptPositionsRepository : ISaleReceiptPositionsRepository
     {
+        SpsrLtDbContext db;
+        IEnumerable<SaleReceiptPosition> saleReceiptPositions; 
+
+        public PgSQLSaleReceiptPositionsRepository()
+        {
+            db = new SpsrLtDbContext();
+            saleReceiptPositions = new ObservableCollection<SaleReceiptPosition>();
+            db.SaleReceiptPositions.Load();
+            foreach (var srp in db.SaleReceiptPositions)
+                ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions).Add(new SaleReceiptPosition(srp.Id, srp.Availabilityid, srp.Salereceiptid));
+        }
+
         public void Create(SaleReceiptPosition item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                db.SaleReceiptPositions.Add(new EFSaleReceiptPosition() { Id = item.Id, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId });
+                db.SaveChanges();
+                ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions).Add(item);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
         }
 
         public void Delete(SaleReceiptPosition item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                db.SaleReceiptPositions.Remove(new EFSaleReceiptPosition() { Id = item.Id, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId });
+                db.SaveChanges();
+                ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions).Remove(item);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            db.Dispose();
         }
 
         public SaleReceiptPosition Get(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var elem = db.SaleReceiptPositions.Find(id);
+
+                if (elem != null)
+                    return new SaleReceiptPosition(elem.Id, elem.Availabilityid, elem.Salereceiptid);
+                else
+                    throw new Exception("Can\'t find sale receipt position.\n");
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return null;
+            }
         }
 
         public IEnumerable<SaleReceiptPosition> GetAll()
         {
-            throw new NotImplementedException();
+            return saleReceiptPositions;
+        }
+
+        public IEnumerable<SaleReceiptPosition> GetAllFromSaleReceipt(SaleReceipt saleReceipt)
+        {
+            return saleReceiptPositions.Where(x => x.SaleReceiptId == saleReceipt.Id);
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            db.SaveChanges();
         }
 
         public void Update(SaleReceiptPosition item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                EFSaleReceiptPosition srp = new EFSaleReceiptPosition() { Id = item.Id, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId };
+
+                db.SaleReceiptPositions.Update(srp);
+                db.SaveChanges();
+
+                for (int i = 0; i < saleReceiptPositions.Count(); i++)
+                    if (((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions)[i].Id == item.Id)
+                    {
+                        ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions)[i] = item;
+                        break;
+                    }
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
         }
     }
 }

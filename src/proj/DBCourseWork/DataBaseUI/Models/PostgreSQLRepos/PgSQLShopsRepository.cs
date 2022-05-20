@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace DataBaseUI.Models
 {
@@ -24,11 +25,6 @@ namespace DataBaseUI.Models
             db.Shops.Load();
             foreach (var efshop in db.Shops)
                 ((ObservableCollection<Shop>)shops).Add(new Shop(efshop.Id, efshop.Name, efshop.Description));
-        }
-
-        public IEnumerable<Shop> Shops
-        {
-            get { return shops; }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -48,7 +44,7 @@ namespace DataBaseUI.Models
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                Trace.WriteLine(e.Message);
             }
         }
 
@@ -62,7 +58,7 @@ namespace DataBaseUI.Models
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                Trace.WriteLine(e.Message);
             }
         }
 
@@ -81,11 +77,12 @@ namespace DataBaseUI.Models
                 if (elem != null)
                     return new Shop(elem.Id, elem.Name, elem.Description);
                 else
-                    throw new Exception("Can\t find elem");
+                    throw new Exception("Can\t find shop.\n");
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                Trace.WriteLine(e.Message);
+                return null;
             }
         }
 
@@ -117,7 +114,7 @@ namespace DataBaseUI.Models
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                Trace.WriteLine(e.Message);
             }
         }
     }

@@ -1,7 +1,5 @@
-﻿using DataBaseUI.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -11,7 +9,6 @@ using System.Windows;
 using System.Threading.Tasks;
 using DataBaseUI.Models;
 using DataBaseUI.SysEntities;
-using System.Windows;
 
 
 namespace DataBaseUI.ViewModels
@@ -19,6 +16,7 @@ namespace DataBaseUI.ViewModels
     internal class ShopsViewModel : INotifyPropertyChanged
     {
         IShopsRepository shopsRepository;
+        Shop selectedShop;
 
         public ShopsViewModel()
         {
@@ -30,6 +28,16 @@ namespace DataBaseUI.ViewModels
             get
             {
                 return shopsRepository.GetAll();
+            }
+        }
+
+        public Shop SelectedShop
+        {
+            get { return selectedShop; }
+            set
+            {
+                selectedShop = value;
+                OnPropertyChanged("SelectedShop");
             }
         }
 
@@ -47,12 +55,26 @@ namespace DataBaseUI.ViewModels
 
         public void DeleteShop(Shop shop)
         {
-            shopsRepository.Delete(shop);
+            try
+            {
+                shopsRepository.Delete(shop);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public void UpdateShop(Shop shop)
         {
-            shopsRepository.Update(shop);
+            try
+            {
+                shopsRepository.Update(shop);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

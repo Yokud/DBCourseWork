@@ -10,5 +10,6 @@ namespace DataBaseUI.Models
 {
     internal interface ICostsRepository : IRepository<Cost>
     {
+        Cost GetByShopProductCost(Shop shop, Product product);
     }
 }

@@ -10,5 +10,6 @@ namespace DataBaseUI.Models
 {
     internal interface ISaleReceiptPositionsRepository : IRepository<SaleReceiptPosition>
     {
+        IEnumerable<SaleReceiptPosition> GetAllFromSaleReceipt(SaleReceipt saleReceipt);
     }
 }

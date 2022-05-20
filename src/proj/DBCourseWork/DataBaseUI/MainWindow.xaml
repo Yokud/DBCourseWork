@@ -8,20 +8,6 @@
         xmlns:views="clr-namespace:DataBaseUI.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-
-    <Window.Resources>
-        
-        <DataTemplate x:Key="productsViewTemplate" DataType="{x:Type viewmodels:ProductsViewModel}">
-            <views:ProductsView DataContext="{Binding}"/>
-        </DataTemplate>
-        <DataTemplate x:Key="salereceiptsViewTemplate" DataType="{x:Type viewmodels:SaleReceiptsViewModel}">
-            <views:SaleReceiptsView DataContext="{Binding}"/>
-        </DataTemplate>
-        <DataTemplate x:Key="coststoryViewTemplate" DataType="{x:Type viewmodels:CostStoryViewModel}">
-            <views:CostStoryView DataContext="{Binding}"/>
-        </DataTemplate>
-    </Window.Resources>
-
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
         <DockPanel DockPanel.Dock="Top">
             <RadioButton IsChecked="True" Margin="3">Пользователь</RadioButton>
