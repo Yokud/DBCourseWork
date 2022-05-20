@@ -14,6 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using DataBaseUI.DB;
+using DataBaseUI.Views;
+using DataBaseUI.ViewModels;
+
 
 namespace DataBaseUI
 {
@@ -26,13 +29,17 @@ namespace DataBaseUI
         {
             InitializeComponent();
 
-            using (var db = new SpsrLtDbContext())
-            {
-                var temp = db.Costs.ToList();
+            ShopsContentControl.Content = new ShopsView();
+            ShopsContentControl.DataContext = new ShopsViewModel();
 
-                foreach (var tmp in temp)
-                    Trace.WriteLine(tmp.CostValue);
-            }
+            ProductsContentControl.Content = new ProductsView();
+            ProductsContentControl.DataContext = new ProductsViewModel();
+
+            SaleReceiptsContentControl.Content = new SaleReceiptsView();
+            SaleReceiptsContentControl.DataContext = new SaleReceiptsViewModel();
+
+            CostStoriesContentControl.Content = new CostStoryView();
+            CostStoriesContentControl.DataContext = new CostStoryViewModel();
         }
     }
 }

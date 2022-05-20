@@ -4,9 +4,45 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataBaseUI"
+        xmlns:viewmodels="clr-namespace:DataBaseUI.ViewModels"
+        xmlns:views="clr-namespace:DataBaseUI.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
-    </Grid>
+    <Window.Resources>
+        
+        <DataTemplate x:Key="productsViewTemplate" DataType="{x:Type viewmodels:ProductsViewModel}">
+            <views:ProductsView DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="salereceiptsViewTemplate" DataType="{x:Type viewmodels:SaleReceiptsViewModel}">
+            <views:SaleReceiptsView DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="coststoryViewTemplate" DataType="{x:Type viewmodels:CostStoryViewModel}">
+            <views:CostStoryView DataContext="{Binding}"/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
+        <DockPanel DockPanel.Dock="Top">
+            <RadioButton IsChecked="True" Margin="3">Пользователь</RadioButton>
+            <RadioButton Margin="3">Аналитик</RadioButton>
+            <RadioButton Margin="3">Администратор</RadioButton>
+        </DockPanel>
+        <Separator DockPanel.Dock="Top"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <ContentControl x:Name="ShopsContentControl" Grid.Row="0" Grid.Column="0"/>
+            <ContentControl x:Name="ProductsContentControl" Grid.Row="0" Grid.Column="1"/>
+            <ContentControl x:Name="SaleReceiptsContentControl" Grid.Row="1" Grid.Column="0"/>
+            <ContentControl x:Name="CostStoriesContentControl" Grid.Row="1" Grid.Column="1"/>
+        </Grid>
+    </DockPanel>
 </Window>

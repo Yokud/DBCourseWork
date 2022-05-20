@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DataBaseUI.Models;
+using System;
 using System.Collections.Generic;
+
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -9,6 +11,8 @@ using System.Windows;
 using System.Threading.Tasks;
 using DataBaseUI.Models;
 using DataBaseUI.SysEntities;
+using System.Windows;
+
 
 namespace DataBaseUI.ViewModels
 {

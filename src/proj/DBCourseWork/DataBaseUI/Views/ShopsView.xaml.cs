@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DataBaseUI.Views
 {
     /// <summary>
-    /// Логика взаимодействия для TrendWindow.xaml
+    /// Логика взаимодействия для ShopsView.xaml
     /// </summary>
-    public partial class TrendWindow : Window
+    public partial class ShopsView : UserControl
     {
-        public TrendWindow()
+        public ShopsView()
         {
             InitializeComponent();
         }
