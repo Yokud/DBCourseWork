@@ -1,62 +1,65 @@
 ﻿using DataBaseUI.Models;
 using System;
 using System.Collections.Generic;
+
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Threading.Tasks;
+using DataBaseUI.Models;
+using DataBaseUI.SysEntities;
+using System.Windows;
+
 
 namespace DataBaseUI.ViewModels
 {
-    internal class ShopsViewModel
+    internal class ShopsViewModel : INotifyPropertyChanged
     {
-        internal class ShopsViewModel : INotifyPropertyChanged
+        IShopsRepository shopsRepository;
+
+        public ShopsViewModel()
         {
-            IShopsRepository shopsRepository;
+            shopsRepository = new PgSQLShopsRepository();
+        }
 
-            public ShopsViewModel()
+        public IEnumerable<Shop> Shops
+        {
+            get
             {
-                shopsRepository = new PgSQLShopsRepository();
+                return shopsRepository.GetAll();
             }
+        }
 
-            public IEnumerable<Shop> Shops
+        public void AddShop(Shop shop)
+        {
+            try
             {
-                get
-                {
-                    return shopsRepository.GetAll();
-                }
+                shopsRepository.Create(shop);
             }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
 
-            public void AddShop(Shop shop)
-            {
-                try
-                {
-                    shopsRepository.Create(shop);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-            }
+        public void DeleteShop(Shop shop)
+        {
+            shopsRepository.Delete(shop);
+        }
 
-            public void DeleteShop(Shop shop)
-            {
-                shopsRepository.Delete(shop);
-            }
+        public void UpdateShop(Shop shop)
+        {
+            shopsRepository.Update(shop);
+        }
 
-            public void UpdateShop(Shop shop)
-            {
-                shopsRepository.Update(shop);
-            }
-
-            public event PropertyChangedEventHandler? PropertyChanged;
-            public void OnPropertyChanged([CallerMemberName] string prop = "")
-            {
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs(prop));
-            }
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

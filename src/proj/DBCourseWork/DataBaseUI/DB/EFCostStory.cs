@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataBaseUI
+namespace DataBaseUI.DB
 {
-    public partial class CostStory
+    public partial class EFCostStory
     {
         public int Id { get; set; }
         public int Year { get; set; }
@@ -11,6 +11,6 @@ namespace DataBaseUI
         public int Cost { get; set; }
         public int Availabilityid { get; set; }
 
-        public virtual Availability Availability { get; set; } = null!;
+        public virtual EFAvailability Availability { get; set; } = null!;
     }
 }

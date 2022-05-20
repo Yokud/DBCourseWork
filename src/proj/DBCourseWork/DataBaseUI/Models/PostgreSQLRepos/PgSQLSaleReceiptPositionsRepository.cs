@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataBaseUI.SysEntities;
 
 namespace DataBaseUI.Models
 {
@@ -13,7 +14,7 @@ namespace DataBaseUI.Models
             throw new NotImplementedException();
         }
 
-        public void Delete(int id)
+        public void Delete(SaleReceiptPosition item)
         {
             throw new NotImplementedException();
         }

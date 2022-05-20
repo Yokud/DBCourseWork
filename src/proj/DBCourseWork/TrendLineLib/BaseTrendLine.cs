@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataBaseUI.TrendLine
+namespace TrendLineLib
 {
-    internal abstract class BaseTrendLine
+    public abstract class BaseTrendLine
     {
         protected List<double> coefs = null!;
 
@@ -58,11 +58,16 @@ namespace DataBaseUI.TrendLine
             return Gauss(matrix, power + 1);
         }
 
-        protected void GetCoefs(List<Point> points)
+        public List<double> GetCoefs(List<Point> points)
         {
+            if (points == null || points.Count == 0)
+                return null;
+
             int extremums = GetExtremumsCount(points);
 
             coefs = LeastSquares(points, Math.Min(6, extremums + 1));
+
+            return coefs;
         }
 
         protected int GetExtremumsCount(List<Point> points)
@@ -76,6 +81,6 @@ namespace DataBaseUI.TrendLine
             return extremums;
         }
 
-        public abstract List<(double, double)> GetLinePoints(List<Point> points);
+        public abstract List<Point> GetLinePoints(List<Point> points);
     }
 }

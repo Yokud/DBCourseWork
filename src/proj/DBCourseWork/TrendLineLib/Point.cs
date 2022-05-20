@@ -1,6 +1,6 @@
-﻿namespace DataBaseUI.TrendLine
+﻿namespace TrendLineLib
 {
-    internal class Point
+    public class Point
     {
         public Point(double x, double y, double p = 1)
         {

@@ -13,8 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using DataBaseUI.DB;
 using DataBaseUI.Views;
 using DataBaseUI.ViewModels;
+
 
 namespace DataBaseUI
 {

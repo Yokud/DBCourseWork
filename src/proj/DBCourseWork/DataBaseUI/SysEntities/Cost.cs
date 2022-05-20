@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataBaseUI.DB;
 
-namespace DataBaseUI.ViewModels
+namespace DataBaseUI.SysEntities
 {
-    internal class CostStoryViewModel
+    internal class Cost
     {
     }
 }

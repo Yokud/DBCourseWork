@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataBaseUI.TrendLine
+namespace TrendLineLib
 {
-    internal class PolynomialTrendLine : BaseTrendLine
+    public class PolynomialTrendLine : BaseTrendLine
     {
-        public override List<(double, double)> GetLinePoints(List<Point> points)
+        public override List<Point> GetLinePoints(List<Point> points)
         {
+            if (points.Count == 0 || points == null)
+                return null;
+
             double CanonPolynome(double x)
             {
                 double sum = 0;
@@ -24,9 +27,9 @@ namespace DataBaseUI.TrendLine
             double x_max = points.Max(p => p.X);
 
             double step = Math.Abs(x_max - x_min) / 100;
-            List<(double, double)> polypts = new List<(double, double)>();
+            List<Point> polypts = new List<Point>();
             for (double curr = x_min; curr <= x_max; curr += step)
-                polypts.Add((curr, CanonPolynome(curr)));
+                polypts.Add(new Point(curr, CanonPolynome(curr)));
 
             return polypts;
         }
