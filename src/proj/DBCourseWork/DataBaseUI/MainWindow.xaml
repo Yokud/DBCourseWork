@@ -10,9 +10,7 @@
         Title="MainWindow" Height="450" Width="800">
 
     <Window.Resources>
-        <DataTemplate x:Key="shopsViewTemplate" DataType="{x:Type viewmodels:ShopsViewModel}">
-            <views:ShopsView DataContext="{Binding}"/>
-        </DataTemplate>
+        
         <DataTemplate x:Key="productsViewTemplate" DataType="{x:Type viewmodels:ProductsViewModel}">
             <views:ProductsView DataContext="{Binding}"/>
         </DataTemplate>
@@ -24,29 +22,27 @@
         </DataTemplate>
     </Window.Resources>
 
-    <StackPanel>
-        <Menu>
-            <MenuItem x:Name="AccessResume" Header="Режим доступа">
-                <StackPanel>
-                    <RadioButton IsChecked="True">Пользователь</RadioButton>
-                    <RadioButton>Аналитик</RadioButton>
-                    <RadioButton>Администратор</RadioButton>
-                </StackPanel>
-            </MenuItem>
-        </Menu>
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
+        <DockPanel DockPanel.Dock="Top">
+            <RadioButton IsChecked="True" Margin="3">Пользователь</RadioButton>
+            <RadioButton Margin="3">Аналитик</RadioButton>
+            <RadioButton Margin="3">Администратор</RadioButton>
+        </DockPanel>
+        <Separator DockPanel.Dock="Top"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-        <TabControl>
-            <TabItem Header="Магазины" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" DataContext="{Binding Source=ShopsView}">
-            </TabItem>
-            <TabItem Header="Продукты" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-
-            </TabItem>
-            <TabItem Header="Товарные чеки" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-
-            </TabItem>
-            <TabItem Header="Прогноз цены" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-
-            </TabItem>
-        </TabControl>
-    </StackPanel>
+            <ContentControl x:Name="ShopsContentControl" Grid.Row="0" Grid.Column="0"/>
+            <ContentControl x:Name="ProductsContentControl" Grid.Row="0" Grid.Column="1"/>
+            <ContentControl x:Name="SaleReceiptsContentControl" Grid.Row="1" Grid.Column="0"/>
+            <ContentControl x:Name="CostStoriesContentControl" Grid.Row="1" Grid.Column="1"/>
+        </Grid>
+    </DockPanel>
 </Window>

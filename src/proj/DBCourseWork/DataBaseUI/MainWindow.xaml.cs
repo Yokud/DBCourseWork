@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using DataBaseUI.Views;
+using DataBaseUI.ViewModels;
 
 namespace DataBaseUI
 {
@@ -24,6 +26,18 @@ namespace DataBaseUI
         public MainWindow()
         {
             InitializeComponent();
+
+            ShopsContentControl.Content = new ShopsView();
+            ShopsContentControl.DataContext = new ShopsViewModel();
+
+            ProductsContentControl.Content = new ProductsView();
+            ProductsContentControl.DataContext = new ProductsViewModel();
+
+            SaleReceiptsContentControl.Content = new SaleReceiptsView();
+            SaleReceiptsContentControl.DataContext = new SaleReceiptsViewModel();
+
+            CostStoriesContentControl.Content = new CostStoryView();
+            CostStoriesContentControl.DataContext = new CostStoryViewModel();
         }
     }
 }

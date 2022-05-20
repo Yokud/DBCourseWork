@@ -13,7 +13,7 @@ namespace DataBaseUI.Models
             throw new NotImplementedException();
         }
 
-        public void Delete(int id)
+        public void Delete(Cost item)
         {
             throw new NotImplementedException();
         }
