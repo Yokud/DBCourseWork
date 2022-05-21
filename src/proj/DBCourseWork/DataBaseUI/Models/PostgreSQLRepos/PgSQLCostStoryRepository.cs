@@ -44,7 +44,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-
+                db.CostStories.Remove(new EFCostStory() { Id = item.Id, Year = item.Year, Month = item.Month, Availabilityid = item.AvailabilityId });
+                db.SaveChanges();
+                ((ObservableCollection<CostStory>)stories).Remove(item);
             }
             catch (Exception e)
             {
@@ -59,7 +61,20 @@ namespace DataBaseUI.Models
 
         public CostStory Get(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var elem = db.CostStories.Find(id);
+
+                if (elem != null)
+                    return new CostStory(elem.Id, elem.Year, elem.Month, elem.Cost, elem.Availabilityid);
+                else
+                    throw new Exception("Can\'t find cost story elem.\n");
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return null;
+            }
         }
 
         public IEnumerable<CostStory> GetAll()
@@ -69,7 +84,8 @@ namespace DataBaseUI.Models
 
         public IEnumerable<CostStory> GetFullCostStory(Shop shop, Product product)
         {
-            throw new NotImplementedException();
+            var avail = db.Availabilities.Where(x => x.Productid == product.Id && x.Shopid == shop.Id).First();
+            return stories.Where(x => x.AvailabilityId == avail.Id);
         }
 
         public void Save()
@@ -79,7 +95,22 @@ namespace DataBaseUI.Models
 
         public void Update(CostStory item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                db.CostStories.Update(new EFCostStory() { Id = item.Id, Year = item.Year, Month = item.Month, Cost = item.Cost, Availabilityid = item.AvailabilityId });
+                db.SaveChanges();
+
+                for (int i = 0; i < stories.Count(); i++)
+                    if (((ObservableCollection<CostStory>)stories)[i].Id == item.Id)
+                    {
+                        ((ObservableCollection<CostStory>)stories)[i] = item;
+                        break;
+                    }
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
         }
     }
 }

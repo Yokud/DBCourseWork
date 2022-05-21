@@ -25,6 +25,9 @@ namespace DataBaseUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        internal delegate void ValuePassDelegate(Shop selectedShop);
+        internal event ValuePassDelegate ValuePassEvent;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -40,6 +43,14 @@ namespace DataBaseUI
 
             CostStoriesContentControl.Content = new CostStoryView();
             CostStoriesContentControl.DataContext = new CostStoryViewModel();
+
+            ValuePassEvent += new ValuePassDelegate(SetSelectedShop);
+            ((ShopsViewModel)ShopsContentControl.DataContext).del = ValuePassEvent;
+        }
+
+        internal void SetSelectedShop(Shop selectedShop)
+        {
+            ((ProductsViewModel)ProductsContentControl.DataContext).SelectedShop = selectedShop;
         }
     }
 }

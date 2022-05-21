@@ -28,14 +28,29 @@ namespace DataBaseUI.ViewModels
         public Shop SelectedShop
         {
             get { return selectedShop; }
-            set { selectedShop = value; }
+            set 
+            { 
+                selectedShop = value;
+                OnPropertyChanged("SelectedShop");
+                OnPropertyChanged("Products");
+            }
         }
 
         public IEnumerable<Product> Products
         {
             get
             {
-                return products.GetAllFromShop(SelectedShop);
+                if (SelectedShop == null)
+                    return null;
+
+                var shopsProducts = products.GetAllFromShop(SelectedShop);
+                var shopsAvails = availabilities.GetAll().Where(x => x.ShopId == SelectedShop.Id);
+                var costs1 = costs.GetAll();
+
+                foreach (Product product in shopsProducts)
+                    product.Cost = costs1.Where(y => y.AvailabilityId == shopsAvails.Where(x => x.ProductId == product.Id).First().Id).First().CostValue;
+
+                return shopsProducts;
             }
         }
 

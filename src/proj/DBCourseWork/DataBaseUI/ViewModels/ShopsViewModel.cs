@@ -17,6 +17,7 @@ namespace DataBaseUI.ViewModels
     {
         IShopsRepository shopsRepository;
         Shop selectedShop;
+        internal Delegate del;
 
         public ShopsViewModel()
         {
@@ -37,8 +38,14 @@ namespace DataBaseUI.ViewModels
             set
             {
                 selectedShop = value;
+                SetSelectedShop(value);
                 OnPropertyChanged("SelectedShop");
             }
+        }
+
+        internal void SetSelectedShop(Shop selectedShop)
+        {
+            del.DynamicInvoke(selectedShop);
         }
 
         public void AddShop(Shop shop)
