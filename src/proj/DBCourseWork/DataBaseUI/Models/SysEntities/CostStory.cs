@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 
 namespace DataBaseUI.SysEntities
 {
-    internal class CostStory
+    public class CostStory
     {
         public CostStory(int id, int year, int month, int cost, int availabilityid)
         {
             Id = id;
+            Year = year;
+            Month = month;
+            Cost = cost;
+            AvailabilityId = availabilityid;
+        }
+
+        public CostStory(int year, int month, int cost, int availabilityid)
+        {
             Year = year;
             Month = month;
             Cost = cost;

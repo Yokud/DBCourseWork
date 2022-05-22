@@ -13,10 +13,19 @@ using System.Diagnostics;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLShopsRepository : IShopsRepository
+    public class PgSQLShopsRepository : IShopsRepository
     {
         SpsrLtDbContext db;
         IEnumerable<Shop> shops = null!;
+
+        public PgSQLShopsRepository()
+        {
+            db = new SpsrLtDbContext();
+            shops = new ObservableCollection<Shop>();
+            db.Shops.Load();
+            foreach (var efshop in db.Shops)
+                ((ObservableCollection<Shop>)shops).Add(new Shop(efshop.Id, efshop.Name, efshop.Description));
+        }
 
         public PgSQLShopsRepository(SpsrLtDbContext spsr)
         {
@@ -33,6 +42,7 @@ namespace DataBaseUI.Models
             {
                 db.Shops.Add(new EFShop() { Id = db.Shops.Count() + 1 , Name = item.Name, Description = item.Description});
                 db.SaveChanges();
+                item.Id = db.Shops.Count();
                 ((ObservableCollection<Shop>)shops).Add(item);
             }
             catch (Exception e)
@@ -45,7 +55,7 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Shops.Remove(new EFShop() { Id = item.Id, Name = item.Name, Description = item.Description });
+                db.Shops.Remove(db.Shops.Find(item.Id));
                 db.SaveChanges();
                 ((ObservableCollection<Shop>)shops).Remove(item);
             }
@@ -93,7 +103,10 @@ namespace DataBaseUI.Models
         {
             try
             {
-                EFShop shop = new EFShop() { Id = item.Id, Name = item.Name, Description = item.Description };
+                EFShop shop = db.Shops.Find(item.Id);
+
+                shop.Name = item.Name;
+                shop.Description = item.Description;
 
                 db.Shops.Update(shop);
                 db.SaveChanges();

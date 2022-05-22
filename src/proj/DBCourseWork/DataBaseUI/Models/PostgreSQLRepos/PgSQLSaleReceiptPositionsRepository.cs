@@ -11,10 +11,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLSaleReceiptPositionsRepository : ISaleReceiptPositionsRepository
+    public class PgSQLSaleReceiptPositionsRepository : ISaleReceiptPositionsRepository
     {
         SpsrLtDbContext db;
-        IEnumerable<SaleReceiptPosition> saleReceiptPositions; 
+        IEnumerable<SaleReceiptPosition> saleReceiptPositions;
+
+        public PgSQLSaleReceiptPositionsRepository()
+        {
+            db = new SpsrLtDbContext();
+            saleReceiptPositions = new ObservableCollection<SaleReceiptPosition>();
+            db.SaleReceiptPositions.Load();
+            foreach (var srp in db.SaleReceiptPositions)
+                ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions).Add(new SaleReceiptPosition(srp.Id, srp.Availabilityid, srp.Salereceiptid));
+        }
 
         public PgSQLSaleReceiptPositionsRepository(SpsrLtDbContext spsr)
         {
@@ -29,8 +38,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.SaleReceiptPositions.Add(new EFSaleReceiptPosition() { Id = item.Id, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId });
+                db.SaleReceiptPositions.Add(new EFSaleReceiptPosition() { Id = db.SaleReceiptPositions.Count() + 1, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId });
                 db.SaveChanges();
+                item.Id = db.SaleReceiptPositions.Count();
                 ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions).Add(item);
             }
             catch (Exception e)
@@ -43,7 +53,7 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.SaleReceiptPositions.Remove(new EFSaleReceiptPosition() { Id = item.Id, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId });
+                db.SaleReceiptPositions.Remove(db.SaleReceiptPositions.Find(item.Id));
                 db.SaveChanges();
                 ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions).Remove(item);
             }
@@ -95,7 +105,10 @@ namespace DataBaseUI.Models
         {
             try
             {
-                EFSaleReceiptPosition srp = new EFSaleReceiptPosition() { Id = item.Id, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId };
+                EFSaleReceiptPosition srp = db.SaleReceiptPositions.Find(item.Id);
+
+                srp.Salereceiptid = item.SaleReceiptId;
+                srp.Availabilityid = item.AvailabilityId;
 
                 db.SaleReceiptPositions.Update(srp);
                 db.SaveChanges();

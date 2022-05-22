@@ -15,10 +15,19 @@ using Npgsql;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLProductsRepository : IProductsRepository
+    public class PgSQLProductsRepository : IProductsRepository
     {
         SpsrLtDbContext db;
         IEnumerable<Product> products = null!;
+
+        public PgSQLProductsRepository()
+        {
+            db = new SpsrLtDbContext();
+            products = new ObservableCollection<Product>();
+            db.Products.Load();
+            foreach (var prod in db.Products)
+                ((ObservableCollection<Product>)products).Add(new Product(prod.Id, prod.Name, prod.Producttype));
+        }
 
         public PgSQLProductsRepository(SpsrLtDbContext spsr)
         {
@@ -33,8 +42,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Products.Add(new EFProduct() { Id = item.Id, Name = item.Name, Producttype = item.ProductType });
+                db.Products.Add(new EFProduct() { Id = db.Products.Count() + 1, Name = item.Name, Producttype = item.ProductType });
                 db.SaveChanges();
+                item.Id = db.Products.Count();
                 ((ObservableCollection<Product>)products).Add(item);
             }
             catch (Exception e)
@@ -47,7 +57,7 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Products.Remove(new EFProduct() { Id = item.Id, Name = item.Name, Producttype = item.ProductType });
+                db.Products.Remove(db.Products.Find(item.Id));
                 db.SaveChanges();
                 ((ObservableCollection<Product>)products).Remove(item);
             }
@@ -94,7 +104,11 @@ namespace DataBaseUI.Models
         {
             try
             {
-                EFProduct product = new EFProduct() { Id = item.Id, Name = item.Name, Producttype = item.ProductType };
+                EFProduct product = db.Products.Find(item.Id);
+
+                product.Name = item.Name;
+                product.Producttype = item.ProductType;
+
                 db.Products.Update(product);
                 db.SaveChanges();
 
