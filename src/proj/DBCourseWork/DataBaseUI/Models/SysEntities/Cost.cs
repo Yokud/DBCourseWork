@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataBaseUI.SysEntities
 {
-    internal class Cost
+    public class Cost
     {
         public Cost(int availabilityId, int costValue)
         {

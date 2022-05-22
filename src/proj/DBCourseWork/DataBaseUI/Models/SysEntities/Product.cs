@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace DataBaseUI.SysEntities
 {
-    internal class Product
+    public class Product
     {
         public Product(int id, string name, string productType, int? cost = null)
         {
             Id = id;
+            Name = name;
+            ProductType = productType;
+            Cost = cost;
+        }
+
+        public Product(string name, string productType, int? cost = null)
+        {
             Name = name;
             ProductType = productType;
             Cost = cost;

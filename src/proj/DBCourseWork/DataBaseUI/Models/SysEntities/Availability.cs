@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 
 namespace DataBaseUI.SysEntities
 {
-    internal class Availability
+    public class Availability
     {
         public Availability(int id, int shopid, int productid)
         {
             Id = id;
+            ShopId = shopid;
+            ProductId = productid;
+        }
+
+        public Availability(int shopid, int productid)
+        {
             ShopId = shopid;
             ProductId = productid;
         }

@@ -11,10 +11,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLCostStoryRepository : ICostStoryRepository
+    public class PgSQLCostStoryRepository : ICostStoryRepository
     {
         SpsrLtDbContext db;
         IEnumerable<CostStory> stories;
+
+        public PgSQLCostStoryRepository()
+        {
+            db = new SpsrLtDbContext();
+            stories = new ObservableCollection<CostStory>();
+            db.CostStories.Load();
+
+            foreach (var cs in db.CostStories)
+                ((ObservableCollection<CostStory>)stories).Add(new CostStory(cs.Id, cs.Year, cs.Month, cs.Cost, cs.Availabilityid));
+        }
 
         public PgSQLCostStoryRepository(SpsrLtDbContext spsr)
         {
@@ -30,8 +40,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.CostStories.Add(new EFCostStory() { Id = item.Id, Year = item.Year, Month = item.Month, Availabilityid = item.AvailabilityId });
+                db.CostStories.Add(new EFCostStory() { Id = db.CostStories.Count() + 1, Year = item.Year, Month = item.Month, Availabilityid = item.AvailabilityId });
                 db.SaveChanges();
+                item.Id = db.CostStories.Count();
                 ((ObservableCollection<CostStory>)stories).Add(item);
             }
             catch (Exception e)
@@ -44,7 +55,7 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.CostStories.Remove(new EFCostStory() { Id = item.Id, Year = item.Year, Month = item.Month, Availabilityid = item.AvailabilityId });
+                db.CostStories.Remove(db.CostStories.Find(item.Id));
                 db.SaveChanges();
                 ((ObservableCollection<CostStory>)stories).Remove(item);
             }
@@ -97,7 +108,14 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.CostStories.Update(new EFCostStory() { Id = item.Id, Year = item.Year, Month = item.Month, Cost = item.Cost, Availabilityid = item.AvailabilityId });
+                EFCostStory c = db.CostStories.Find(item.Id);
+
+                c.Year = item.Year;
+                c.Month = item.Month;
+                c.Cost = item.Cost;
+                c.Availabilityid = item.AvailabilityId;
+
+                db.CostStories.Update(c);
                 db.SaveChanges();
 
                 for (int i = 0; i < stories.Count(); i++)

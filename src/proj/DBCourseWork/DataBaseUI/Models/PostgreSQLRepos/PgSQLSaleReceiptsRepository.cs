@@ -11,10 +11,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLSaleReceiptsRepository : ISaleReceiptsRepository
+    public class PgSQLSaleReceiptsRepository : ISaleReceiptsRepository
     {
         SpsrLtDbContext db;
         IEnumerable<SaleReceipt> saleReceipts;
+
+        public PgSQLSaleReceiptsRepository()
+        {
+            db = new SpsrLtDbContext();
+            saleReceipts = new ObservableCollection<SaleReceipt>();
+            db.SaleReceipts.Load();
+            foreach (var sr in db.SaleReceipts)
+                ((ObservableCollection<SaleReceipt>)saleReceipts).Add(new SaleReceipt(sr.Id, sr.Fio, sr.Dateofpurchase, sr.Shopid));
+        }
 
         public PgSQLSaleReceiptsRepository(SpsrLtDbContext spsr)
         {
@@ -29,8 +38,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.SaleReceipts.Add(new EFSaleReceipt() { Id = item.Id, Fio = item.Fio, Dateofpurchase = item.DateOfPurchase, Shopid = item.ShopId });
+                db.SaleReceipts.Add(new EFSaleReceipt() { Id = db.SaleReceipts.Count() + 1, Fio = item.Fio, Dateofpurchase = item.DateOfPurchase, Shopid = item.ShopId });
                 db.SaveChanges();
+                item.Id = db.SaleReceipts.Count();
                 ((ObservableCollection<SaleReceipt>)saleReceipts).Add(item);
             }
             catch (Exception e)
@@ -43,7 +53,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-
+                db.SaleReceipts.Remove(db.SaleReceipts.Find(item.Id));
+                db.SaveChanges();
+                ((ObservableCollection<SaleReceipt>)saleReceipts).Remove(item);
             }
             catch (Exception e)
             {
@@ -93,8 +105,13 @@ namespace DataBaseUI.Models
         {
             try
             {
-                EFSaleReceipt sr = new EFSaleReceipt() { Id = item.Id, Dateofpurchase = item.DateOfPurchase, Fio = item.Fio, Shopid = item.ShopId };
-                db.SaleReceipts.Add(sr);
+                EFSaleReceipt sr = db.SaleReceipts.Find(item.Id);
+
+                sr.Fio = item.Fio;
+                sr.Dateofpurchase = item.DateOfPurchase;
+                sr.Shopid = item.ShopId;
+
+                db.SaleReceipts.Update(sr);
                 db.SaveChanges();
 
                 for (int i = 0; i < saleReceipts.Count(); i++)

@@ -11,9 +11,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLCostsRepository : ICostsRepository
+    public class PgSQLCostsRepository : ICostsRepository
     {
         SpsrLtDbContext db;
+
+        public PgSQLCostsRepository()
+        {
+            db = new SpsrLtDbContext();
+            db.Costs.Load();
+        }
 
         public PgSQLCostsRepository(SpsrLtDbContext spsr)
         {

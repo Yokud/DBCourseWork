@@ -11,10 +11,19 @@ using System.Threading.Tasks;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLAvailabilityRepository : IAvailabilityRepository
+    public class PgSQLAvailabilityRepository : IAvailabilityRepository
     {
         SpsrLtDbContext db;
         IEnumerable<Availability> availabilities;
+
+        public PgSQLAvailabilityRepository()
+        {
+            db = new SpsrLtDbContext();
+            availabilities = new ObservableCollection<Availability>();
+            db.Availabilities.Load();
+            foreach (var avail in db.Availabilities)
+                ((ObservableCollection<Availability>)availabilities).Add(new Availability(avail.Id, avail.Shopid, avail.Productid));
+        }
 
         public PgSQLAvailabilityRepository(SpsrLtDbContext spsr)
         {
@@ -31,6 +40,7 @@ namespace DataBaseUI.Models
             {
                 db.Availabilities.Add(new EFAvailability() { Id = item.Id, Shopid = item.ShopId, Productid = item.ProductId });
                 db.SaveChanges();
+                item.Id = db.Availabilities.Count() + 1;
                 ((ObservableCollection<Availability>)availabilities).Add(item);
             }
             catch (Exception e)

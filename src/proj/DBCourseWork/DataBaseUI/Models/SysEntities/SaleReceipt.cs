@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace DataBaseUI.SysEntities
 {
-    internal class SaleReceipt
+    public class SaleReceipt
     {
         public SaleReceipt(int id, string fio, DateOnly dateOfPurchase, int shopId)
         {
             Id = id;
+            Fio = fio;
+            DateOfPurchase = dateOfPurchase;
+            ShopId = shopId;
+        }
+
+        public SaleReceipt(string fio, DateOnly dateOfPurchase, int shopId)
+        {
             Fio = fio;
             DateOfPurchase = dateOfPurchase;
             ShopId = shopId;
