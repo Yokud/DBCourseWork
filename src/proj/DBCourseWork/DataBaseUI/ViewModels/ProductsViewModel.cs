@@ -17,6 +17,7 @@ namespace DataBaseUI.ViewModels
         ICostsRepository costs;
         IAvailabilityRepository availabilities;
         Shop selectedShop;
+        Product selectedProduct;
 
         public ProductsViewModel(SpsrLtDbContext spsr)
         {
@@ -36,21 +37,21 @@ namespace DataBaseUI.ViewModels
             }
         }
 
+        public Product SelectedProduct
+        {
+            get { return selectedProduct; }
+            set
+            {
+                selectedProduct = value;
+                OnPropertyChanged("SelectedProduct");
+            }
+        }
+
         public IEnumerable<Product> Products
         {
             get
             {
-                if (SelectedShop == null)
-                    return null;
-
-                var shopsProducts = products.GetAllFromShop(SelectedShop);
-                //var shopsAvails = availabilities.GetAll().Where(x => x.ShopId == SelectedShop.Id);
-                //var costs1 = costs.GetAll();
-
-                //foreach (Product product in shopsProducts)
-                //    product.Cost = costs1.Where(y => y.AvailabilityId == shopsAvails.Where(x => x.ProductId == product.Id).First().Id).First().CostValue;
-
-                return shopsProducts;
+                return SelectedShop == null ? null : products.GetAllFromShop(SelectedShop);
             }
         }
 

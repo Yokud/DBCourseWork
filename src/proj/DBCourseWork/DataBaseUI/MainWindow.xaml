@@ -4,10 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataBaseUI"
-        xmlns:viewmodels="clr-namespace:DataBaseUI.ViewModels"
-        xmlns:views="clr-namespace:DataBaseUI.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Система прогнозирования цен на товары в магазинах" Height="450" Width="800">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
         <DockPanel DockPanel.Dock="Top">
             <RadioButton IsChecked="True" Margin="3">Пользователь</RadioButton>

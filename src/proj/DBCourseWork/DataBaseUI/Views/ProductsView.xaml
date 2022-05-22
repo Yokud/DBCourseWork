@@ -17,7 +17,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Column="0" Grid.RowSpan="2" ItemsSource="{Binding Products}" Margin="25" BorderBrush="Black" BorderThickness="2">
+        <ListBox Grid.Column="0" Grid.RowSpan="2" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" Margin="25" BorderBrush="Black" BorderThickness="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="5">
