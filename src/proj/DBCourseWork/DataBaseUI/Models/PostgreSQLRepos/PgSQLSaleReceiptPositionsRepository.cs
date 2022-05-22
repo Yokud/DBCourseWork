@@ -16,9 +16,9 @@ namespace DataBaseUI.Models
         SpsrLtDbContext db;
         IEnumerable<SaleReceiptPosition> saleReceiptPositions; 
 
-        public PgSQLSaleReceiptPositionsRepository()
+        public PgSQLSaleReceiptPositionsRepository(SpsrLtDbContext spsr)
         {
-            db = new SpsrLtDbContext();
+            db = spsr;
             saleReceiptPositions = new ObservableCollection<SaleReceiptPosition>();
             db.SaleReceiptPositions.Load();
             foreach (var srp in db.SaleReceiptPositions)

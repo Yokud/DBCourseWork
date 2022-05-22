@@ -13,25 +13,18 @@ using System.Diagnostics;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLShopsRepository : IShopsRepository, INotifyPropertyChanged
+    internal class PgSQLShopsRepository : IShopsRepository
     {
         SpsrLtDbContext db;
         IEnumerable<Shop> shops = null!;
 
-        public PgSQLShopsRepository()
+        public PgSQLShopsRepository(SpsrLtDbContext spsr)
         {
-            db = new SpsrLtDbContext();
+            db = spsr;
             shops = new ObservableCollection<Shop>();
             db.Shops.Load();
             foreach (var efshop in db.Shops)
                 ((ObservableCollection<Shop>)shops).Add(new Shop(efshop.Id, efshop.Name, efshop.Description));
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
 
         public void Create(Shop item)

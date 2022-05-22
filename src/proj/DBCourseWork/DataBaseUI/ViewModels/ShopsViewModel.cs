@@ -9,7 +9,7 @@ using System.Windows;
 using System.Threading.Tasks;
 using DataBaseUI.Models;
 using DataBaseUI.SysEntities;
-
+using DataBaseUI.DB;
 
 namespace DataBaseUI.ViewModels
 {
@@ -19,9 +19,9 @@ namespace DataBaseUI.ViewModels
         Shop selectedShop;
         internal Delegate del;
 
-        public ShopsViewModel()
+        public ShopsViewModel(SpsrLtDbContext spsr)
         {
-            shopsRepository = new PgSQLShopsRepository();
+            shopsRepository = new PgSQLShopsRepository(spsr);
         }
 
         public IEnumerable<Shop> Shops

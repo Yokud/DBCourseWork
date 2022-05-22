@@ -18,11 +18,11 @@ namespace DataBaseUI.ViewModels
         IAvailabilityRepository availabilities;
         Shop selectedShop;
 
-        public ProductsViewModel()
+        public ProductsViewModel(SpsrLtDbContext spsr)
         {
-            products = new PgSQLProductsRepository();
-            costs = new PgSQLCostsRepository();
-            availabilities = new PgSQLAvailabilityRepository();
+            products = new PgSQLProductsRepository(spsr);
+            costs = new PgSQLCostsRepository(spsr);
+            availabilities = new PgSQLAvailabilityRepository(spsr);
         }
 
         public Shop SelectedShop
@@ -44,11 +44,11 @@ namespace DataBaseUI.ViewModels
                     return null;
 
                 var shopsProducts = products.GetAllFromShop(SelectedShop);
-                var shopsAvails = availabilities.GetAll().Where(x => x.ShopId == SelectedShop.Id);
-                var costs1 = costs.GetAll();
+                //var shopsAvails = availabilities.GetAll().Where(x => x.ShopId == SelectedShop.Id);
+                //var costs1 = costs.GetAll();
 
-                foreach (Product product in shopsProducts)
-                    product.Cost = costs1.Where(y => y.AvailabilityId == shopsAvails.Where(x => x.ProductId == product.Id).First().Id).First().CostValue;
+                //foreach (Product product in shopsProducts)
+                //    product.Cost = costs1.Where(y => y.AvailabilityId == shopsAvails.Where(x => x.ProductId == product.Id).First().Id).First().CostValue;
 
                 return shopsProducts;
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -10,28 +11,22 @@ using System.Threading.Tasks;
 using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace DataBaseUI.Models
 {
-    internal class PgSQLProductsRepository : IProductsRepository, INotifyPropertyChanged
+    internal class PgSQLProductsRepository : IProductsRepository
     {
         SpsrLtDbContext db;
         IEnumerable<Product> products = null!;
 
-        public PgSQLProductsRepository()
+        public PgSQLProductsRepository(SpsrLtDbContext spsr)
         {
-            db = new SpsrLtDbContext();
+            db = spsr;
             products = new ObservableCollection<Product>();
             db.Products.Load();
             foreach (var prod in db.Products)
                 ((ObservableCollection<Product>)products).Add(new Product(prod.Id, prod.Name, prod.Producttype));
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
 
         public void Create(Product item)
@@ -121,15 +116,17 @@ namespace DataBaseUI.Models
         {
             try
             {
-                var prodIds = db.Availabilities.Where(x => x.Shopid == shop.Id).Select(x => x.Productid);
-                var products = new ObservableCollection<Product>();
+                var conn = (NpgsqlConnection?)db.Database.GetDbConnection();
+                conn.Open();
+                string cmd = string.Format("select * from get_products_by_shopid({0})", shop.Id);
+                NpgsqlCommand command = new NpgsqlCommand(cmd, conn);
+                NpgsqlDataReader reader = command.ExecuteReader();
+                ObservableCollection<Product> products = new ObservableCollection<Product>();
 
-                foreach (var id in prodIds)
-                {
-                    var efprod = db.Products.Find(id);
-                    products.Add(new Product(efprod.Id, efprod.Name, efprod.Producttype));
-                }
+                while (reader.Read())
+                    products.Add(new Product((int)reader.GetDouble(0), reader.GetString(1), reader.GetString(2), (int?)reader.GetDouble(3)));
 
+                conn.Close();
                 return products;
             }
             catch (Exception e)

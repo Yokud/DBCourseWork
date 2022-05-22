@@ -15,9 +15,9 @@ namespace DataBaseUI.Models
     {
         SpsrLtDbContext db;
 
-        public PgSQLCostsRepository()
+        public PgSQLCostsRepository(SpsrLtDbContext spsr)
         {
-            db = new SpsrLtDbContext();
+            db = spsr;
             db.Costs.Load();
         }
 

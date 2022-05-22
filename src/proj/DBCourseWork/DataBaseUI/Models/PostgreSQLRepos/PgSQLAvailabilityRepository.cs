@@ -16,9 +16,9 @@ namespace DataBaseUI.Models
         SpsrLtDbContext db;
         IEnumerable<Availability> availabilities;
 
-        public PgSQLAvailabilityRepository()
+        public PgSQLAvailabilityRepository(SpsrLtDbContext spsr)
         {
-            db = new SpsrLtDbContext();
+            db = spsr;
             availabilities = new ObservableCollection<Availability>();
             db.Availabilities.Load();
             foreach (var avail in db.Availabilities)

@@ -16,9 +16,9 @@ namespace DataBaseUI.Models
         SpsrLtDbContext db;
         IEnumerable<CostStory> stories;
 
-        public PgSQLCostStoryRepository()
+        public PgSQLCostStoryRepository(SpsrLtDbContext spsr)
         {
-            db = new SpsrLtDbContext();
+            db = spsr;
             stories = new ObservableCollection<CostStory>();
             db.CostStories.Load();
 

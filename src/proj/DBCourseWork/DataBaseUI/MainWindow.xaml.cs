@@ -32,11 +32,13 @@ namespace DataBaseUI
         {
             InitializeComponent();
 
+            SpsrLtDbContext dbContext = new SpsrLtDbContext();
+
             ShopsContentControl.Content = new ShopsView();
-            ShopsContentControl.DataContext = new ShopsViewModel();
+            ShopsContentControl.DataContext = new ShopsViewModel(dbContext);
 
             ProductsContentControl.Content = new ProductsView();
-            ProductsContentControl.DataContext = new ProductsViewModel();
+            ProductsContentControl.DataContext = new ProductsViewModel(dbContext);
 
             SaleReceiptsContentControl.Content = new SaleReceiptsView();
             SaleReceiptsContentControl.DataContext = new SaleReceiptsViewModel();
