@@ -88,16 +88,16 @@ namespace DBAccessTests
             // Create
             SaleReceiptPosition newSr = new SaleReceiptPosition(123, 1);
             rep.Create(newSr);
-            Assert.Equal(rep.GetAll().Where(x => x.AvailabilityId == 123).First().AvailabilityId, 123);
+            Assert.Equal(rep.GetAll().Where(x => x.Id == 10053).First().AvailabilityId, 123);
 
             // Update
             newSr.AvailabilityId = 456;
             rep.Update(newSr);
-            Assert.Equal(rep.GetAll().Where(x => x.AvailabilityId == 456).First().AvailabilityId, 456);
+            Assert.Equal(rep.GetAll().Where(x => x.Id == 10053).First().AvailabilityId, 456);
 
             // Delete
             rep.Delete(newSr);
-            Assert.Equal(rep.GetAll().Where(x => x.AvailabilityId == 456).ToList(), new List<SaleReceiptPosition>());
+            Assert.Equal(rep.GetAll().Where(x => x.Id == 10053).ToList(), new List<SaleReceiptPosition>());
         }
 
         [Fact]
@@ -122,16 +122,16 @@ namespace DBAccessTests
             // Create
             CostStory newCs = new CostStory(2022, 1, 666, 123);
             rep.Create(newCs);
-            Assert.Equal(rep.GetAll().Where(x => x.AvailabilityId == 123).First().AvailabilityId, 123);
+            Assert.Equal(rep.GetAll().Where(x => x.Id == 188893).First().AvailabilityId, 123);
 
             // Update
             newCs.AvailabilityId = 456;
             rep.Update(newCs);
-            Assert.Equal(rep.GetAll().Where(x => x.AvailabilityId == 456).First().AvailabilityId, 456);
+            Assert.Equal(rep.GetAll().Where(x => x.Id == 188893).First().AvailabilityId, 456);
 
             // Delete
             rep.Delete(newCs);
-            Assert.Equal(rep.GetAll().Where(x => x.AvailabilityId == 456).ToList(), new List<CostStory>());
+            Assert.Equal(rep.GetAll().Where(x => x.Id == 188893).ToList(), new List<CostStory>());
         }
     }
 }
