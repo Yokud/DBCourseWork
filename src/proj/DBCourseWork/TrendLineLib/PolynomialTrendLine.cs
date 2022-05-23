@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataBaseUI.SysEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ namespace TrendLineLib
 {
     public class PolynomialTrendLine : BaseTrendLine
     {
-        public override List<Point> GetLinePoints(List<Point> points)
+        public override List<Point> GetLinePoints(IEnumerable<Point> points)
         {
-            if (points.Count == 0 || points == null)
+            if (points.ToList().Count == 0 || points == null)
                 return null;
 
             double CanonPolynome(double x)
@@ -32,6 +33,13 @@ namespace TrendLineLib
                 polypts.Add(new Point(curr, CanonPolynome(curr)));
 
             return polypts;
+        }
+
+        public override List<Point> GetLinePoints(IEnumerable<CostStory> costStories)
+        {
+            var points = CostStoryPoints.FromCostStory(costStories);
+
+            return GetLinePoints(points);
         }
     }
 }

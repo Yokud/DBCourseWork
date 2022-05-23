@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataBaseUI.SysEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,16 +59,23 @@ namespace TrendLineLib
             return Gauss(matrix, power + 1);
         }
 
-        public List<double> GetCoefs(List<Point> points)
+        public List<double> GetCoefs(IEnumerable<Point> points)
         {
-            if (points == null || points.Count == 0)
+            if (points == null || points.ToList().Count == 0)
                 return null;
 
-            int extremums = GetExtremumsCount(points);
+            int extremums = GetExtremumsCount(points.ToList());
 
-            coefs = LeastSquares(points, Math.Min(6, extremums + 1));
+            coefs = LeastSquares(points.ToList(), Math.Min(6, extremums + 1));
 
             return coefs;
+        }
+
+        public List<double> GetCoefs(IEnumerable<CostStory> costStories)
+        {
+            var points = CostStoryPoints.FromCostStory(costStories);
+
+            return GetCoefs(points.ToList());
         }
 
         protected int GetExtremumsCount(List<Point> points)
@@ -81,6 +89,7 @@ namespace TrendLineLib
             return extremums;
         }
 
-        public abstract List<Point> GetLinePoints(List<Point> points);
+        public abstract List<Point> GetLinePoints(IEnumerable<Point> points);
+        public abstract List<Point> GetLinePoints(IEnumerable<CostStory> costStories);
     }
 }
