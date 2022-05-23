@@ -8,7 +8,7 @@ using DataBaseUI.SysEntities;
 
 namespace DataBaseUI.Models
 {
-    internal interface IProductsRepository : IRepository<Product>
+    public interface IProductsRepository : IRepository<Product>
     {
         IEnumerable<Product> GetAllFromShop(Shop shop);
     }

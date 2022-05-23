@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataBaseUI.Models
 {
-    internal interface ICostsRepository : IRepository<Cost>
+    public interface ICostsRepository : IRepository<Cost>
     {
         Cost GetByShopProductCost(Shop shop, Product product);
     }

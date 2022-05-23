@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicTests", "Busin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrendLineLib", "TrendLineLib\TrendLineLib.csproj", "{7B200919-1DA3-46E7-804C-1D8D182DA697}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBAccessTests", "DBAccessTests\DBAccessTests.csproj", "{3842547E-2EE3-46AD-9835-518BEF107C29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBAccessTests", "DBAccessTests\DBAccessTests.csproj", "{3842547E-2EE3-46AD-9835-518BEF107C29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicUI", "TechnicUI\TechnicUI.csproj", "{597B2425-1F66-4242-B680-2A655A4BA239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3842547E-2EE3-46AD-9835-518BEF107C29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3842547E-2EE3-46AD-9835-518BEF107C29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3842547E-2EE3-46AD-9835-518BEF107C29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{597B2425-1F66-4242-B680-2A655A4BA239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{597B2425-1F66-4242-B680-2A655A4BA239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{597B2425-1F66-4242-B680-2A655A4BA239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{597B2425-1F66-4242-B680-2A655A4BA239}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

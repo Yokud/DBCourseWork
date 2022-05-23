@@ -8,7 +8,7 @@ using DataBaseUI.SysEntities;
 
 namespace DataBaseUI.Models
 {
-    internal interface ISaleReceiptPositionsRepository : IRepository<SaleReceiptPosition>
+    public interface ISaleReceiptPositionsRepository : IRepository<SaleReceiptPosition>
     {
         IEnumerable<SaleReceiptPosition> GetAllFromSaleReceipt(SaleReceipt saleReceipt);
     }

@@ -8,7 +8,7 @@ using DataBaseUI.SysEntities;
 
 namespace DataBaseUI.Models
 {
-    internal interface IShopsRepository : IRepository<Shop>
+    public interface IShopsRepository : IRepository<Shop>
     {
 
     }

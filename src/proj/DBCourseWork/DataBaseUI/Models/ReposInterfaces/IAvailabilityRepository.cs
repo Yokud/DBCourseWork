@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataBaseUI.Models
 {
-    internal interface IAvailabilityRepository : IRepository<Availability>
+    public interface IAvailabilityRepository : IRepository<Availability>
     {
 
     }
