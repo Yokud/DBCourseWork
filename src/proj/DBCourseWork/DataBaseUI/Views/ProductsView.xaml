@@ -13,8 +13,8 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="1.3*"/>
+            <RowDefinition Height="0.7*"/>
         </Grid.RowDefinitions>
 
         <ListBox Grid.Column="0" Grid.RowSpan="2" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" Margin="25" BorderBrush="Black" BorderThickness="2">
@@ -29,5 +29,20 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
+        <StackPanel Grid.Column="1" DataContext="{Binding SelectedProduct}" Margin="25">
+            <TextBlock Text="Выбранный товар" FontSize="20" Margin="0, 0, 0, 15"/>
+            <DockPanel>
+                <TextBlock Text="Название:" FontSize="15" Margin="0, 5, 5, 0"/>
+                <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5, 0, 5, 0" FontSize="16"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Text="Тип товара:" FontSize="15" Margin="0, 5, 5, 0"/>
+                <TextBlock Text="{Binding ProductType, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="5, 0, 5, 0" FontSize="16"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Text="Стоимость:" FontSize="15" Margin="0, 5, 5, 0"/>
+                <TextBlock Text="{Binding Cost, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="5, 0, 5, 0" FontSize="16"/>
+            </DockPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

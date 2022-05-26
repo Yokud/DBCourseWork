@@ -43,6 +43,38 @@ namespace DataBaseUI.ViewModels
             }
         }
 
+        RelayCommand addCommand;
+        public RelayCommand AddCommand
+        {
+            get
+            {
+                return addCommand ?? new RelayCommand(obj =>
+                {
+                    Shop shop = obj as Shop;
+
+                    if (shop != null)
+                        AddShop(shop);
+                });
+            }
+        }
+
+        RelayCommand deleteCommand;
+        public RelayCommand DeleteCommand
+        {
+            get
+            {
+                return deleteCommand ?? new RelayCommand(obj =>
+                {
+                    Shop shop = obj as Shop;
+
+                    if (shop != null)
+                        DeleteShop(shop);
+                },
+                (obj => shopsRepository.GetAll().Count() > 0)
+                );
+            }
+        }
+
         internal void SetSelectedShop(Shop selectedShop)
         {
             del.DynamicInvoke(selectedShop);
