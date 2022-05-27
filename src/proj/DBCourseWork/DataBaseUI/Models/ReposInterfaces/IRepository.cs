@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataBaseUI.Models
 {
-    internal interface IRepository<T> : IDisposable
+    public interface IRepository<T> : IDisposable
         where T : class
     {
         IEnumerable<T> GetAll();
