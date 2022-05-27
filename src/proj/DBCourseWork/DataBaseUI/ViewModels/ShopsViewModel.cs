@@ -75,6 +75,21 @@ namespace DataBaseUI.ViewModels
             }
         }
 
+        RelayCommand updateCommand;
+        public RelayCommand UpdateCommand
+        {
+            get
+            {
+                return updateCommand ?? new RelayCommand(obj =>
+                {
+                    Shop shop = obj as Shop;
+
+                    if (shop != null)
+                        UpdateShop(shop);
+                });
+            }
+        }
+
         internal void SetSelectedShop(Shop selectedShop)
         {
             del.DynamicInvoke(selectedShop);

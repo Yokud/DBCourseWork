@@ -20,6 +20,13 @@ using DataBaseUI.SysEntities;
 
 namespace DataBaseUI
 {
+    enum Users
+    {
+        User,
+        Analyst,
+        Admin
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

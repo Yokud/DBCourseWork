@@ -48,9 +48,9 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Button Content="Добавить магазин" Grid.Column="0" Grid.Row="0" Margin="20" Command="{Binding Path=AddCommand}" CommandParameter="{Binding }" IsEnabled="False" Visibility="Hidden"/>
-            <Button Content="Удалить магазин" Grid.Column="1" Grid.Row="0" Margin="20" Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding Path=SelectedShop}"/>
-            <Button Content="Обновить магазин" Grid.Row="1" Grid.ColumnSpan="2" Margin="110 , 20, 110, 20" />
+            <Button Content="Добавить магазин" Grid.Column="0" Grid.Row="0" Margin="20" Command="{Binding Path=AddCommand}" CommandParameter="{Binding }" IsEnabled="{Binding }" Visibility="{Binding }"/>
+            <Button Content="Удалить магазин" Grid.Column="1" Grid.Row="0" Margin="20" Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding Path=SelectedShop}" IsEnabled="{Binding }" Visibility="{Binding }"/>
+            <Button Content="Обновить магазин" Grid.Row="1" Grid.ColumnSpan="2" Margin="110 , 20, 110, 20" Command="{Binding Path=UpdateCommand}" IsEnabled="{Binding }" Visibility="{Binding }"/>
         </Grid>
     </Grid>
 </UserControl>
