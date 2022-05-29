@@ -121,7 +121,10 @@ namespace DataBaseUI.Models
                 for (int i = 0; i < stories.Count(); i++)
                     if (((ObservableCollection<CostStory>)stories)[i].Id == item.Id)
                     {
-                        ((ObservableCollection<CostStory>)stories)[i] = item;
+                        ((ObservableCollection<CostStory>)stories)[i].Year = item.Year;
+                        ((ObservableCollection<CostStory>)stories)[i].Month = item.Month;
+                        ((ObservableCollection<CostStory>)stories)[i].Cost = item.Cost;
+                        ((ObservableCollection<CostStory>)stories)[i].AvailabilityId = item.AvailabilityId;
                         break;
                     }
             }

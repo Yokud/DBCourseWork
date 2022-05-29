@@ -116,7 +116,8 @@ namespace DataBaseUI.Models
                 for (int i = 0; i < products.Count(); i++)
                     if (((ObservableCollection<Product>)products)[i].Id == item.Id)
                     {
-                        ((ObservableCollection<Product>)products)[i] = item;
+                        ((ObservableCollection<Product>)products)[i].Name = item.Name;
+                        ((ObservableCollection<Product>)products)[i].ProductType = item.ProductType;
                         break;
                     }
 

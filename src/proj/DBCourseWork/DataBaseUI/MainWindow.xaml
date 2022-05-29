@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataBaseUI"
         mc:Ignorable="d"
-        Title="Система прогнозирования цен на товары в магазинах" Height="450" Width="800">
+        Title="Система прогнозирования цен на товары в магазинах" MinHeight="900" MinWidth="1600" Icon="Resources/chart_line_icon.png" >
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
         <DockPanel DockPanel.Dock="Top">
             <RadioButton IsChecked="True" Margin="3">Пользователь</RadioButton>

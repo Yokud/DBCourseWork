@@ -1,5 +1,4 @@
-﻿using DataBaseUI.SysEntities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,12 +70,7 @@ namespace TrendLineLib
             return coefs;
         }
 
-        public List<double> GetCoefs(IEnumerable<CostStory> costStories)
-        {
-            var points = CostStoryPoints.FromCostStory(costStories);
 
-            return GetCoefs(points.ToList());
-        }
 
         protected int GetExtremumsCount(List<Point> points)
         {
@@ -90,6 +84,6 @@ namespace TrendLineLib
         }
 
         public abstract List<Point> GetLinePoints(IEnumerable<Point> points);
-        public abstract List<Point> GetLinePoints(IEnumerable<CostStory> costStories);
+        public abstract double F(double x);
     }
 }

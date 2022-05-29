@@ -117,7 +117,9 @@ namespace DataBaseUI.Models
                 for (int i = 0; i < saleReceipts.Count(); i++)
                     if (((ObservableCollection<SaleReceipt>)saleReceipts)[i].Id == item.Id)
                     {
-                        ((ObservableCollection<SaleReceipt>)saleReceipts)[i] = item;
+                        ((ObservableCollection<SaleReceipt>)saleReceipts)[i].Fio = item.Fio;
+                        ((ObservableCollection<SaleReceipt>)saleReceipts)[i].DateOfPurchase = item.DateOfPurchase;
+                        ((ObservableCollection<SaleReceipt>)saleReceipts)[i].ShopId = item.ShopId;
                         break;
                     }
             }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DataBaseUI.Views"
+             xmlns:oxyplot="http://oxyplot.org/wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -11,7 +12,57 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
 
-        
+        <ListBox Margin="15" ItemsSource="{Binding ProductCostStory}" SelectedItem="{Binding SelectedCostStory}" Grid.RowSpan="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <TextBlock FontSize="15" VerticalAlignment="Center" Margin="3" Text="{Binding Path=Year, UpdateSourceTrigger=PropertyChanged}" />
+                        <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
+                        <TextBlock FontSize="13" VerticalAlignment="Center" Margin="3" Text="{Binding Path=Month, UpdateSourceTrigger=PropertyChanged}" />
+                        <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
+                        <TextBlock FontSize="14" VerticalAlignment="Center" Margin="3" Text="{Binding Path=Cost, UpdateSourceTrigger=PropertyChanged}" />
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Button Content="Добавить новую цену" Margin="7.5"/>
+            <Button Content="Удалить цену из истории" Margin="7.5" Grid.Column="1"/>
+            <Button Content="Изменить данные о цене" Grid.Row="1" Grid.ColumnSpan="2" Margin="90, 7.5, 90, 7.5"/>
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.75*"/>
+                <RowDefinition Height="0.18*"/>
+                <RowDefinition Height="0.07*"/>
+            </Grid.RowDefinitions>
+            
+            <oxyplot:PlotView Model="{Binding TrendLinePlot, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Margin="15"/>
+
+            <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                <TextBlock Text="Функция тренда цены" Margin="1" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding Path=PolynomeString}" Margin="3" TextWrapping="Wrap"/>
+            </StackPanel>
+            <DockPanel Grid.Row="2" VerticalAlignment="Center">
+                <TextBlock Text="Цена товара на следующий месяц:" Margin="3"/>
+                <TextBlock Text="{Binding Path=NextCostValue}" Margin="3"/>
+            </DockPanel>
+        </Grid>
     </Grid>
 </UserControl>

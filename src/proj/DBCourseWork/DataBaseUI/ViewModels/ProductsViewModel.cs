@@ -22,6 +22,8 @@ namespace DataBaseUI.ViewModels
         Shop selectedShop;
         Product selectedProduct;
 
+        internal Delegate del;
+
         public ProductsViewModel(SpsrLtDbContext spsr)
         {
             products = new PgSQLProductsRepository(spsr);
@@ -46,6 +48,7 @@ namespace DataBaseUI.ViewModels
             set
             {
                 selectedProduct = value;
+                SetSelectedProduct(value);
                 OnPropertyChanged("SelectedProduct");
             }
         }
@@ -213,6 +216,11 @@ namespace DataBaseUI.ViewModels
             {
                 MessageBox.Show(e.Message);
             }
+        }
+
+        internal void SetSelectedProduct(Product product)
+        {
+            del.DynamicInvoke(product);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

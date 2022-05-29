@@ -14,6 +14,7 @@ namespace DataBaseUI.SysEntities
         string fio;
         DateOnly dateOfPurchase;
         int shopId;
+        int? summaryCost;
 
         public SaleReceipt(int id, string fio, DateOnly dateOfPurchase, int shopId)
         {
@@ -34,6 +35,7 @@ namespace DataBaseUI.SysEntities
         public string Fio { get => fio; set { fio = value; OnPropertyChanged("Fio"); } }
         public DateOnly DateOfPurchase { get => dateOfPurchase; set { dateOfPurchase = value; OnPropertyChanged("DateOfPurchase"); } }
         public int ShopId { get => shopId; set { shopId = value; OnPropertyChanged("ShopId"); } }
+        public int? SummaryCost { get => summaryCost; set { summaryCost = value; OnPropertyChanged("SummaryCost"); } }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

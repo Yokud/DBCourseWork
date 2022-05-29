@@ -111,7 +111,8 @@ namespace DataBaseUI.Models
                 for (int i = 0; i < availabilities.Count(); i++)
                     if (((ObservableCollection<Availability>)availabilities)[i].Id == item.Id)
                     {
-                        ((ObservableCollection<Availability>)availabilities)[i] = item;
+                        ((ObservableCollection<Availability>)availabilities)[i].ShopId = item.ShopId;
+                        ((ObservableCollection<Availability>)availabilities)[i].ProductId = item.ProductId;
                         break;
                     }
             }
