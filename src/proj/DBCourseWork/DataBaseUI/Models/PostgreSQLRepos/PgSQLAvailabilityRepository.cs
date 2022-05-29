@@ -38,9 +38,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Availabilities.Add(new EFAvailability() { Id = item.Id, Shopid = item.ShopId, Productid = item.ProductId });
+                db.Availabilities.Add(new EFAvailability() { Id = db.Availabilities.Max(x => x.Id) + 1, Shopid = item.ShopId, Productid = item.ProductId });
                 db.SaveChanges();
-                item.Id = db.Availabilities.Count() + 1;
+                item.Id = db.Availabilities.Max(x => x.Id);
                 ((ObservableCollection<Availability>)availabilities).Add(item);
             }
             catch (Exception e)
@@ -53,8 +53,8 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Availabilities.Remove(new EFAvailability() { Id = item.Id, Shopid = item.ShopId, Productid = item.ProductId });
-                db.SaveChanges();
+                db.Availabilities.Remove(db.Availabilities.Find(item.Id));
+                db.SaveChangesAsync();
                 ((ObservableCollection<Availability>)availabilities).Remove(item);
             }
             catch (Exception e)
@@ -93,21 +93,26 @@ namespace DataBaseUI.Models
 
         public void Save()
         {
-            db.SaveChanges();
+            db.SaveChangesAsync();
         }
 
         public void Update(Availability item)
         {
             try
             {
-                var avail = new EFAvailability() { Id = item.Id, Shopid = item.ShopId, Productid = item.ProductId };
+                var avail = db.Availabilities.Find(item.Id);
+
+                avail.Shopid = item.ShopId;
+                avail.Productid = item.ProductId;
+
                 db.Availabilities.Update(avail);
                 db.SaveChanges();
 
                 for (int i = 0; i < availabilities.Count(); i++)
                     if (((ObservableCollection<Availability>)availabilities)[i].Id == item.Id)
                     {
-                        ((ObservableCollection<Availability>)availabilities)[i] = item;
+                        ((ObservableCollection<Availability>)availabilities)[i].ShopId = item.ShopId;
+                        ((ObservableCollection<Availability>)availabilities)[i].ProductId = item.ProductId;
                         break;
                     }
             }

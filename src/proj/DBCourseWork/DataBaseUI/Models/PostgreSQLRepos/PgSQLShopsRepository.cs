@@ -40,9 +40,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Shops.Add(new EFShop() { Id = db.Shops.Count() + 1 , Name = item.Name, Description = item.Description});
+                db.Shops.Add(new EFShop() { Id = db.Shops.Max(x => x.Id) + 1 , Name = item.Name, Description = item.Description});
                 db.SaveChanges();
-                item.Id = db.Shops.Count();
+                item.Id = db.Shops.Max(x => x.Id);
                 ((ObservableCollection<Shop>)shops).Add(item);
             }
             catch (Exception e)
@@ -114,7 +114,8 @@ namespace DataBaseUI.Models
                 for (int i = 0; i < shops.Count(); i++)
                     if (((ObservableCollection<Shop>)shops)[i].Id == item.Id)
                     {
-                        ((ObservableCollection<Shop>)shops)[i] = item;
+                        ((ObservableCollection<Shop>)shops)[i].Name = item.Name;
+                        ((ObservableCollection<Shop>)shops)[i].Description = item.Description;
                         break;
                     }
             }

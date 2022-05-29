@@ -53,11 +53,10 @@ create table CostStory
 );
 
 create view Costs as
-	select AvailabilityID, Cost
-	from CostStory
-	where make_date(Year, Month, 1) in (select max(make_date(Year, Month, 1))
-										from CostStory
-										group by AvailabilityID);
+	select T.AvailabilityID, Cost
+	from CostStory join (select AvailabilityID, max(make_date(Year, Month, 1)) as CostDate
+						from CostStory
+						group by AvailabilityID) as T on T.AvailabilityID = CostStory.AvailabilityID and T.CostDate = make_date(CostStory.Year, CostStory.Month,1);
 
 -- Триггерная функция, которая удаляет значение цены товара в магазине если она старше новой на более 18 месяцев
 create or replace function remove_too_old_coststory()

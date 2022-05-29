@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace DataBaseUI.Models
 {
@@ -38,9 +40,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.SaleReceiptPositions.Add(new EFSaleReceiptPosition() { Id = db.SaleReceiptPositions.Count() + 1, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId });
+                db.SaleReceiptPositions.Add(new EFSaleReceiptPosition() { Id = db.SaleReceiptPositions.Max(x => x.Id) + 1, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId });
                 db.SaveChanges();
-                item.Id = db.SaleReceiptPositions.Count();
+                item.Id = db.SaleReceiptPositions.Max(x => x.Id);
                 ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions).Add(item);
             }
             catch (Exception e)
@@ -91,9 +93,31 @@ namespace DataBaseUI.Models
             return saleReceiptPositions;
         }
 
-        public IEnumerable<SaleReceiptPosition> GetAllFromSaleReceipt(SaleReceipt saleReceipt)
+        public IEnumerable<Product> GetAllFromSaleReceipt(SaleReceipt saleReceipt)
         {
-            return saleReceiptPositions.Where(x => x.SaleReceiptId == saleReceipt.Id);
+            try
+            {
+                var conn = (NpgsqlConnection?)db.Database.GetDbConnection();
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                if (conn.State == ConnectionState.Executing)
+                    conn.Wait();
+                string cmd = string.Format("select * from get_content_from_salereceipt({0})", saleReceipt.Id);
+                NpgsqlCommand command = new NpgsqlCommand(cmd, conn);
+                NpgsqlDataReader reader = command.ExecuteReader();
+                ObservableCollection<Product> products = new ObservableCollection<Product>();
+
+                while (reader.Read())
+                    products.Add(new Product((int)reader.GetDouble(0), reader.GetString(1), reader.GetString(2), (int?)reader.GetDouble(3)));
+
+                conn.Close();
+                return products;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return null;
+            }
         }
 
         public void Save()
@@ -116,7 +140,8 @@ namespace DataBaseUI.Models
                 for (int i = 0; i < saleReceiptPositions.Count(); i++)
                     if (((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions)[i].Id == item.Id)
                     {
-                        ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions)[i] = item;
+                        ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions)[i].AvailabilityId = item.AvailabilityId;
+                        ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions)[i].SaleReceiptId = item.SaleReceiptId;
                         break;
                     }
             }

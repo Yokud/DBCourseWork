@@ -1,4 +1,6 @@
-﻿namespace TrendLineLib
+﻿
+
+namespace TrendLineLib
 {
     public class Point
     {

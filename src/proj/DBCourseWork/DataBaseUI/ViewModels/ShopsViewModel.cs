@@ -11,6 +11,7 @@ using DataBaseUI.Models;
 using DataBaseUI.SysEntities;
 using DataBaseUI.DB;
 using Microsoft.Extensions.Logging;
+using DataBaseUI.Views.DialogWindows;
 
 namespace DataBaseUI.ViewModels
 {
@@ -44,6 +45,68 @@ namespace DataBaseUI.ViewModels
                 SetSelectedShop(value);
                 OnPropertyChanged("SelectedShop");
                 logger.LogInformation("Selected shop was updated.\n");
+            }
+        }
+
+        RelayCommand addCommand;
+        public RelayCommand AddCommand
+        {
+            get
+            {
+                return addCommand ??= new RelayCommand(obj =>
+                {
+                    AddShopWindow wnd = new AddShopWindow();
+
+                    if (wnd.ShowDialog() == true)
+                    {
+                        var shop = wnd.NewShop;
+
+                        if (shop != null)
+                            AddShop(shop);
+                    }
+                });
+            }
+        }
+
+        RelayCommand deleteCommand;
+        public RelayCommand DeleteCommand
+        {
+            get
+            {
+                return deleteCommand ??= new RelayCommand(obj =>
+                {
+                    Shop shop = obj as Shop;
+
+                    if (shop != null)
+                        DeleteShop(shop);
+                },
+                (obj => shopsRepository.GetAll().Count() > 0)
+                );
+            }
+        }
+
+        RelayCommand updateCommand;
+        public RelayCommand UpdateCommand
+        {
+            get
+            {
+                return updateCommand ??= new RelayCommand(obj =>
+                {
+                    UpdateShopWindow wnd = new UpdateShopWindow();
+
+                    if (wnd.ShowDialog() == true)
+                    {
+                        Shop shop = obj as Shop;
+
+                        if (shop != null)
+                        {
+                            shop.Name = wnd.NewShopName ?? shop.Name;
+                            shop.Description = wnd.NewShopDescr ?? shop.Description;
+                            UpdateShop(shop);
+                        }
+                    }
+                }, (obj => selectedShop != null)
+                );
             }
         }
 
@@ -86,6 +149,7 @@ namespace DataBaseUI.ViewModels
             {
                 shopsRepository.Update(shop);
                 logger.LogInformation(String.Format("Shop with id = {0} was updated.\n", shop.Id));
+                OnPropertyChanged("Shops");
             }
             catch (Exception e)
             {

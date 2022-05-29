@@ -38,9 +38,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.SaleReceipts.Add(new EFSaleReceipt() { Id = db.SaleReceipts.Count() + 1, Fio = item.Fio, Dateofpurchase = item.DateOfPurchase, Shopid = item.ShopId });
+                db.SaleReceipts.Add(new EFSaleReceipt() { Id = db.SaleReceipts.Max(x => x.Id) + 1, Fio = item.Fio, Dateofpurchase = item.DateOfPurchase, Shopid = item.ShopId });
                 db.SaveChanges();
-                item.Id = db.SaleReceipts.Count();
+                item.Id = db.SaleReceipts.Max(x => x.Id);
                 ((ObservableCollection<SaleReceipt>)saleReceipts).Add(item);
             }
             catch (Exception e)
@@ -117,7 +117,9 @@ namespace DataBaseUI.Models
                 for (int i = 0; i < saleReceipts.Count(); i++)
                     if (((ObservableCollection<SaleReceipt>)saleReceipts)[i].Id == item.Id)
                     {
-                        ((ObservableCollection<SaleReceipt>)saleReceipts)[i] = item;
+                        ((ObservableCollection<SaleReceipt>)saleReceipts)[i].Fio = item.Fio;
+                        ((ObservableCollection<SaleReceipt>)saleReceipts)[i].DateOfPurchase = item.DateOfPurchase;
+                        ((ObservableCollection<SaleReceipt>)saleReceipts)[i].ShopId = item.ShopId;
                         break;
                     }
             }

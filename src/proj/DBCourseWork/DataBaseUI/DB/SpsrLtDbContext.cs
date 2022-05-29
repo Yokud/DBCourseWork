@@ -31,7 +31,7 @@ namespace DataBaseUI.DB
             if (!optionsBuilder.IsConfigured)
             {
                 var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
-                string connectionString = config.GetConnectionString("CurrentConnection");
+                string connectionString = config.GetConnectionString("DefaultConnection");
 
                 optionsBuilder.UseNpgsql(connectionString);
             }
