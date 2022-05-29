@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DataBaseUI.Models;
 using DataBaseUI.SysEntities;
 using DataBaseUI.DB;
+using Microsoft.Extensions.Logging;
 using DataBaseUI.Views.DialogWindows;
 
 namespace DataBaseUI.ViewModels
@@ -19,10 +20,12 @@ namespace DataBaseUI.ViewModels
         IShopsRepository shopsRepository;
         Shop selectedShop;
         internal Delegate del;
+        ILogger<ShopsViewModel> logger;
 
-        public ShopsViewModel(SpsrLtDbContext spsr)
+        public ShopsViewModel(SpsrLtDbContext spsr, ILogger<ShopsViewModel> logger)
         {
             shopsRepository = new PgSQLShopsRepository(spsr);
+            this.logger = logger;
         }
 
         public IEnumerable<Shop> Shops
@@ -41,6 +44,7 @@ namespace DataBaseUI.ViewModels
                 selectedShop = value;
                 SetSelectedShop(value);
                 OnPropertyChanged("SelectedShop");
+                logger.LogInformation("Selected shop was updated.\n");
             }
         }
 
@@ -116,10 +120,12 @@ namespace DataBaseUI.ViewModels
             try
             {
                 shopsRepository.Create(shop);
+                logger.LogInformation(String.Format("Shop with id = {0} was added.\n", shop.Id));
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger.LogError(e.Message);
             }
         }
 
@@ -128,10 +134,12 @@ namespace DataBaseUI.ViewModels
             try
             {
                 shopsRepository.Delete(shop);
+                logger.LogInformation(String.Format("Shop with id = {0} was deleted.\n", shop.Id));
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger.LogError(e.Message);
             }
         }
 
@@ -140,11 +148,13 @@ namespace DataBaseUI.ViewModels
             try
             {
                 shopsRepository.Update(shop);
+                logger.LogInformation(String.Format("Shop with id = {0} was updated.\n", shop.Id));
                 OnPropertyChanged("Shops");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger.LogError(e.Message);
             }
         }
 
