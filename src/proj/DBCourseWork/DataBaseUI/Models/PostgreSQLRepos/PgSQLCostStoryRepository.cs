@@ -40,9 +40,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.CostStories.Add(new EFCostStory() { Id = db.CostStories.Count() + 1, Year = item.Year, Month = item.Month, Availabilityid = item.AvailabilityId });
+                db.CostStories.Add(new EFCostStory() { Id = db.CostStories.Max(x => x.Id) + 1, Year = item.Year, Month = item.Month, Availabilityid = item.AvailabilityId, Cost = item.Cost });
                 db.SaveChanges();
-                item.Id = db.CostStories.Count();
+                item.Id = db.CostStories.Max(x => x.Id);
                 ((ObservableCollection<CostStory>)stories).Add(item);
             }
             catch (Exception e)
@@ -56,7 +56,7 @@ namespace DataBaseUI.Models
             try
             {
                 db.CostStories.Remove(db.CostStories.Find(item.Id));
-                db.SaveChanges();
+                db.SaveChangesAsync();
                 ((ObservableCollection<CostStory>)stories).Remove(item);
             }
             catch (Exception e)

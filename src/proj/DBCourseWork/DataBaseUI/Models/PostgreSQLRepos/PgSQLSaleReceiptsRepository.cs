@@ -38,9 +38,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.SaleReceipts.Add(new EFSaleReceipt() { Id = db.SaleReceipts.Count() + 1, Fio = item.Fio, Dateofpurchase = item.DateOfPurchase, Shopid = item.ShopId });
+                db.SaleReceipts.Add(new EFSaleReceipt() { Id = db.SaleReceipts.Max(x => x.Id) + 1, Fio = item.Fio, Dateofpurchase = item.DateOfPurchase, Shopid = item.ShopId });
                 db.SaveChanges();
-                item.Id = db.SaleReceipts.Count();
+                item.Id = db.SaleReceipts.Max(x => x.Id);
                 ((ObservableCollection<SaleReceipt>)saleReceipts).Add(item);
             }
             catch (Exception e)

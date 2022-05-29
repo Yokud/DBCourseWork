@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DataBaseUI.Models;
 using DataBaseUI.SysEntities;
 using DataBaseUI.DB;
+using DataBaseUI.Views.DialogWindows;
 
 namespace DataBaseUI.ViewModels
 {
@@ -48,12 +49,17 @@ namespace DataBaseUI.ViewModels
         {
             get
             {
-                return addCommand ?? new RelayCommand(obj =>
+                return addCommand ??= new RelayCommand(obj =>
                 {
-                    Shop shop = obj as Shop;
+                    AddShopWindow wnd = new AddShopWindow();
 
-                    if (shop != null)
-                        AddShop(shop);
+                    if (wnd.ShowDialog() == true)
+                    {
+                        var shop = wnd.NewShop;
+
+                        if (shop != null)
+                            AddShop(shop);
+                    }
                 });
             }
         }
@@ -63,7 +69,7 @@ namespace DataBaseUI.ViewModels
         {
             get
             {
-                return deleteCommand ?? new RelayCommand(obj =>
+                return deleteCommand ??= new RelayCommand(obj =>
                 {
                     Shop shop = obj as Shop;
 
@@ -80,13 +86,23 @@ namespace DataBaseUI.ViewModels
         {
             get
             {
-                return updateCommand ?? new RelayCommand(obj =>
+                return updateCommand ??= new RelayCommand(obj =>
                 {
-                    Shop shop = obj as Shop;
+                    UpdateShopWindow wnd = new UpdateShopWindow();
 
-                    if (shop != null)
-                        UpdateShop(shop);
-                });
+                    if (wnd.ShowDialog() == true)
+                    {
+                        Shop shop = obj as Shop;
+
+                        if (shop != null)
+                        {
+                            shop.Name = wnd.NewShopName ?? shop.Name;
+                            shop.Description = wnd.NewShopDescr ?? shop.Description;
+                            UpdateShop(shop);
+                        }
+                    }
+                }, (obj => selectedShop != null)
+                );
             }
         }
 
@@ -124,6 +140,7 @@ namespace DataBaseUI.ViewModels
             try
             {
                 shopsRepository.Update(shop);
+                OnPropertyChanged("Shops");
             }
             catch (Exception e)
             {

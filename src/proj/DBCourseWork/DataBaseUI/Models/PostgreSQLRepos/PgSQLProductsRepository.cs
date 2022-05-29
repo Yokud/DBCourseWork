@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
@@ -42,9 +43,9 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Products.Add(new EFProduct() { Id = db.Products.Count() + 1, Name = item.Name, Producttype = item.ProductType });
+                db.Products.Add(new EFProduct() { Id = db.Products.Max(x => x.Id) + 1, Name = item.Name, Producttype = item.ProductType });
                 db.SaveChanges();
-                item.Id = db.Products.Count();
+                item.Id = db.Products.Max(x => x.Id);
                 ((ObservableCollection<Product>)products).Add(item);
             }
             catch (Exception e)
@@ -131,7 +132,10 @@ namespace DataBaseUI.Models
             try
             {
                 var conn = (NpgsqlConnection?)db.Database.GetDbConnection();
-                conn.Open();
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                if (conn.State == ConnectionState.Executing)
+                    conn.Wait();
                 string cmd = string.Format("select * from get_products_by_shopid({0})", shop.Id);
                 NpgsqlCommand command = new NpgsqlCommand(cmd, conn);
                 NpgsqlDataReader reader = command.ExecuteReader();
