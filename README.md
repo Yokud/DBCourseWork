@@ -25,7 +25,7 @@ GoodsForecast.Planning |+|-|-
 
 ## Описание типа приложения и технологического стека
 * Тип приложения: Desktop WPF (.Net 6)
-* Технологический стек: C# 10, PostgreSQL, NpgSQL, Entity Framework Core 6
+* Технологический стек: C# 10, PostgreSQL, NpgSQL, Entity Framework Core 6, OxyPlot
 
 ## Диаграмма компонентов
 ![](/docs/imgs/HighComponents.drawio.png)
@@ -49,3 +49,6 @@ GoodsForecast.Planning |+|-|-
 
 ## UML-диаграмма классов для технологического UI ко всем функциям системы (консольное приложение)
 ![](/docs/imgs/technic_ui.jpg)
+
+### UML-диаграмма всего проекта
+![](/docs/imgs/AllDiagram.jpg)
