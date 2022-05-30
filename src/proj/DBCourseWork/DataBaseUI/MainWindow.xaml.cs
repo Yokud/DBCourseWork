@@ -40,11 +40,13 @@ namespace DataBaseUI
         internal delegate void ProductValuePassDelegate(Product product);
         internal event ProductValuePassDelegate ProductValuePassEvent;
 
+        SpsrLtDbContext dbContext;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            SpsrLtDbContext dbContext = new SpsrLtDbContext();
+            dbContext = new SpsrLtDbContext();
             ILogger logger = new DbLogger();
 
             ShopsContentControl.Content = new ShopsView();
