@@ -18,6 +18,7 @@ using DataBaseUI.Views;
 using DataBaseUI.ViewModels;
 using DataBaseUI.SysEntities;
 using Microsoft.Extensions.Logging;
+using DataBaseUI.Logger;
 
 namespace DataBaseUI
 {
@@ -44,9 +45,10 @@ namespace DataBaseUI
             InitializeComponent();
 
             SpsrLtDbContext dbContext = new SpsrLtDbContext();
+            ILogger logger = new DbLogger();
 
             ShopsContentControl.Content = new ShopsView();
-            ShopsContentControl.DataContext = new ShopsViewModel(dbContext, new Logger<ShopsViewModel>(new LoggerFactory()));
+            ShopsContentControl.DataContext = new ShopsViewModel(dbContext, logger);
 
             ProductsContentControl.Content = new ProductsView();
             ProductsContentControl.DataContext = new ProductsViewModel(dbContext);

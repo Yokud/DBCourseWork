@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DataBaseUI.Models
 {
@@ -15,16 +16,22 @@ namespace DataBaseUI.Models
     {
         SpsrLtDbContext db;
 
-        public PgSQLCostsRepository()
+        ILogger logger;
+
+        public PgSQLCostsRepository(ILogger logger = null)
         {
             db = new SpsrLtDbContext();
             db.Costs.Load();
+
+            this.logger = logger;
         }
 
-        public PgSQLCostsRepository(SpsrLtDbContext spsr)
+        public PgSQLCostsRepository(SpsrLtDbContext spsr, ILogger logger)
         {
             db = spsr;
             db.Costs.Load();
+
+            this.logger = logger;
         }
 
         public void Create(Cost item)
@@ -56,6 +63,7 @@ namespace DataBaseUI.Models
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
                 return null;
             }
         }
@@ -85,6 +93,7 @@ namespace DataBaseUI.Models
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
                 return null;
             }
         }

@@ -11,6 +11,7 @@ using DataBaseUI.Models;
 using DataBaseUI.SysEntities;
 using DataBaseUI.Views.DialogWindows;
 using DataBaseUI.Views.DialogWindows.ProductsView;
+using Microsoft.Extensions.Logging;
 
 namespace DataBaseUI.ViewModels
 {
@@ -22,13 +23,17 @@ namespace DataBaseUI.ViewModels
         Shop selectedShop;
         Product selectedProduct;
 
+        ILogger logger;
+
         internal Delegate del;
 
-        public ProductsViewModel(SpsrLtDbContext spsr)
+        public ProductsViewModel(SpsrLtDbContext spsr, ILogger logger = null)
         {
-            products = new PgSQLProductsRepository(spsr);
-            costs = new PgSQLCostStoryRepository(spsr);
-            availabilities = new PgSQLAvailabilityRepository(spsr);
+            products = new PgSQLProductsRepository(spsr, logger);
+            costs = new PgSQLCostStoryRepository(spsr, logger);
+            availabilities = new PgSQLAvailabilityRepository(spsr, logger);
+
+            this.logger = logger;
         }
 
         public Shop SelectedShop
@@ -39,6 +44,7 @@ namespace DataBaseUI.ViewModels
                 selectedShop = value;
                 OnPropertyChanged("SelectedShop");
                 OnPropertyChanged("Products");
+                logger?.LogInformation("Selected shop was updated.\n");
             }
         }
 
@@ -50,6 +56,7 @@ namespace DataBaseUI.ViewModels
                 selectedProduct = value;
                 SetSelectedProduct(value);
                 OnPropertyChanged("SelectedProduct");
+                logger?.LogInformation("Selected product was updated.\n");
             }
         }
 
@@ -154,11 +161,14 @@ namespace DataBaseUI.ViewModels
                     cost.AvailabilityId = avail.Id;
                     costs.Create(cost);
                 }
+                
+                logger?.LogInformation(string.Format("Product with id = {0} was added.\n", prod.Id));
                 OnPropertyChanged("Products");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -175,11 +185,14 @@ namespace DataBaseUI.ViewModels
                     cost.AvailabilityId = newAvail.Id;
                     costs.Create(cost);
                 }
+                
+                logger?.LogInformation(string.Format("Product with id = {0} was created.\n", prod.Id));
                 OnPropertyChanged("Products");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -188,11 +201,13 @@ namespace DataBaseUI.ViewModels
             try
             {
                 availabilities.Delete(availabilities.GetAll().Where(x => x.ShopId == selectedShop.Id && x.ProductId == prod.Id).First());
+                logger?.LogInformation(string.Format("Product with id = {0} was deleted.\n", prod.Id));
                 OnPropertyChanged("Products");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -209,12 +224,13 @@ namespace DataBaseUI.ViewModels
                 }
 
                 prod.Cost = null;
-
+                logger?.LogInformation(string.Format("Product with id = {0} was updated.\n", prod.Id));
                 OnPropertyChanged("Products");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 

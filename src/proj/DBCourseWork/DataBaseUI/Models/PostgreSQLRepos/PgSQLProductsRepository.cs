@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 
 namespace DataBaseUI.Models
@@ -21,22 +22,28 @@ namespace DataBaseUI.Models
         SpsrLtDbContext db;
         IEnumerable<Product> products = null!;
 
-        public PgSQLProductsRepository()
+        ILogger logger;
+
+        public PgSQLProductsRepository(ILogger logger = null)
         {
             db = new SpsrLtDbContext();
             products = new ObservableCollection<Product>();
             db.Products.Load();
             foreach (var prod in db.Products)
                 ((ObservableCollection<Product>)products).Add(new Product(prod.Id, prod.Name, prod.Producttype));
+
+            this.logger = logger;
         }
 
-        public PgSQLProductsRepository(SpsrLtDbContext spsr)
+        public PgSQLProductsRepository(SpsrLtDbContext spsr, ILogger logger = null)
         {
             db = spsr;
             products = new ObservableCollection<Product>();
             db.Products.Load();
             foreach (var prod in db.Products)
                 ((ObservableCollection<Product>)products).Add(new Product(prod.Id, prod.Name, prod.Producttype));
+
+            this.logger = logger;
         }
 
         public void Create(Product item)
@@ -47,10 +54,12 @@ namespace DataBaseUI.Models
                 db.SaveChanges();
                 item.Id = db.Products.Max(x => x.Id);
                 ((ObservableCollection<Product>)products).Add(item);
+                logger?.LogInformation(string.Format("Product with id = {0} was added.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -61,10 +70,12 @@ namespace DataBaseUI.Models
                 db.Products.Remove(db.Products.Find(item.Id));
                 db.SaveChanges();
                 ((ObservableCollection<Product>)products).Remove(item);
+                logger?.LogInformation(string.Format("Product with id = {0} was deleted.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -87,6 +98,7 @@ namespace DataBaseUI.Models
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
                 return null;
             }
         }
@@ -120,11 +132,12 @@ namespace DataBaseUI.Models
                         ((ObservableCollection<Product>)products)[i].ProductType = item.ProductType;
                         break;
                     }
-
+                logger?.LogInformation(string.Format("Product with id = {0} was updated.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -151,6 +164,7 @@ namespace DataBaseUI.Models
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
                 return null;
             }
         }

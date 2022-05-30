@@ -10,25 +10,33 @@ using DataBaseUI.Models;
 using DataBaseUI.SysEntities;
 using TrendLineLib;
 using OxyPlot;
+using System.Windows;
+using DataBaseUI.Views.DialogWindows.CostStoryView;
+using Microsoft.Extensions.Logging;
 
 namespace DataBaseUI.ViewModels
 {
     internal class CostStoryViewModel : INotifyPropertyChanged
     {
         ICostStoryRepository costStories;
+        IAvailabilityRepository availabilities;
         Shop selectedShop;
         Product selectedProduct;
         CostStory selectedCostStory;
+
+        ILogger logger;
 
         BaseTrendLine trend;
         PlotModel trendLinePlot;
         int nextCostValue;
         string polString;
 
-        public CostStoryViewModel(SpsrLtDbContext dbContext)
+        public CostStoryViewModel(SpsrLtDbContext dbContext, ILogger logger = null)
         {
-            costStories = new PgSQLCostStoryRepository(dbContext);
+            costStories = new PgSQLCostStoryRepository(dbContext, logger);
+            availabilities = new PgSQLAvailabilityRepository(dbContext, logger);
             trend = new PolynomialTrendLine();
+            this.logger = logger;
         }
 
         public IEnumerable<CostStory> ProductCostStory
@@ -46,6 +54,7 @@ namespace DataBaseUI.ViewModels
             {
                 selectedShop = value;
                 OnPropertyChanged("SelectedShop");
+                logger?.LogInformation("Selected shop was updated.\n");
             }
         }
 
@@ -55,6 +64,7 @@ namespace DataBaseUI.ViewModels
             set
             {
                 selectedProduct = value;
+                logger?.LogInformation("Selected product was updated.\n");
                 OnPropertyChanged("SelectedProduct");
                 OnPropertyChanged("ProductCostStory");
                 OnPropertyChanged("TrendLinePlot");
@@ -67,6 +77,7 @@ namespace DataBaseUI.ViewModels
             set
             {
                 selectedCostStory = value;
+                logger?.LogInformation("Selected cost story was updated.\n");
                 OnPropertyChanged("SelectedCostStory");
             }
         }
@@ -81,7 +92,7 @@ namespace DataBaseUI.ViewModels
                 trendLinePlot = new PlotModel();
 
                 List<double> coefs = trend.GetCoefs(ProductCostStory);
-                List<Point> points = trend.GetLinePoints(ProductCostStory);
+                List<TrendLineLib.Point> points = trend.GetLinePoints(ProductCostStory);
 
                 NextCostValue = (int)trend.F(ProductCostStory.Count() + 1);
 
@@ -141,6 +152,118 @@ namespace DataBaseUI.ViewModels
             }
         }
 
+        RelayCommand addCommand;
+        public RelayCommand AddCommand
+        {
+            get
+            {
+                return addCommand ??= new RelayCommand(obj => 
+                {
+                    AddCostStoryWindow wnd = new AddCostStoryWindow();
+
+                    if (wnd.ShowDialog() == true)
+                    {
+                        CostStory c = wnd.NewCostStory;
+
+                        if (c != null)
+                        {
+                            c.AvailabilityId = availabilities.GetAll().Where(x => x.ShopId == selectedShop.Id && x.ProductId == selectedProduct.Id).First().Id;
+                            AddCostStory(c);
+                        }
+                    }
+                });
+            }
+        }
+
+        RelayCommand deleteCommand;
+        public RelayCommand DeleteCommand
+        {
+            get
+            {
+                return deleteCommand ??= new RelayCommand(obj =>
+                {
+                    CostStory c = obj as CostStory;
+
+                    if (c != null)
+                        DeleteCostStory(c);
+                }, obj => costStories.GetAll().Count() > 0);
+            }
+        }
+
+        RelayCommand updateCommand;
+        public RelayCommand UpdateCommand
+        {
+            get
+            {
+                return updateCommand ??= new RelayCommand(obj =>
+                {
+                    UpdateCostStoryWindow wnd = new UpdateCostStoryWindow();
+
+                    if (wnd.ShowDialog() == true)
+                    {
+                        CostStory c = obj as CostStory;
+
+                        if (c != null)
+                        {
+                            c.Year = wnd.NewYear ?? c.Year;
+                            c.Month = wnd.NewMonth ?? c.Month;
+                            c.Cost = wnd.NewCost ?? c.Cost;
+
+                            UpdateCostStory(c);
+                        }
+                    }
+                });
+            }
+        }
+
+        public void AddCostStory(CostStory costStory)
+        {
+            try
+            {
+                costStories.Create(costStory);
+                OnPropertyChanged("ProductCostStory");
+                OnPropertyChanged("TrendLinePlot");
+                logger?.LogInformation(string.Format("Cost story with id = {0} was added.\n", costStory.Id));
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
+            }
+        }
+
+        public void DeleteCostStory(CostStory costStory)
+        {
+            try
+            {
+                costStories.Delete(costStory);
+                OnPropertyChanged("ProductCostStory");
+                OnPropertyChanged("TrendLinePlot");
+                logger?.LogInformation(string.Format("Cost story with id = {0} was deleted.\n", costStory.Id));
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
+            }
+        }
+
+        public void UpdateCostStory(CostStory costStory)
+        {
+            try
+            {
+                costStories.Update(costStory);
+                OnPropertyChanged("ProductCostStory");
+                OnPropertyChanged("TrendLinePlot");
+                logger?.LogInformation(string.Format("Cost story with id = {0} was updated.\n", costStory.Id));
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
+            }
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
@@ -151,16 +274,16 @@ namespace DataBaseUI.ViewModels
 
     internal static class CostStoryPoints
     {
-        public static IEnumerable<Point> FromCostStory(IEnumerable<CostStory> cs)
+        public static IEnumerable<TrendLineLib.Point> FromCostStory(IEnumerable<CostStory> cs)
         {
             List<int> costs = cs.ToList().Select(x => x.Cost).ToList();
             List<DateOnly> dates = cs.Select(x => new DateOnly(x.Year, x.Month, 1)).ToList<DateOnly>();
 
-            List<Point> points = new List<Point>();
+            List<TrendLineLib.Point> points = new List<TrendLineLib.Point>();
 
             for (int i = 0; i < Math.Max(costs.Count, dates.Count); i++)
             {
-                points.Add(new Point(i + 1, costs[i]));
+                points.Add(new TrendLineLib.Point(i + 1, costs[i]));
             }
 
             return points;
@@ -173,7 +296,7 @@ namespace DataBaseUI.ViewModels
             return line.GetCoefs(points.ToList());
         }
 
-        public static List<Point> GetLinePoints(this BaseTrendLine line, IEnumerable<CostStory> costStories)
+        public static List<TrendLineLib.Point> GetLinePoints(this BaseTrendLine line, IEnumerable<CostStory> costStories)
         {
             var points = FromCostStory(costStories);
 

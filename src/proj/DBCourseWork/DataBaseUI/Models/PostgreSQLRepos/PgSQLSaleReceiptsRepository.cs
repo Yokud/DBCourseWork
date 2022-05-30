@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DataBaseUI.Models
 {
@@ -16,22 +17,28 @@ namespace DataBaseUI.Models
         SpsrLtDbContext db;
         IEnumerable<SaleReceipt> saleReceipts;
 
-        public PgSQLSaleReceiptsRepository()
+        ILogger logger;
+
+        public PgSQLSaleReceiptsRepository(ILogger logger = null)
         {
             db = new SpsrLtDbContext();
             saleReceipts = new ObservableCollection<SaleReceipt>();
             db.SaleReceipts.Load();
             foreach (var sr in db.SaleReceipts)
                 ((ObservableCollection<SaleReceipt>)saleReceipts).Add(new SaleReceipt(sr.Id, sr.Fio, sr.Dateofpurchase, sr.Shopid));
+
+            this.logger = logger;
         }
 
-        public PgSQLSaleReceiptsRepository(SpsrLtDbContext spsr)
+        public PgSQLSaleReceiptsRepository(SpsrLtDbContext spsr, ILogger logger)
         {
             db = spsr;
             saleReceipts = new ObservableCollection<SaleReceipt>();
             db.SaleReceipts.Load();
             foreach (var sr in db.SaleReceipts)
                 ((ObservableCollection<SaleReceipt>)saleReceipts).Add(new SaleReceipt(sr.Id, sr.Fio, sr.Dateofpurchase, sr.Shopid));
+
+            this.logger = logger;
         }
 
         public void Create(SaleReceipt item)
@@ -42,10 +49,13 @@ namespace DataBaseUI.Models
                 db.SaveChanges();
                 item.Id = db.SaleReceipts.Max(x => x.Id);
                 ((ObservableCollection<SaleReceipt>)saleReceipts).Add(item);
+
+                logger?.LogInformation(string.Format("Sale receipt with id = {0} was added.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -56,10 +66,12 @@ namespace DataBaseUI.Models
                 db.SaleReceipts.Remove(db.SaleReceipts.Find(item.Id));
                 db.SaveChanges();
                 ((ObservableCollection<SaleReceipt>)saleReceipts).Remove(item);
+                logger?.LogInformation(string.Format("Sale receipt with id = {0} was deleted.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -82,6 +94,7 @@ namespace DataBaseUI.Models
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
                 return null;
             }
         }
@@ -122,10 +135,13 @@ namespace DataBaseUI.Models
                         ((ObservableCollection<SaleReceipt>)saleReceipts)[i].ShopId = item.ShopId;
                         break;
                     }
+
+                logger?.LogInformation(string.Format("Sale receipt with id = {0} was updated.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
     }

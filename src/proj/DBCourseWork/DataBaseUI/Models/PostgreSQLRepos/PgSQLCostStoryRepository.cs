@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DataBaseUI.Models
 {
@@ -16,7 +17,9 @@ namespace DataBaseUI.Models
         SpsrLtDbContext db;
         IEnumerable<CostStory> stories;
 
-        public PgSQLCostStoryRepository()
+        ILogger logger;
+
+        public PgSQLCostStoryRepository(ILogger logger = null)
         {
             db = new SpsrLtDbContext();
             stories = new ObservableCollection<CostStory>();
@@ -24,9 +27,11 @@ namespace DataBaseUI.Models
 
             foreach (var cs in db.CostStories)
                 ((ObservableCollection<CostStory>)stories).Add(new CostStory(cs.Id, cs.Year, cs.Month, cs.Cost, cs.Availabilityid));
+
+            this.logger = logger;
         }
 
-        public PgSQLCostStoryRepository(SpsrLtDbContext spsr)
+        public PgSQLCostStoryRepository(SpsrLtDbContext spsr, ILogger logger = null)
         {
             db = spsr;
             stories = new ObservableCollection<CostStory>();
@@ -34,6 +39,8 @@ namespace DataBaseUI.Models
 
             foreach (var cs in db.CostStories)
                 ((ObservableCollection<CostStory>)stories).Add(new CostStory(cs.Id, cs.Year, cs.Month, cs.Cost, cs.Availabilityid));
+
+            this.logger = logger;
         }
 
         public void Create(CostStory item)
@@ -44,10 +51,13 @@ namespace DataBaseUI.Models
                 db.SaveChanges();
                 item.Id = db.CostStories.Max(x => x.Id);
                 ((ObservableCollection<CostStory>)stories).Add(item);
+
+                logger?.LogInformation(string.Format("Cost story with id = {0} was added.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -58,10 +68,12 @@ namespace DataBaseUI.Models
                 db.CostStories.Remove(db.CostStories.Find(item.Id));
                 db.SaveChangesAsync();
                 ((ObservableCollection<CostStory>)stories).Remove(item);
+                logger?.LogInformation(string.Format("Cost story with id = {0} was deleted.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -84,6 +96,7 @@ namespace DataBaseUI.Models
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
                 return null;
             }
         }
@@ -127,10 +140,13 @@ namespace DataBaseUI.Models
                         ((ObservableCollection<CostStory>)stories)[i].AvailabilityId = item.AvailabilityId;
                         break;
                     }
+
+                logger?.LogInformation(string.Format("Cost story with id = {0} was updated.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
     }

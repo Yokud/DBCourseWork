@@ -10,6 +10,7 @@ using DataBaseUI.DB;
 using DataBaseUI.Models;
 using DataBaseUI.SysEntities;
 using DataBaseUI.Views.DialogWindows.SaleReceiptsView;
+using Microsoft.Extensions.Logging;
 
 namespace DataBaseUI.ViewModels
 {
@@ -22,11 +23,15 @@ namespace DataBaseUI.ViewModels
         SaleReceipt selectedSaleReceipt;
         Product selectedSaleReceiptPosition;
 
-        public SaleReceiptsViewModel(SpsrLtDbContext dbContext)
+        ILogger logger;
+
+        public SaleReceiptsViewModel(SpsrLtDbContext dbContext, ILogger logger = null)
         {
-            saleReceipts = new PgSQLSaleReceiptsRepository(dbContext);
-            saleReceiptPositions = new PgSQLSaleReceiptPositionsRepository(dbContext);
-            availavilities = new PgSQLAvailabilityRepository(dbContext);
+            saleReceipts = new PgSQLSaleReceiptsRepository(dbContext, logger);
+            saleReceiptPositions = new PgSQLSaleReceiptPositionsRepository(dbContext, logger);
+            availavilities = new PgSQLAvailabilityRepository(dbContext, logger);
+
+            this.logger = logger;
         }
 
         public Shop SelectedShop
@@ -37,6 +42,7 @@ namespace DataBaseUI.ViewModels
                 selectedShop = value; 
                 OnPropertyChanged("SelectedShop");
                 OnPropertyChanged("SaleReceipts");
+                logger?.LogInformation("Selected shop was updated.\n");
             }
         }
 
@@ -48,13 +54,19 @@ namespace DataBaseUI.ViewModels
                 selectedSaleReceipt = value; 
                 OnPropertyChanged("SelectedSaleReceipt");
                 OnPropertyChanged("SaleReceiptPositions");
+                logger?.LogInformation("Selected sale receipt was updated.\n");
             }
         }
 
         public Product SelectedSaleReceiptPosition
         {
             get { return selectedSaleReceiptPosition; }
-            set { selectedSaleReceiptPosition = value; OnPropertyChanged("SelectedSaleReceiptPosition"); }
+            set 
+            { 
+                selectedSaleReceiptPosition = value; 
+                OnPropertyChanged("SelectedSaleReceiptPosition");
+                logger?.LogInformation("Selected sale receipt position was updated.\n");
+            }
         }
 
         public IEnumerable<SaleReceipt> SaleReceipts
@@ -168,11 +180,13 @@ namespace DataBaseUI.ViewModels
             try
             {
                 saleReceipts.Create(receipt);
+                logger?.LogInformation(string.Format("Sale receipt with id = {0} was added.\n", receipt.Id));
                 OnPropertyChanged("SaleReceipts");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -181,11 +195,13 @@ namespace DataBaseUI.ViewModels
             try
             {
                 saleReceiptPositions.Create(pos);
+                logger?.LogInformation(string.Format("Sale receipt position with id = {0} was added.\n", pos.Id));
                 OnPropertyChanged("SaleReceiptPositions");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -194,11 +210,13 @@ namespace DataBaseUI.ViewModels
             try
             {
                 saleReceipts.Delete(receipt);
+                logger?.LogInformation(string.Format("Sale receipt with id = {0} was deleted.\n", receipt.Id));
                 OnPropertyChanged("SaleReceipts");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -207,11 +225,13 @@ namespace DataBaseUI.ViewModels
             try
             {
                 saleReceiptPositions.Delete(pos);
+                logger?.LogInformation(string.Format("Sale receipt position with id = {0} was deleted.\n", pos.Id));
                 OnPropertyChanged("SaleReceiptPositions");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 

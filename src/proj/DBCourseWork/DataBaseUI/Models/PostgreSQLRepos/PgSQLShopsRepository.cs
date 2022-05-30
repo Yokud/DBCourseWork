@@ -10,6 +10,7 @@ using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace DataBaseUI.Models
 {
@@ -18,22 +19,28 @@ namespace DataBaseUI.Models
         SpsrLtDbContext db;
         IEnumerable<Shop> shops = null!;
 
-        public PgSQLShopsRepository()
+        ILogger logger;
+
+        public PgSQLShopsRepository(ILogger logger = null)
         {
             db = new SpsrLtDbContext();
             shops = new ObservableCollection<Shop>();
             db.Shops.Load();
             foreach (var efshop in db.Shops)
                 ((ObservableCollection<Shop>)shops).Add(new Shop(efshop.Id, efshop.Name, efshop.Description));
+
+            this.logger = logger;
         }
 
-        public PgSQLShopsRepository(SpsrLtDbContext spsr)
+        public PgSQLShopsRepository(SpsrLtDbContext spsr, ILogger logger = null)
         {
             db = spsr;
             shops = new ObservableCollection<Shop>();
             db.Shops.Load();
             foreach (var efshop in db.Shops)
                 ((ObservableCollection<Shop>)shops).Add(new Shop(efshop.Id, efshop.Name, efshop.Description));
+
+            this.logger = logger;
         }
 
         public void Create(Shop item)
@@ -44,10 +51,13 @@ namespace DataBaseUI.Models
                 db.SaveChanges();
                 item.Id = db.Shops.Max(x => x.Id);
                 ((ObservableCollection<Shop>)shops).Add(item);
+
+                logger?.LogInformation(string.Format("Shop with id = {0} was added.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -58,10 +68,12 @@ namespace DataBaseUI.Models
                 db.Shops.Remove(db.Shops.Find(item.Id));
                 db.SaveChanges();
                 ((ObservableCollection<Shop>)shops).Remove(item);
+                logger?.LogInformation(string.Format("Shop with id = {0} was deleted.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -85,6 +97,7 @@ namespace DataBaseUI.Models
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
                 return null;
             }
         }
@@ -118,10 +131,13 @@ namespace DataBaseUI.Models
                         ((ObservableCollection<Shop>)shops)[i].Description = item.Description;
                         break;
                     }
+
+                logger?.LogInformation(string.Format("Shop with id = {0} was updated.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
     }

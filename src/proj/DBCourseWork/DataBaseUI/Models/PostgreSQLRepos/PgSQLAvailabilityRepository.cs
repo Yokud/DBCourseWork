@@ -1,6 +1,7 @@
 ﻿using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,22 +17,28 @@ namespace DataBaseUI.Models
         SpsrLtDbContext db;
         IEnumerable<Availability> availabilities;
 
-        public PgSQLAvailabilityRepository()
+        ILogger logger;
+
+        public PgSQLAvailabilityRepository(ILogger logger = null)
         {
             db = new SpsrLtDbContext();
             availabilities = new ObservableCollection<Availability>();
             db.Availabilities.Load();
             foreach (var avail in db.Availabilities)
                 ((ObservableCollection<Availability>)availabilities).Add(new Availability(avail.Id, avail.Shopid, avail.Productid));
+
+            this.logger = logger;
         }
 
-        public PgSQLAvailabilityRepository(SpsrLtDbContext spsr)
+        public PgSQLAvailabilityRepository(SpsrLtDbContext spsr, ILogger logger = null)
         {
             db = spsr;
             availabilities = new ObservableCollection<Availability>();
             db.Availabilities.Load();
             foreach (var avail in db.Availabilities)
                 ((ObservableCollection<Availability>)availabilities).Add(new Availability(avail.Id, avail.Shopid, avail.Productid));
+
+            this.logger = logger;
         }
 
         public void Create(Availability item)
@@ -42,10 +49,13 @@ namespace DataBaseUI.Models
                 db.SaveChanges();
                 item.Id = db.Availabilities.Max(x => x.Id);
                 ((ObservableCollection<Availability>)availabilities).Add(item);
+
+                logger?.LogInformation(string.Format("Availability with id = {0} was added.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -56,10 +66,13 @@ namespace DataBaseUI.Models
                 db.Availabilities.Remove(db.Availabilities.Find(item.Id));
                 db.SaveChangesAsync();
                 ((ObservableCollection<Availability>)availabilities).Remove(item);
+
+                logger?.LogInformation(string.Format("Availability with id = {0} was deleted.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
 
@@ -82,6 +95,7 @@ namespace DataBaseUI.Models
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
                 return null;
             }
         }
@@ -115,10 +129,13 @@ namespace DataBaseUI.Models
                         ((ObservableCollection<Availability>)availabilities)[i].ProductId = item.ProductId;
                         break;
                     }
+
+                logger?.LogInformation(string.Format("Availability with id = {0} was updated.\n", item.Id));
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
+                logger?.LogError(e.Message);
             }
         }
     }
