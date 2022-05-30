@@ -57,6 +57,31 @@ namespace TechnicUI
         public event ITechnicView.UpdateProductDel UpdateProductEvent;
         public event ITechnicView.GetProductDel GetProductEvent;
         public event ITechnicView.GetAllProductsDel GetAllProductsEvent;
+        public event ITechnicView.AddAvailabilityDel AddAvailabilityEvent;
+        public event ITechnicView.DeleteAvailabilityDel DeleteAvailabilityEvent;
+        public event ITechnicView.UpdateAvailabilityDel UpdateAvailabilityEvent;
+        public event ITechnicView.GetAvailabilityDel GetAvailabilityEvent;
+        public event ITechnicView.GetAllAvailabilitiesDel GetAllAvailabilitiesEvent;
+        public event ITechnicView.AddSaleReceiptDel AddSaleReceiptEvent;
+        public event ITechnicView.DeleteSaleReceiptDel DeleteSaleReceiptEvent;
+        public event ITechnicView.UpdateSaleReceiptDel UpdateSaleReceiptEvent;
+        public event ITechnicView.GetSaleReceiptDel GetSaleReceiptEvent;
+        public event ITechnicView.GetAllSaleReceiptsDel GetAllSaleReceiptsEvent;
+        public event ITechnicView.AddSaleReceiptPositionDel AddSaleReceiptPositionEvent;
+        public event ITechnicView.DeleteSaleReceiptPositionDel DeleteSaleReceiptPositionEvent;
+        public event ITechnicView.UpdateSaleReceiptPositionDel UpdateSaleReceiptPositionEvent;
+        public event ITechnicView.GetSaleReceiptPositionDel GetSaleReceiptPositionEvent;
+        public event ITechnicView.GetAllSaleReceiptPositionsDel GetAllSaleReceiptPositionsEvent;
+        public event ITechnicView.AddCostDel AddCostEvent;
+        public event ITechnicView.DeleteCostDel DeleteCostEvent;
+        public event ITechnicView.UpdateCostDel UpdateCostEvent;
+        public event ITechnicView.GetCostDel GetCostEvent;
+        public event ITechnicView.GetAllCostsDel GetAllCostsEvent;
+        public event ITechnicView.AddCostStoryDel AddCostStoryEvent;
+        public event ITechnicView.DeleteCostStoryDel DeleteCostStoryEvent;
+        public event ITechnicView.UpdateCostStoryDel UpdateCostStoryEvent;
+        public event ITechnicView.GetCostStoryDel GetCostStoryEvent;
+        public event ITechnicView.GetAllCostStoriesDel GetAllCostStoriesEvent;
 
         public ConsoleTechnicView()
         {
@@ -340,7 +365,7 @@ namespace TechnicUI
                 int prodid = int.Parse(Console.ReadLine());
                 int shopid = int.Parse(Console.ReadLine());
 
-                //AddAvailability(new Availability(shopid, prodid));
+                AddAvailabilityEvent?.Invoke(new Availability(shopid, prodid));
             }
             catch (Exception e)
             {
@@ -356,7 +381,7 @@ namespace TechnicUI
                 int prodid = int.Parse(Console.ReadLine());
                 int shopid = int.Parse(Console.ReadLine());
 
-                //Presenter.DeleteAvailability(new Availability(id, shopid, prodid));
+                DeleteAvailabilityEvent?.Invoke(new Availability(id, shopid, prodid));
             }
             catch (Exception e)
             {
@@ -372,7 +397,7 @@ namespace TechnicUI
                 int prodid = int.Parse(Console.ReadLine());
                 int shopid = int.Parse(Console.ReadLine());
 
-                //Presenter.UpdateAvailability(new Availability(id, shopid, prodid));
+                UpdateAvailabilityEvent?.Invoke(new Availability(id, shopid, prodid));
             }
             catch (Exception e)
             {
@@ -386,7 +411,7 @@ namespace TechnicUI
             {
                 int id = int.Parse(Console.ReadLine());
 
-                //Presenter.GetAvailability(id);
+                GetAvailabilityEvent?.Invoke(id);
             }
             catch (Exception e)
             {
@@ -396,7 +421,7 @@ namespace TechnicUI
 
         public void GetAllAvailabilities()
         {
-            //Presenter.GetAllAvailabilities();
+            GetAllAvailabilitiesEvent?.Invoke();
         }
 
         public void AddSaleReceipt()
@@ -407,7 +432,7 @@ namespace TechnicUI
                 DateOnly d = DateOnly.Parse(Console.ReadLine());
                 int shopid = int.Parse(Console.ReadLine());
 
-                //Presenter.AddSaleReceipt(new SaleReceipt(fio, d, shopid));
+                AddSaleReceiptEvent?.Invoke(new SaleReceipt(fio, d, shopid));
             }
             catch (Exception e)
             {
@@ -424,7 +449,7 @@ namespace TechnicUI
                 DateOnly d = DateOnly.Parse(Console.ReadLine());
                 int shopid = int.Parse(Console.ReadLine());
 
-                //Presenter.DeleteSaleReceipt(new SaleReceipt(id, fio, d, shopid));
+                DeleteSaleReceiptEvent?.Invoke(new SaleReceipt(id, fio, d, shopid));
             }
             catch (Exception e)
             {
@@ -441,7 +466,7 @@ namespace TechnicUI
                 DateOnly d = DateOnly.Parse(Console.ReadLine());
                 int shopid = int.Parse(Console.ReadLine());
 
-                //Presenter.UpdateSaleReceipt(new SaleReceipt(id, fio, d, shopid));
+                UpdateSaleReceiptEvent?.Invoke(new SaleReceipt(id, fio, d, shopid));
             }
             catch (Exception e)
             {
@@ -455,7 +480,7 @@ namespace TechnicUI
             {
                 int id = int.Parse(Console.ReadLine());
 
-                //Presenter.GetSaleReceipt(id);
+                GetSaleReceiptEvent?.Invoke(id);
             }
             catch (Exception e)
             {
@@ -465,7 +490,7 @@ namespace TechnicUI
 
         public void GetAllSaleReceipts()
         {
-            //Presenter.GetAllSaleReceipts();
+            GetAllSaleReceiptsEvent?.Invoke();
         }
 
         public void AddSaleReceiptPosition()
@@ -475,7 +500,7 @@ namespace TechnicUI
                 int srid = int.Parse(Console.ReadLine());
                 int avid = int.Parse(Console.ReadLine());
 
-                //Presenter.AddSaleReceiptPosition(new SaleReceiptPosition(avid, srid));
+                AddSaleReceiptPositionEvent?.Invoke(new SaleReceiptPosition(avid, srid));
             }
             catch (Exception e)
             {
@@ -491,7 +516,7 @@ namespace TechnicUI
                 int srid = int.Parse(Console.ReadLine());
                 int avid = int.Parse(Console.ReadLine());
 
-                //Presenter.DeleteSaleReceiptPosition(new SaleReceiptPosition(id, avid, srid));
+                DeleteSaleReceiptPositionEvent?.Invoke(new SaleReceiptPosition(id, avid, srid));
             }
             catch (Exception e)
             {
@@ -507,7 +532,7 @@ namespace TechnicUI
                 int srid = int.Parse(Console.ReadLine());
                 int avid = int.Parse(Console.ReadLine());
 
-                //Presenter.UpdateSaleReceiptPosition(new SaleReceiptPosition(id, avid, srid));
+                UpdateSaleReceiptPositionEvent?.Invoke(new SaleReceiptPosition(id, avid, srid));
             }
             catch (Exception e)
             {
@@ -521,7 +546,7 @@ namespace TechnicUI
             {
                 int id = int.Parse(Console.ReadLine());
 
-                //Presenter.GetSaleReceiptPosition(id);
+                GetSaleReceiptPositionEvent?.Invoke(id);
             }
             catch (Exception e)
             {
@@ -531,7 +556,7 @@ namespace TechnicUI
 
         public void GetAllSaleReceiptPositions()
         {
-            //Presenter.GetAllSaleReceiptPositions();
+            GetAllSaleReceiptPositionsEvent?.Invoke();
         }
 
         public void AddCost()
@@ -541,7 +566,7 @@ namespace TechnicUI
                 int avid = int.Parse(Console.ReadLine());
                 int cost = int.Parse(Console.ReadLine());
 
-                //Presenter.AddCost(new Cost(avid, cost));
+                AddCostEvent?.Invoke(new Cost(avid, cost));
             }
             catch (Exception e)
             {
@@ -556,7 +581,7 @@ namespace TechnicUI
                 int avid = int.Parse(Console.ReadLine());
                 int cost = int.Parse(Console.ReadLine());
 
-                //Presenter.DeleteCost(new Cost(avid, cost));
+                DeleteCostEvent?.Invoke(new Cost(avid, cost));
             }
             catch (Exception e)
             {
@@ -571,7 +596,7 @@ namespace TechnicUI
                 int avid = int.Parse(Console.ReadLine());
                 int cost = int.Parse(Console.ReadLine());
 
-                //Presenter.UpdateCost(new Cost(avid, cost));
+                UpdateCostEvent?.Invoke(new Cost(avid, cost));
             }
             catch (Exception e)
             {
@@ -585,7 +610,7 @@ namespace TechnicUI
             {
                 int id = int.Parse(Console.ReadLine());
 
-                //Presenter.GetCost(id);
+                GetCostEvent?.Invoke(id);
             }
             catch (Exception e)
             {
@@ -595,7 +620,7 @@ namespace TechnicUI
 
         public void GetAllCosts()
         {
-            //Presenter.GetAllCosts();
+            GetAllCostsEvent?.Invoke();
         }
 
         public void AddCostStory()
@@ -607,7 +632,7 @@ namespace TechnicUI
                 int cost = int.Parse(Console.ReadLine());
                 int avid = int.Parse(Console.ReadLine());
 
-                //Presenter.AddCostStory(new CostStory(year, month, cost, avid));
+                AddCostStoryEvent?.Invoke(new CostStory(year, month, cost, avid));
             }
             catch (Exception e)
             {
@@ -625,7 +650,7 @@ namespace TechnicUI
                 int cost = int.Parse(Console.ReadLine());
                 int avid = int.Parse(Console.ReadLine());
 
-                //Presenter.DeleteCostStory(new CostStory(id, year, month, cost, avid));
+                DeleteCostStoryEvent?.Invoke(new CostStory(id, year, month, cost, avid));
             }
             catch (Exception e)
             {
@@ -643,7 +668,7 @@ namespace TechnicUI
                 int cost = int.Parse(Console.ReadLine());
                 int avid = int.Parse(Console.ReadLine());
 
-                //Presenter.UpdateCostStory(new CostStory(id, year, month, cost, avid));
+                UpdateCostStoryEvent?.Invoke(new CostStory(id, year, month, cost, avid));
             }
             catch (Exception e)
             {
@@ -657,7 +682,7 @@ namespace TechnicUI
             {
                 int id = int.Parse(Console.ReadLine());
 
-                //Presenter.GetCostStory(id);
+                GetCostStoryEvent?.Invoke(id);
             }
             catch (Exception e)
             {
@@ -667,7 +692,7 @@ namespace TechnicUI
 
         public void GetAllCostStories()
         {
-            //Presenter.GetAllCostStories();
+            GetAllCostStoriesEvent?.Invoke();
         }
     }
 }

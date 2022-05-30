@@ -49,6 +49,36 @@ namespace TechnicUI
             View.UpdateProductEvent += UpdateProduct;
             View.GetProductEvent += GetProduct;
             View.GetAllProductsEvent += GetAllProducts;
+
+            View.AddAvailabilityEvent += AddAvailability;
+            View.DeleteAvailabilityEvent += DeleteAvailability;
+            View.UpdateAvailabilityEvent += UpdateAvailability;
+            View.GetAllAvailabilitiesEvent += GetAllAvailabilities;
+            View.GetAvailabilityEvent += GetAvailability;
+
+            View.AddCostEvent += AddCost;
+            View.DeleteCostEvent += DeleteCost;
+            View.UpdateCostEvent += UpdateCost;
+            View.GetCostEvent += GetCost;
+            View.GetAllCostsEvent += GetAllCosts;
+
+            View.AddCostStoryEvent += AddCostStory;
+            View.DeleteCostStoryEvent += DeleteCostStory;
+            View.UpdateCostStoryEvent += UpdateCostStory;
+            View.GetCostStoryEvent += GetCostStory;
+            View.GetAllCostStoriesEvent += GetAllCostStories;
+
+            View.AddSaleReceiptEvent += AddSaleReceipt;
+            View.DeleteSaleReceiptEvent += DeleteSaleReceipt;
+            View.UpdateSaleReceiptEvent += UpdateSaleReceipt;
+            View.GetSaleReceiptEvent += GetSaleReceipt;
+            View.GetAllSaleReceiptsEvent += GetAllSaleReceipts;
+
+            View.AddSaleReceiptPositionEvent += AddSaleReceiptPosition;
+            View.DeleteSaleReceiptPositionEvent += DeleteSaleReceiptPosition;
+            View.UpdateSaleReceiptPositionEvent += UpdateSaleReceiptPosition;
+            View.GetSaleReceiptPositionEvent += GetSaleReceiptPosition;
+            View.GetAllSaleReceiptPositionsEvent += GetAllSaleReceiptPositions;
         }
 
         public IShopsRepository Shops { get => shops; set => shops = value; }
