@@ -15,7 +15,6 @@ namespace TechnicUI
                                                                     new PgSQLCostsRepository(),
                                                                     new PgSQLCostStoryRepository(),
                                                                     new PgSQLAvailabilityRepository());
-            view.Presenter = presenter;
 
             view.StartUi();
         }

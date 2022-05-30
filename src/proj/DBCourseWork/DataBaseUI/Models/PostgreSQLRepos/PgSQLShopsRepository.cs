@@ -47,7 +47,7 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Shops.Add(new EFShop() { Id = db.Shops.Max(x => x.Id) + 1 , Name = item.Name, Description = item.Description});
+                db.Shops.Add(new EFShop() { Id = db.Shops.Count() != 0 ? db.Shops.Max(x => x.Id) + 1 : 0, Name = item.Name, Description = item.Description});
                 db.SaveChanges();
                 item.Id = db.Shops.Max(x => x.Id);
                 ((ObservableCollection<Shop>)shops).Add(item);

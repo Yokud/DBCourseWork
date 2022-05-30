@@ -47,7 +47,7 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.SaleReceiptPositions.Add(new EFSaleReceiptPosition() { Id = db.SaleReceiptPositions.Max(x => x.Id) + 1, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId });
+                db.SaleReceiptPositions.Add(new EFSaleReceiptPosition() { Id = db.SaleReceiptPositions.Count() != 0 ? db.SaleReceiptPositions.Max(x => x.Id) + 1 : 0, Availabilityid = item.AvailabilityId, Salereceiptid = item.SaleReceiptId });
                 db.SaveChanges();
                 item.Id = db.SaleReceiptPositions.Max(x => x.Id);
                 ((ObservableCollection<SaleReceiptPosition>)saleReceiptPositions).Add(item);

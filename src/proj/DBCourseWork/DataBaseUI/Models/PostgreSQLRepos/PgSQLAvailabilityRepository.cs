@@ -45,7 +45,7 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Availabilities.Add(new EFAvailability() { Id = db.Availabilities.Max(x => x.Id) + 1, Shopid = item.ShopId, Productid = item.ProductId });
+                db.Availabilities.Add(new EFAvailability() { Id = db.Availabilities.Count() != 0 ? db.Availabilities.Max(x => x.Id) + 1 : 0, Shopid = item.ShopId, Productid = item.ProductId });
                 db.SaveChanges();
                 item.Id = db.Availabilities.Max(x => x.Id);
                 ((ObservableCollection<Availability>)availabilities).Add(item);

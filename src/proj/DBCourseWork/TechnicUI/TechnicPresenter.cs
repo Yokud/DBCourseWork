@@ -37,6 +37,18 @@ namespace TechnicUI
             Costs = costs;
             CostStories = costStory;
             Availabilityies = availability;
+
+            View.AddShopEvent += AddShop;
+            View.DeleteShopEvent += DeleteShop;
+            View.UpdateShopEvent += UpdateShop;
+            View.GetShopEvent += GetShop;
+            View.GetAllShopsEvent += GetAllShops;
+
+            View.AddProductEvent += AddProduct;
+            View.DeleteProductEvent += DeleteProduct;
+            View.UpdateProductEvent += UpdateProduct;
+            View.GetProductEvent += GetProduct;
+            View.GetAllProductsEvent += GetAllProducts;
         }
 
         public IShopsRepository Shops { get => shops; set => shops = value; }

@@ -47,7 +47,7 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.CostStories.Add(new EFCostStory() { Id = db.CostStories.Max(x => x.Id) + 1, Year = item.Year, Month = item.Month, Availabilityid = item.AvailabilityId, Cost = item.Cost });
+                db.CostStories.Add(new EFCostStory() { Id = db.CostStories.Count() != 0 ? db.CostStories.Max(x => x.Id) + 1 : 0, Year = item.Year, Month = item.Month, Availabilityid = item.AvailabilityId, Cost = item.Cost });
                 db.SaveChanges();
                 item.Id = db.CostStories.Max(x => x.Id);
                 ((ObservableCollection<CostStory>)stories).Add(item);

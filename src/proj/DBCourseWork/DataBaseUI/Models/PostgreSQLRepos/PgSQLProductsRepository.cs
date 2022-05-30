@@ -50,7 +50,7 @@ namespace DataBaseUI.Models
         {
             try
             {
-                db.Products.Add(new EFProduct() { Id = db.Products.Max(x => x.Id) + 1, Name = item.Name, Producttype = item.ProductType });
+                db.Products.Add(new EFProduct() { Id = db.Products.Count() != 0 ? db.Products.Max(x => x.Id) + 1 : 0, Name = item.Name, Producttype = item.ProductType });
                 db.SaveChanges();
                 item.Id = db.Products.Max(x => x.Id);
                 ((ObservableCollection<Product>)products).Add(item);

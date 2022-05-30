@@ -9,13 +9,42 @@ namespace TechnicUI
 {
     public interface ITechnicView
     {
-        ITechnicPresenter Presenter { get; set; }
+        delegate void AddShopDel(Shop shop);
+        event AddShopDel AddShopEvent;
+
+        delegate void DeleteShopDel(Shop shop);
+        event DeleteShopDel DeleteShopEvent;
+
+        delegate void UpdateShopDel(Shop shop);
+        event UpdateShopDel UpdateShopEvent;
+
+        delegate void GetShopDel(int id);
+        event GetShopDel GetShopEvent;
+
+        delegate void GetAllShopsDel();
+        event GetAllShopsDel GetAllShopsEvent;
 
         void AddShop();
         void DeleteShop();
         void UpdateShop();
         void GetShop();
         void GetAllShops();
+
+
+        delegate void AddProductDel(Product shop);
+        event AddProductDel AddProductEvent;
+
+        delegate void DeleteProductDel(Product shop);
+        event DeleteProductDel DeleteProductEvent;
+
+        delegate void UpdateProductDel(Product shop);
+        event UpdateProductDel UpdateProductEvent;
+
+        delegate void GetProductDel(int id);
+        event GetProductDel GetProductEvent;
+
+        delegate void GetAllProductsDel();
+        event GetAllProductsDel GetAllProductsEvent;
 
         void AddProduct();
         void DeleteProduct();
