@@ -31,6 +31,8 @@ namespace DataBaseUI.ViewModels
         int nextCostValue;
         string polString;
 
+        bool isAdmin, isAnalyst;
+
         public CostStoryViewModel(SpsrLtDbContext dbContext, ILogger logger = null)
         {
             costStories = new PgSQLCostStoryRepository(dbContext, logger);
@@ -79,6 +81,26 @@ namespace DataBaseUI.ViewModels
                 selectedCostStory = value;
                 logger?.LogInformation("Selected cost story was updated.\n");
                 OnPropertyChanged("SelectedCostStory");
+            }
+        }
+
+        public bool IsAdmin
+        {
+            get => isAdmin;
+            set
+            {
+                isAdmin = value;
+                OnPropertyChanged("IsAdmin");
+            }
+        }
+
+        public bool IsAnalyst
+        {
+            get => isAnalyst;
+            set
+            {
+                isAnalyst = value;
+                OnPropertyChanged("IsAnalyst");
             }
         }
 

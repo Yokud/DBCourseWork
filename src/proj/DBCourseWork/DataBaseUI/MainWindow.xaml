@@ -8,9 +8,9 @@
         Title="Система прогнозирования цен на товары в магазинах" MinHeight="900" MinWidth="1600" Icon="Resources/chart_line_icon.png" >
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
         <DockPanel DockPanel.Dock="Top">
-            <RadioButton IsChecked="True" Margin="3">Пользователь</RadioButton>
-            <RadioButton Margin="3">Аналитик</RadioButton>
-            <RadioButton Margin="3">Администратор</RadioButton>
+            <RadioButton x:Name="UserRB" IsChecked="True" Margin="3" Checked="UserRB_Checked">Пользователь</RadioButton>
+            <RadioButton x:Name="AnalystRB" Margin="3" Checked="AnalystRB_Checked">Аналитик</RadioButton>
+            <RadioButton x:Name="AdminRB" Margin="3" Checked="AdminRB_Checked">Администратор</RadioButton>
         </DockPanel>
         <Separator DockPanel.Dock="Top"/>
         <Grid>

@@ -23,6 +23,8 @@ namespace DataBaseUI.ViewModels
         Shop selectedShop;
         Product selectedProduct;
 
+        bool isAdmin;
+
         ILogger logger;
 
         internal Delegate del;
@@ -65,6 +67,19 @@ namespace DataBaseUI.ViewModels
             get
             {
                 return selectedShop == null ? null : products.GetAllFromShop(SelectedShop);
+            }
+        }
+
+        public bool IsAdmin
+        {
+            get
+            {
+                return isAdmin;
+            }
+            set
+            {
+                isAdmin = value;
+                OnPropertyChanged("IsAdmin");
             }
         }
 

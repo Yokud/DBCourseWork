@@ -25,6 +25,8 @@ namespace DataBaseUI.ViewModels
 
         ILogger logger;
 
+        bool isAdmin;
+
         public SaleReceiptsViewModel(SpsrLtDbContext dbContext, ILogger logger = null)
         {
             saleReceipts = new PgSQLSaleReceiptsRepository(dbContext, logger);
@@ -66,6 +68,19 @@ namespace DataBaseUI.ViewModels
                 selectedSaleReceiptPosition = value; 
                 OnPropertyChanged("SelectedSaleReceiptPosition");
                 logger?.LogInformation("Selected sale receipt position was updated.\n");
+            }
+        }
+
+        public bool IsAdmin
+        {
+            get
+            {
+                return isAdmin;
+            }
+            set
+            {
+                isAdmin = value;
+                OnPropertyChanged("IsAdmin");
             }
         }
 

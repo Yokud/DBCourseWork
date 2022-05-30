@@ -55,18 +55,18 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Button HorizontalContentAlignment="Center" Grid.Column="0" Grid.Row="0" Margin="15" Command="{Binding Path=AddCommand}" CommandParameter="{Binding }" IsEnabled="{Binding }" Visibility="{Binding }">
+            <Button HorizontalContentAlignment="Center" Grid.Column="0" Grid.Row="0" Margin="15" Command="{Binding Path=AddCommand}" CommandParameter="{Binding }" IsEnabled="{Binding IsAdmin}" Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
                 <Button.Content>
                     <TextBlock Text="Добавить существующий продукт в магазин" TextWrapping="Wrap"/>
                 </Button.Content>
             </Button>
-            <Button Grid.Column="1" Grid.Row="0" Margin="15" Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding Path=SelectedProduct}" IsEnabled="{Binding }" Visibility="{Binding }">
+            <Button Grid.Column="1" Grid.Row="0" Margin="15" Command="{Binding Path=DeleteCommand}" CommandParameter="{Binding Path=SelectedProduct}" IsEnabled="{Binding IsAdmin}" Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
                 <Button.Content>
                     <TextBlock Text="Удалить продукт из магазина" TextWrapping="Wrap" HorizontalAlignment="Center"/>
                 </Button.Content>
             </Button>
-            <Button Content="Создать новый продукт" Grid.Row="1" Grid.Column="0" Margin="15" Command="{Binding Path=CreateCommand}" CommandParameter="{Binding }" IsEnabled="{Binding }" Visibility="{Binding }"/>
-            <Button Content="Обновить продукт" Grid.Row="1" Grid.Column="1" Margin="15" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding Path=SelectedProduct}" IsEnabled="{Binding }" Visibility="{Binding }"/>
+            <Button Content="Создать новый продукт" Grid.Row="1" Grid.Column="0" Margin="15" Command="{Binding Path=CreateCommand}" CommandParameter="{Binding }" IsEnabled="{Binding IsAdmin}" Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}"/>
+            <Button Content="Обновить продукт" Grid.Row="1" Grid.Column="1" Margin="15" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding Path=SelectedProduct}" IsEnabled="{Binding IsAdmin}" Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </Grid>
 </UserControl>

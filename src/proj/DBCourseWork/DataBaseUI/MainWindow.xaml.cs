@@ -78,5 +78,59 @@ namespace DataBaseUI
         {
             ((CostStoryViewModel)CostStoriesContentControl.DataContext).SelectedProduct = product;
         }
+
+        private void UserRB_Checked(object sender, RoutedEventArgs e)
+        {
+            if (ShopsContentControl?.DataContext != null)
+                ((ShopsViewModel)ShopsContentControl.DataContext).IsAdmin = false;
+
+            if (ProductsContentControl?.DataContext != null)
+                ((ProductsViewModel)ProductsContentControl.DataContext).IsAdmin = false;
+
+            if (SaleReceiptsContentControl?.DataContext != null)
+                ((SaleReceiptsViewModel)SaleReceiptsContentControl.DataContext).IsAdmin = false;
+
+            if (CostStoriesContentControl?.DataContext != null)
+            {
+                ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAnalyst = false;
+                ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAdmin = false;
+            }
+        }
+
+        private void AnalystRB_Checked(object sender, RoutedEventArgs e)
+        {
+            if (ShopsContentControl?.DataContext != null)
+                ((ShopsViewModel)ShopsContentControl.DataContext).IsAdmin = false;
+
+            if (ProductsContentControl?.DataContext != null)
+                ((ProductsViewModel)ProductsContentControl.DataContext).IsAdmin = false;
+
+            if (SaleReceiptsContentControl?.DataContext != null)
+                ((SaleReceiptsViewModel)SaleReceiptsContentControl.DataContext).IsAdmin = false;
+
+            if (CostStoriesContentControl?.DataContext != null)
+            {
+                ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAnalyst = true;
+                ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAdmin = false;
+            }
+        }
+
+        private void AdminRB_Checked(object sender, RoutedEventArgs e)
+        {
+            if (ShopsContentControl?.DataContext != null)
+                ((ShopsViewModel)ShopsContentControl.DataContext).IsAdmin = true;
+
+            if (ProductsContentControl?.DataContext != null)
+                ((ProductsViewModel)ProductsContentControl.DataContext).IsAdmin = true;
+
+            if (SaleReceiptsContentControl?.DataContext != null)
+                ((SaleReceiptsViewModel)SaleReceiptsContentControl.DataContext).IsAdmin = true;
+
+            if (CostStoriesContentControl?.DataContext != null)
+            {
+                ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAnalyst = true;
+                ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAdmin = true;
+            }
+        }
     }
 }

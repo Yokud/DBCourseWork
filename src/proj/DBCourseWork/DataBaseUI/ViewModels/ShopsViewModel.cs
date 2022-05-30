@@ -22,6 +22,8 @@ namespace DataBaseUI.ViewModels
         internal Delegate del;
         ILogger logger;
 
+        bool isAdmin;
+
         public ShopsViewModel(SpsrLtDbContext spsr, ILogger logger = null)
         {
             shopsRepository = new PgSQLShopsRepository(spsr, logger);
@@ -45,6 +47,19 @@ namespace DataBaseUI.ViewModels
                 SetSelectedShop(value);
                 OnPropertyChanged("SelectedShop");
                 logger?.LogInformation("Selected shop was updated.\n");
+            }
+        }
+
+        public bool IsAdmin
+        {
+            get
+            {
+                return isAdmin;
+            }
+            set
+            {
+                isAdmin = value;
+                OnPropertyChanged("IsAdmin");
             }
         }
 
