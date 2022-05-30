@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrendLineLib", "TrendLineLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBAccessTests", "DBAccessTests\DBAccessTests.csproj", "{3842547E-2EE3-46AD-9835-518BEF107C29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicUI", "TechnicUI\TechnicUI.csproj", "{597B2425-1F66-4242-B680-2A655A4BA239}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnicUI", "TechnicUI\TechnicUI.csproj", "{597B2425-1F66-4242-B680-2A655A4BA239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

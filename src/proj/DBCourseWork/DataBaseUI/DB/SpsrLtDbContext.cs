@@ -33,7 +33,10 @@ namespace DataBaseUI.DB
                 var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
                 string connectionString = config.GetConnectionString("DefaultConnection");
 
-                optionsBuilder.UseNpgsql(connectionString);
+                if (connectionString != "Server=(localdb)\\mssqllocaldb;Database=db_cp;Trusted_Connection=True;")
+                    optionsBuilder.UseNpgsql(connectionString);
+                else
+                    optionsBuilder.UseSqlServer(connectionString);
             }
         }
 
