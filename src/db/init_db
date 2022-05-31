@@ -139,10 +139,11 @@ as $$
 			join Products on A.ProductID = Products.ID) as AP join Costs on AP.AvailID = Costs.AvailabilityID) as APC;
 $$ language sql;
 
+
 create or replace function get_coststory_by_shopid_prodid(shop_id integer, prod_id integer)
-returns table(Year integer, Month integer, Cost integer)
+returns table(ID integer, Year integer, Month integer, Cost integer, AvailabilityID integer)
 as $$
-	select CostStory.Year, CostStory.Month, CostStory.Cost
+	select CostStory.ID, CostStory.Year, CostStory.Month, CostStory.Cost, CostStory.AvailabilityID
 	from CostStory
 	where AvailabilityID = (select ID
 						   from Availability

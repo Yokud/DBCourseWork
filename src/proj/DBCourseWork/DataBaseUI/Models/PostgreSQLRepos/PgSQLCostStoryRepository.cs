@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ using DataBaseUI.DB;
 using DataBaseUI.SysEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace DataBaseUI.Models
 {
@@ -66,7 +68,7 @@ namespace DataBaseUI.Models
             try
             {
                 db.CostStories.Remove(db.CostStories.Find(item.Id));
-                db.SaveChangesAsync();
+                db.SaveChanges();
                 ((ObservableCollection<CostStory>)stories).Remove(item);
                 logger?.LogInformation(string.Format("Cost story with id = {0} was deleted.\n", item.Id));
             }
@@ -108,8 +110,21 @@ namespace DataBaseUI.Models
 
         public IEnumerable<CostStory> GetFullCostStory(Shop shop, Product product)
         {
-            var avail = db.Availabilities.Where(x => x.Productid == product.Id && x.Shopid == shop.Id).First();
-            return stories.Where(x => x.AvailabilityId == avail.Id);
+            var conn = (NpgsqlConnection?)db.Database.GetDbConnection();
+            if (conn.State != ConnectionState.Open)
+                conn.Open();
+
+            string cmd = string.Format("select * from get_coststory_by_shopid_prodid({0}, {1})", shop.Id, product.Id);
+            NpgsqlCommand command = new NpgsqlCommand(cmd, conn);
+
+            ObservableCollection<CostStory> story = new ObservableCollection<CostStory>();
+
+            using (NpgsqlDataReader reader = command.ExecuteReader())
+                while (reader.Read())
+                    story.Add(new CostStory((int)reader.GetDouble(0), (int)reader.GetDouble(1), (int)reader.GetDouble(2), (int)reader.GetDouble(3), (int)reader.GetDouble(4)));
+
+            conn.Close();
+            return story;
         }
 
         public void Save()

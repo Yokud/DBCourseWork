@@ -20,6 +20,6 @@
             <TextBox x:Name="NewCostValue" Margin="3"/>
         </DockPanel>
 
-        <Button Content="Добавить" Margin="50, 5, 50, 5" Click="Button_Click"/>
+        <Button Content="Обновить" Margin="50, 5, 50, 5" Click="Button_Click"/>
     </StackPanel>
 </Window>

@@ -152,11 +152,10 @@ namespace DataBaseUI.Models
                     conn.Wait();
                 string cmd = string.Format("select * from get_products_by_shopid({0})", shop.Id);
                 NpgsqlCommand command = new NpgsqlCommand(cmd, conn);
-                NpgsqlDataReader reader = command.ExecuteReader();
                 ObservableCollection<Product> products = new ObservableCollection<Product>();
-
-                while (reader.Read())
-                    products.Add(new Product((int)reader.GetDouble(0), reader.GetString(1), reader.GetString(2), (int?)reader.GetDouble(3)));
+                using (NpgsqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
+                        products.Add(new Product((int)reader.GetDouble(0), reader.GetString(1), reader.GetString(2), (int?)reader.GetDouble(3)));
 
                 conn.Close();
                 return products;

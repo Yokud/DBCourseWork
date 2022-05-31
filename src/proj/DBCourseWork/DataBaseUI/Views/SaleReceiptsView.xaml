@@ -16,33 +16,21 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
-        <ListBox Margin="15" ItemsSource="{Binding SaleReceipts}" SelectedItem="{Binding SelectedSaleReceipt}" Grid.RowSpan="2">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel>
-                        <TextBlock FontSize="15" VerticalAlignment="Center" Margin="3" Text="{Binding Path=Fio, UpdateSourceTrigger=PropertyChanged}" />
-                        <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
-                        <TextBlock FontSize="13" VerticalAlignment="Center" Margin="3" Text="{Binding Path=DateOfPurchase, UpdateSourceTrigger=PropertyChanged}" />
-                        <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
-                        <TextBlock FontSize="14" VerticalAlignment="Center" Margin="3" Text="{Binding Path=SummaryCost, UpdateSourceTrigger=PropertyChanged}" />
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <DataGrid Margin="15" AutoGenerateColumns="False" ItemsSource="{Binding SaleReceipts}" SelectedItem="{Binding SelectedSaleReceipt}" Grid.RowSpan="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ФИО" FontSize="15" Binding="{Binding Path=Fio, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Дата покупки" FontSize="13" Binding="{Binding Path=DateOfPurchase, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Суммарная стоимость" FontSize="14" Binding="{Binding Path=SummaryCost, UpdateSourceTrigger=PropertyChanged}" />
+            </DataGrid.Columns>
+        </DataGrid>
 
-        <ListBox Margin="15" ItemsSource="{Binding SaleReceiptPositions}" SelectedItem="{Binding SelectedSaleReceiptPosition}" Grid.Column="1">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel>
-                        <TextBlock FontSize="15" VerticalAlignment="Center" Margin="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" />
-                        <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
-                        <TextBlock FontSize="13" VerticalAlignment="Center" Margin="3" Text="{Binding Path=ProductType, UpdateSourceTrigger=PropertyChanged}" />
-                        <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
-                        <TextBlock FontSize="14" VerticalAlignment="Center" Margin="3" Text="{Binding Path=Cost, UpdateSourceTrigger=PropertyChanged}" />
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <DataGrid Margin="15" AutoGenerateColumns="False" ItemsSource="{Binding SaleReceiptPositions}" SelectedItem="{Binding SelectedSaleReceiptPosition}" Grid.Column="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя" FontSize="15" Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Тип продукта" FontSize="13" Binding="{Binding Path=ProductType, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Цена" FontSize="14" Binding="{Binding Path=Cost, UpdateSourceTrigger=PropertyChanged}" />
+            </DataGrid.Columns>
+        </DataGrid>
 
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>

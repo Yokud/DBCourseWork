@@ -17,19 +17,13 @@
             <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
 
-        <ListBox Margin="15" ItemsSource="{Binding ProductCostStory}" SelectedItem="{Binding SelectedCostStory}" Grid.RowSpan="2">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel>
-                        <TextBlock FontSize="15" VerticalAlignment="Center" Margin="3" Text="{Binding Path=Year, UpdateSourceTrigger=PropertyChanged}" />
-                        <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
-                        <TextBlock FontSize="13" VerticalAlignment="Center" Margin="3" Text="{Binding Path=Month, UpdateSourceTrigger=PropertyChanged}" />
-                        <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
-                        <TextBlock FontSize="14" VerticalAlignment="Center" Margin="3" Text="{Binding Path=Cost, UpdateSourceTrigger=PropertyChanged}" />
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <DataGrid Margin="15" AutoGenerateColumns="False" ItemsSource="{Binding ProductCostStory}" SelectedItem="{Binding SelectedCostStory}" Grid.RowSpan="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Год" FontSize="15" Binding="{Binding Path=Year, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Месяц" FontSize="13" Binding="{Binding Path=Month, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Цена" FontSize="14" Binding="{Binding Path=Cost, UpdateSourceTrigger=PropertyChanged}" />
+            </DataGrid.Columns>
+        </DataGrid>
 
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>

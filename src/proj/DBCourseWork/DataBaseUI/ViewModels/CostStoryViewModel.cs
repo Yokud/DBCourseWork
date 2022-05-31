@@ -243,9 +243,9 @@ namespace DataBaseUI.ViewModels
             try
             {
                 costStories.Create(costStory);
+                logger?.LogInformation(string.Format("Cost story with id = {0} was added.\n", costStory.Id));
                 OnPropertyChanged("ProductCostStory");
                 OnPropertyChanged("TrendLinePlot");
-                logger?.LogInformation(string.Format("Cost story with id = {0} was added.\n", costStory.Id));
             }
             catch (Exception e)
             {
@@ -259,9 +259,9 @@ namespace DataBaseUI.ViewModels
             try
             {
                 costStories.Delete(costStory);
+                logger?.LogInformation(string.Format("Cost story with id = {0} was deleted.\n", costStory.Id));
                 OnPropertyChanged("ProductCostStory");
                 OnPropertyChanged("TrendLinePlot");
-                logger?.LogInformation(string.Format("Cost story with id = {0} was deleted.\n", costStory.Id));
             }
             catch (Exception e)
             {
@@ -275,9 +275,9 @@ namespace DataBaseUI.ViewModels
             try
             {
                 costStories.Update(costStory);
+                logger?.LogInformation(string.Format("Cost story with id = {0} was updated.\n", costStory.Id));
                 OnPropertyChanged("ProductCostStory");
                 OnPropertyChanged("TrendLinePlot");
-                logger?.LogInformation(string.Format("Cost story with id = {0} was updated.\n", costStory.Id));
             }
             catch (Exception e)
             {
