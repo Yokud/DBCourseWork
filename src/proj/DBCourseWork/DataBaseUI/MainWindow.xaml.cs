@@ -22,13 +22,6 @@ using DataBaseUI.Logger;
 
 namespace DataBaseUI
 {
-    enum Users
-    {
-        User,
-        Analyst,
-        Admin
-    }
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

@@ -63,6 +63,12 @@ namespace TrendLineLib
             if (points == null || points.ToList().Count == 0)
                 return null;
 
+            if (points.ToList().Count() == 1)
+            {
+                coefs = new List<double>() { points.ToList()[0].Y };
+                return coefs;
+            }
+
             int extremums = GetExtremumsCount(points.ToList());
 
             coefs = LeastSquares(points.ToList(), Math.Min(6, extremums + 1));

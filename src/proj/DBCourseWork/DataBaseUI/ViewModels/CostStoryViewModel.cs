@@ -298,8 +298,9 @@ namespace DataBaseUI.ViewModels
     {
         public static IEnumerable<TrendLineLib.Point> FromCostStory(IEnumerable<CostStory> cs)
         {
+            cs = cs.OrderBy(x => new DateOnly(x.Year, x.Month, 1));
             List<int> costs = cs.ToList().Select(x => x.Cost).ToList();
-            List<DateOnly> dates = cs.Select(x => new DateOnly(x.Year, x.Month, 1)).ToList<DateOnly>();
+            List<DateOnly> dates = cs.Select(x => new DateOnly(x.Year, x.Month, 1)).ToList();
 
             List<TrendLineLib.Point> points = new List<TrendLineLib.Point>();
 
