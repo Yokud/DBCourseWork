@@ -19,6 +19,7 @@ using DataBaseUI.ViewModels;
 using DataBaseUI.SysEntities;
 using Microsoft.Extensions.Logging;
 using DataBaseUI.Logger;
+using DataBaseUI.Views.DialogWindows;
 
 namespace DataBaseUI
 {
@@ -59,6 +60,8 @@ namespace DataBaseUI
 
             ProductValuePassEvent += new ProductValuePassDelegate(SetSelectedProduct);
             ((ProductsViewModel)ProductsContentControl.DataContext).del = ProductValuePassEvent;
+
+            dbContext.ChangeConnection("user", "");
         }
 
         internal void SetSelectedShop(Shop selectedShop)
@@ -94,37 +97,71 @@ namespace DataBaseUI
 
         private void AnalystRB_Checked(object sender, RoutedEventArgs e)
         {
-            if (ShopsContentControl?.DataContext != null)
-                ((ShopsViewModel)ShopsContentControl.DataContext).IsAdmin = false;
+            PasswordWindow wnd = new PasswordWindow();
 
-            if (ProductsContentControl?.DataContext != null)
-                ((ProductsViewModel)ProductsContentControl.DataContext).IsAdmin = false;
-
-            if (SaleReceiptsContentControl?.DataContext != null)
-                ((SaleReceiptsViewModel)SaleReceiptsContentControl.DataContext).IsAdmin = false;
-
-            if (CostStoriesContentControl?.DataContext != null)
+            if (wnd.ShowDialog() == true)
             {
-                ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAnalyst = true;
-                ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAdmin = false;
+                try
+                {
+                    dbContext.ChangeConnection("analyst", wnd.Password);
+
+                    if (ShopsContentControl?.DataContext != null)
+                        ((ShopsViewModel)ShopsContentControl.DataContext).IsAdmin = false;
+
+                    if (ProductsContentControl?.DataContext != null)
+                        ((ProductsViewModel)ProductsContentControl.DataContext).IsAdmin = false;
+
+                    if (SaleReceiptsContentControl?.DataContext != null)
+                        ((SaleReceiptsViewModel)SaleReceiptsContentControl.DataContext).IsAdmin = false;
+
+                    if (CostStoriesContentControl?.DataContext != null)
+                    {
+                        ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAnalyst = true;
+                        ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAdmin = false;
+                    }
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.Message);
+
+                    AnalystRB.IsChecked = false;
+                    UserRB.IsChecked = true;
+                }
             }
         }
 
         private void AdminRB_Checked(object sender, RoutedEventArgs e)
         {
-            if (ShopsContentControl?.DataContext != null)
-                ((ShopsViewModel)ShopsContentControl.DataContext).IsAdmin = true;
+            PasswordWindow wnd = new PasswordWindow();
 
-            if (ProductsContentControl?.DataContext != null)
-                ((ProductsViewModel)ProductsContentControl.DataContext).IsAdmin = true;
-
-            if (SaleReceiptsContentControl?.DataContext != null)
-                ((SaleReceiptsViewModel)SaleReceiptsContentControl.DataContext).IsAdmin = true;
-
-            if (CostStoriesContentControl?.DataContext != null)
+            if (wnd.ShowDialog() == true)
             {
-                ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAnalyst = true;
-                ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAdmin = true;
+                try
+                {
+                    dbContext.ChangeConnection("admin", wnd.Password);
+
+                    if (ShopsContentControl?.DataContext != null)
+                        ((ShopsViewModel)ShopsContentControl.DataContext).IsAdmin = true;
+
+                    if (ProductsContentControl?.DataContext != null)
+                        ((ProductsViewModel)ProductsContentControl.DataContext).IsAdmin = true;
+
+                    if (SaleReceiptsContentControl?.DataContext != null)
+                        ((SaleReceiptsViewModel)SaleReceiptsContentControl.DataContext).IsAdmin = true;
+
+                    if (CostStoriesContentControl?.DataContext != null)
+                    {
+                        ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAnalyst = true;
+                        ((CostStoryViewModel)CostStoriesContentControl.DataContext).IsAdmin = true;
+                    }
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.Message);
+
+                    AdminRB.IsChecked = false;
+                    UserRB.IsChecked = true;
+                }
             }
         }
     }

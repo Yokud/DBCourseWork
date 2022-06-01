@@ -1,12 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 
 namespace DataBaseUI.DB
 {
+    enum Roles
+    {
+        User,
+        Analyst,
+        Admin
+    }
+
     public partial class SpsrLtDbContext : DbContext
     {
         public SpsrLtDbContext()
@@ -26,18 +34,75 @@ namespace DataBaseUI.DB
         public virtual DbSet<EFSaleReceiptPosition> SaleReceiptPositions { get; set; } = null!;
         public virtual DbSet<EFShop> Shops { get; set; } = null!;
 
+        Roles role;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
                 string connectionString = config.GetConnectionString("DefaultConnection");
-
-                if (connectionString != "Server=(localdb)\\mssqllocaldb;Database=db_cp;Trusted_Connection=True;")
-                    optionsBuilder.UseNpgsql(connectionString);
-                else
-                    optionsBuilder.UseSqlServer(connectionString);
+                role = Roles.Admin;
+                optionsBuilder.UseNpgsql(connectionString);
             }
+        }
+
+        public void ChangeConnection(string mode, string password)
+        {
+            IConfigurationRoot config;
+            string connectionString;
+
+            switch (mode.ToLower())
+            {
+                case "user":
+                    config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+                    connectionString = config.GetConnectionString("UserConnection");
+                    Database.SetConnectionString(connectionString);
+                    role = Roles.User;
+                    break;
+
+                case "analyst":
+                    config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+                    connectionString = config.GetConnectionString("AnalystConnection");
+
+                    string actualPassword = connectionString.Split(';').Last().Split('=').Last();
+
+                    if (password != actualPassword)
+                        throw new Exception("Неверный пароль!");
+
+                    Database.SetConnectionString(connectionString);
+                    role = Roles.Analyst;
+                    break;
+
+                case "admin":
+                    config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+                    connectionString = config.GetConnectionString("AdminConnection");
+
+                    actualPassword = connectionString.Split(';').Last().Split('=').Last();
+
+                    if (password != actualPassword)
+                        throw new Exception("Неверный пароль!");
+
+                    Database.SetConnectionString(connectionString);
+                    Database.OpenConnection();
+                    role = Roles.Admin;
+                    break;
+            }
+        }
+
+        public bool IsUser
+        {
+            get => role == Roles.User;
+        }
+
+        public bool IsAnalyst
+        {
+            get => role == Roles.Analyst;
+        }
+
+        public bool IsAdmin
+        {
+            get => role == Roles.Admin;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

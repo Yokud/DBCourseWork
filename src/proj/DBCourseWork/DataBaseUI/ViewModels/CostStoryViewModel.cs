@@ -208,7 +208,7 @@ namespace DataBaseUI.ViewModels
 
                     if (c != null)
                         DeleteCostStory(c);
-                }, obj => costStories.GetAll().Count() > 0);
+                }, obj => costStories.GetAll()?.Count() > 0);
             }
         }
 

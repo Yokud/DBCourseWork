@@ -93,11 +93,12 @@ namespace DataBaseUI.ViewModels
 
                 var saleReceiptsInShop = saleReceipts.GetAllFromShop(selectedShop);
 
-                foreach (var sr in saleReceiptsInShop)
-                {
-                    var positions = saleReceiptPositions.GetAllFromSaleReceipt(sr);
-                    sr.SummaryCost = positions.Sum(x => x.Cost);
-                }
+                if (saleReceiptsInShop != null)
+                    foreach (var sr in saleReceiptsInShop)
+                    {
+                        var positions = saleReceiptPositions.GetAllFromSaleReceipt(sr);
+                        sr.SummaryCost = positions.Sum(x => x.Cost);
+                    }
 
                 return saleReceiptsInShop;
             }
@@ -168,7 +169,7 @@ namespace DataBaseUI.ViewModels
 
                     if (sr != null)
                         DeleteSaleReceipt(sr);
-                }, obj => saleReceipts.GetAll().Count() > 0);
+                }, obj => saleReceipts.GetAll()?.Count() > 0);
             }
         }
 
@@ -186,7 +187,7 @@ namespace DataBaseUI.ViewModels
                         int id = availavilities.GetAll().Where(x => x.ProductId == prod.Id && x.ShopId == selectedShop.Id).First().Id;
                         DeleteSaleReceiptPosition(saleReceiptPositions.GetAll().Where(x => x.AvailabilityId == id).First());
                     }
-                }, obj => saleReceiptPositions.GetAll().Count() > 0);
+                }, obj => saleReceiptPositions.GetAll()?.Count() > 0);
             }
         }
 

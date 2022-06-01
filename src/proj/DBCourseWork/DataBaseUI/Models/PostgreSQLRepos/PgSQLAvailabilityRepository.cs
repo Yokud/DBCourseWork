@@ -22,57 +22,67 @@ namespace DataBaseUI.Models
         public PgSQLAvailabilityRepository(ILogger logger = null)
         {
             db = new SpsrLtDbContext();
-            availabilities = new ObservableCollection<Availability>();
-            db.Availabilities.Load();
-            foreach (var avail in db.Availabilities)
-                ((ObservableCollection<Availability>)availabilities).Add(new Availability(avail.Id, avail.Shopid, avail.Productid));
-
+            if (db.IsUser || db.IsAnalyst || db.IsAdmin)
+            {
+                availabilities = new ObservableCollection<Availability>();
+                db.Availabilities.Load();
+                foreach (var avail in db.Availabilities)
+                    ((ObservableCollection<Availability>)availabilities).Add(new Availability(avail.Id, avail.Shopid, avail.Productid));
+            }
             this.logger = logger;
         }
 
         public PgSQLAvailabilityRepository(SpsrLtDbContext spsr, ILogger logger = null)
         {
             db = spsr;
-            availabilities = new ObservableCollection<Availability>();
-            db.Availabilities.Load();
-            foreach (var avail in db.Availabilities)
-                ((ObservableCollection<Availability>)availabilities).Add(new Availability(avail.Id, avail.Shopid, avail.Productid));
-
+            if (db.IsUser || db.IsAnalyst || db.IsAdmin)
+            {
+                availabilities = new ObservableCollection<Availability>();
+                db.Availabilities.Load();
+                foreach (var avail in db.Availabilities)
+                    ((ObservableCollection<Availability>)availabilities).Add(new Availability(avail.Id, avail.Shopid, avail.Productid));
+            }
             this.logger = logger;
         }
 
         public void Create(Availability item)
         {
-            try
+            if (db.IsAdmin)
             {
-                db.Availabilities.Add(new EFAvailability() { Id = db.Availabilities.Count() != 0 ? db.Availabilities.Max(x => x.Id) + 1 : 0, Shopid = item.ShopId, Productid = item.ProductId });
-                db.SaveChanges();
-                item.Id = db.Availabilities.Max(x => x.Id);
-                ((ObservableCollection<Availability>)availabilities).Add(item);
+                try
+                {
+                    db.Availabilities.Add(new EFAvailability() { Id = db.Availabilities.Count() != 0 ? db.Availabilities.Max(x => x.Id) + 1 : 0, Shopid = item.ShopId, Productid = item.ProductId });
+                    db.SaveChanges();
+                    item.Id = db.Availabilities.Max(x => x.Id);
+                    ((ObservableCollection<Availability>)availabilities).Add(item);
 
-                logger?.LogInformation(string.Format("Availability with id = {0} was added.\n", item.Id));
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(e.Message);
-                logger?.LogError(e.Message);
+                    logger?.LogInformation(string.Format("Availability with id = {0} was added.\n", item.Id));
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e.Message);
+                    logger?.LogError(e.Message);
+                }
             }
         }
 
         public void Delete(Availability item)
         {
-            try
+            if (db.IsAdmin)
             {
-                db.Availabilities.Remove(db.Availabilities.Find(item.Id));
-                db.SaveChangesAsync();
-                ((ObservableCollection<Availability>)availabilities).Remove(item);
+                try
+                {
+                    db.Availabilities.Remove(db.Availabilities.Find(item.Id));
+                    db.SaveChangesAsync();
+                    ((ObservableCollection<Availability>)availabilities).Remove(item);
 
-                logger?.LogInformation(string.Format("Availability with id = {0} was deleted.\n", item.Id));
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(e.Message);
-                logger?.LogError(e.Message);
+                    logger?.LogInformation(string.Format("Availability with id = {0} was deleted.\n", item.Id));
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e.Message);
+                    logger?.LogError(e.Message);
+                }
             }
         }
 
@@ -83,26 +93,36 @@ namespace DataBaseUI.Models
 
         public Availability Get(int id)
         {
-            try
+            if (db.IsUser || db.IsAnalyst || db.IsAdmin)
             {
-                var elem = db.Availabilities.Find(id);
+                try
+                {
+                    var elem = db.Availabilities.Find(id);
 
-                if (elem != null)
-                    return new Availability(elem.Id, elem.Shopid, elem.Productid);
-                else
-                    throw new Exception("Can\'t find availability.\n");
+                    if (elem != null)
+                        return new Availability(elem.Id, elem.Shopid, elem.Productid);
+                    else
+                        throw new Exception("Can\'t find availability.\n");
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e.Message);
+                    logger?.LogError(e.Message);
+                    return null;
+                }
             }
-            catch (Exception e)
-            {
-                Trace.WriteLine(e.Message);
-                logger?.LogError(e.Message);
-                return null;
-            }
+
+            return null;
         }
 
         public IEnumerable<Availability> GetAll()
         {
-            return availabilities;
+            if (db.IsUser || db.IsAnalyst || db.IsAdmin)
+            {
+                return availabilities;
+            }
+
+            return null;
         }
 
         public void Save()
@@ -112,30 +132,33 @@ namespace DataBaseUI.Models
 
         public void Update(Availability item)
         {
-            try
+            if (db.IsAdmin)
             {
-                var avail = db.Availabilities.Find(item.Id);
+                try
+                {
+                    var avail = db.Availabilities.Find(item.Id);
 
-                avail.Shopid = item.ShopId;
-                avail.Productid = item.ProductId;
+                    avail.Shopid = item.ShopId;
+                    avail.Productid = item.ProductId;
 
-                db.Availabilities.Update(avail);
-                db.SaveChanges();
+                    db.Availabilities.Update(avail);
+                    db.SaveChanges();
 
-                for (int i = 0; i < availabilities.Count(); i++)
-                    if (((ObservableCollection<Availability>)availabilities)[i].Id == item.Id)
-                    {
-                        ((ObservableCollection<Availability>)availabilities)[i].ShopId = item.ShopId;
-                        ((ObservableCollection<Availability>)availabilities)[i].ProductId = item.ProductId;
-                        break;
-                    }
+                    for (int i = 0; i < availabilities.Count(); i++)
+                        if (((ObservableCollection<Availability>)availabilities)[i].Id == item.Id)
+                        {
+                            ((ObservableCollection<Availability>)availabilities)[i].ShopId = item.ShopId;
+                            ((ObservableCollection<Availability>)availabilities)[i].ProductId = item.ProductId;
+                            break;
+                        }
 
-                logger?.LogInformation(string.Format("Availability with id = {0} was updated.\n", item.Id));
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(e.Message);
-                logger?.LogError(e.Message);
+                    logger?.LogInformation(string.Format("Availability with id = {0} was updated.\n", item.Id));
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e.Message);
+                    logger?.LogError(e.Message);
+                }
             }
         }
     }
