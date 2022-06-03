@@ -6,8 +6,8 @@ import calendar
 
 
 PRODUCTS_COUNT = 10000
-SHOPS_COUNT = 100 
-SR_COUNT = 2500
+SHOPS_COUNT = 1000
+SR_COUNT = 25000
  
 def GenProductsTable(csvfilename):
     with open(csvfilename, 'w', newline='') as csvfile:
@@ -84,11 +84,17 @@ def GenAvailabilityTable(csvfilename):
 
 
 def GenSaleReceiptPositionsTable(csvfilename):
-    avail_table_len = 0
-    with open('Availability.csv', newline='') as avail_table:
-        reader = csv.DictReader(avail_table, delimiter=';')
+    avail_table = []
+    with open('Availability.csv', newline='') as avail_table_csv:
+        reader = csv.DictReader(avail_table_csv, delimiter=';')
         for row in reader:
-            avail_table_len += 1
+            avail_table.append((row['ID'], row['ShopID'], row['ProductID']))
+
+    sr_table = []
+    with open('SaleReceipts.csv', newline='') as sr_table_csv:
+        reader = csv.DictReader(sr_table_csv, delimiter=';')
+        for row in reader:
+            sr_table.append((row['ID'], row['ShopID']))
     
     with open(csvfilename, 'w', newline='') as csvfile:
         fieldnames = ['ID', 'AvailabilityID', 'SaleReceiptID']
@@ -96,9 +102,10 @@ def GenSaleReceiptPositionsTable(csvfilename):
         writer.writeheader()
         j = 1
         for i in range(SR_COUNT):
+            sr_avails = [x[0] for x in avail_table if x[1] == sr_table[i][1]]
             for _ in range(rnd.randint(1, 7)):
                 writer.writerow({fieldnames[0] : j,
-                                 fieldnames[1] : rnd.randint(1, avail_table_len),
+                                 fieldnames[1] : rnd.choice(sr_avails),
                                  fieldnames[2] : i + 1})
                 j += 1
 
@@ -146,12 +153,19 @@ def month_year_iter(start_month, start_year, end_month, end_year):
 
 
 def main():
-    #GenProductsTable('Products.csv')
-    #GenShopsTable('Shops.csv')
-    #GenSRTable('SaleReceipts.csv')
-    #GenAvailabilityTable('Availability.csv')
-    #GenSaleReceiptPositionsTable('SaleReceiptPositions.csv')
+    GenProductsTable('Products.csv')
+    print('Products generated')
+    GenShopsTable('Shops.csv')
+    print('Shops generated')
+    GenSRTable('SaleReceipts.csv')
+    print('SaleReceipts generated')
+    GenAvailabilityTable('Availability.csv')
+    print('Availability generated')
+    GenSaleReceiptPositionsTable('SaleReceiptPositions.csv')
+    print('SaleReceiptPositions generated')
     GenCostStory('CostStory.csv')
+    print('CostStory generated')
+    print('exiting...')
 
 
 if __name__ == '__main__':

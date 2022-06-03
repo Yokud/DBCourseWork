@@ -173,3 +173,10 @@ copy SaleReceipts from 'D:\Repos\GitHub\DBCourseWork\src\db\tables_data\SaleRece
 copy Availability from 'D:\Repos\GitHub\DBCourseWork\src\db\tables_data\Availability.csv' delimiter ';' CSV HEADER;
 copy SaleReceiptPositions from 'D:\Repos\GitHub\DBCourseWork\src\db\tables_data\SaleReceiptPositions.csv' delimiter ';' CSV HEADER;
 copy CostStory from 'D:\Repos\GitHub\DBCourseWork\src\db\tables_data\CostStory.csv' delimiter ';' CSV HEADER;
+
+delete from Products;
+delete from Shops;
+delete from SaleReceipts;
+delete from Availability;
+delete from SaleReceiptPositions;
+delete from CostStory;
