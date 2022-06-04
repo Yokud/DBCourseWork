@@ -6,28 +6,28 @@
         xmlns:local="clr-namespace:DataBaseUI.Views.DialogWindows"
         mc:Ignorable="d"
         Title="Создать новый продукт" Height="215" Width="300" ResizeMode="NoResize">
-    <StackPanel>
+    <StackPanel Background="DimGray">
         <DockPanel>
             <TextBlock Text="Название:" Margin="3"/>
-            <TextBox x:Name="NewProductName" Margin="3"/>
+            <TextBox x:Name="NewProductName" Margin="3" Background="LightGray"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Тип продукта:" Margin="3"/>
-            <TextBox x:Name="NewProductType" Margin="3"/>
+            <TextBox x:Name="NewProductType" Margin="3" Background="LightGray"/>
         </DockPanel>
         <Separator/>
         <TextBlock Text="Параметры цены" FontSize="13"/>
         <DockPanel>
             <TextBlock Text="Год:" Margin="3"/>
-            <TextBox x:Name="NewCostYear" Margin="3"/>
+            <TextBox x:Name="NewCostYear" Margin="3" Background="LightGray"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Месяц:" Margin="3"/>
-            <TextBox x:Name="NewCostMonth" Margin="3"/>
+            <TextBox x:Name="NewCostMonth" Margin="3" Background="LightGray"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Цена:" Margin="3"/>
-            <TextBox x:Name="NewCostValue" Margin="3"/>
+            <TextBox x:Name="NewCostValue" Margin="3" Background="LightGray"/>
         </DockPanel>
         
         <Button Content="Создать" Margin="50, 5, 50, 5" Click="Button_Click"/>

@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:DataBaseUI.Views.DialogWindows.SaleReceiptsView"
         mc:Ignorable="d"
         Title="Добавить чек" Height="120" Width="250" ResizeMode="NoResize">
-    <StackPanel>
+    <StackPanel Background="DimGray">
         <DockPanel>
             <TextBlock Text="ФИО:" Margin="3"/>
-            <TextBox x:Name="FIO" Margin="3"/>
+            <TextBox x:Name="FIO" Margin="3" Background="LightGray"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Дата покупки:" Margin="3"/>
-            <TextBox x:Name="DateOfPurchase" Margin="3"/>
+            <TextBox x:Name="DateOfPurchase" Margin="3" Background="LightGray"/>
         </DockPanel>
 
         <Button Content="Добавить" Click="Button_Click"  Margin="50, 5, 50, 5"/>

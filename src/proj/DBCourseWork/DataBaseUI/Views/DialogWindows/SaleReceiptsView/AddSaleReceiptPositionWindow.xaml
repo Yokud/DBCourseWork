@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:DataBaseUI.Views.DialogWindows.SaleReceiptsView"
         mc:Ignorable="d"
         Title="Добавить позицию в чек" Height="450" Width="600" ResizeMode="NoResize">
-    <Grid>
+    <Grid Background="DimGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.9*"/>
             <RowDefinition Height="0.1*"/>
         </Grid.RowDefinitions>
 
-        <ListBox Margin="50, 15, 50, 15" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}">
+        <ListBox Margin="50, 15, 50, 15" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" Background="LightGray">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>

@@ -6,18 +6,18 @@
         xmlns:local="clr-namespace:DataBaseUI.Views.DialogWindows.CostStoryView"
         mc:Ignorable="d"
         Title="Изменить данные о цене" Height="150" Width="200" ResizeMode="NoResize">
-    <StackPanel>
+    <StackPanel Background="DimGray">
         <DockPanel>
             <TextBlock Text="Год:" Margin="3"/>
-            <TextBox x:Name="NewCostYear" Margin="3"/>
+            <TextBox x:Name="NewCostYear" Margin="3" Background="LightGray"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Месяц:" Margin="3"/>
-            <TextBox x:Name="NewCostMonth" Margin="3"/>
+            <TextBox x:Name="NewCostMonth" Margin="3" Background="LightGray"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Цена:" Margin="3"/>
-            <TextBox x:Name="NewCostValue" Margin="3"/>
+            <TextBox x:Name="NewCostValue" Margin="3" Background="LightGray"/>
         </DockPanel>
 
         <Button Content="Обновить" Margin="50, 5, 50, 5" Click="Button_Click"/>

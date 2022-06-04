@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:DataBaseUI.Views.DialogWindows"
         mc:Ignorable="d"
         Title="Добавить новый магазин" Height="125" Width="300" ResizeMode="NoResize">
-    <StackPanel>
+    <StackPanel Background="DimGray">
         <DockPanel>
             <TextBlock Text="Название:" Margin="3"/>
-            <TextBox x:Name="ShopName" Margin="3"/>
+            <TextBox x:Name="ShopName" Margin="3" Background="LightGray"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Описание:" Margin="3"/>
-            <TextBox x:Name="ShopDescr" Margin="3"/>
+            <TextBox x:Name="ShopDescr" Margin="3" Background="LightGray"/>
         </DockPanel>
         <Button Content="Добавить" Margin="50, 5, 50, 5" Click="Button_Click"/>
     </StackPanel>

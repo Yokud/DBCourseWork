@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DataBaseUI.Views.DialogWindows"
         mc:Ignorable="d"
         Title="Добавить существующий продукт" Height="450" Width="800" ResizeMode="NoResize">
-    <Grid>
+    <Grid Background="DimGray">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.7*"/>
             <ColumnDefinition Width="0.3*"/>
@@ -16,7 +16,7 @@
             <RowDefinition Height="0.1*"/>
         </Grid.RowDefinitions>
 
-        <ListBox Margin="15" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}">
+        <ListBox Margin="15" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" Background="LightGray">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>
@@ -34,15 +34,15 @@
             <StackPanel>
                 <DockPanel>
                     <TextBlock Text="Год:" Margin="3"/>
-                    <TextBox x:Name="NewCostYear" Margin="3"/>
+                    <TextBox x:Name="NewCostYear" Margin="3" Background="LightGray"/>
                 </DockPanel>
                 <DockPanel>
                     <TextBlock Text="Месяц:" Margin="3"/>
-                    <TextBox x:Name="NewCostMonth" Margin="3"/>
+                    <TextBox x:Name="NewCostMonth" Margin="3" Background="LightGray"/>
                 </DockPanel>
                 <DockPanel>
                     <TextBlock Text="Цена:" Margin="3"/>
-                    <TextBox x:Name="NewCostValue" Margin="3"/>
+                    <TextBox x:Name="NewCostValue" Margin="3" Background="LightGray"/>
                 </DockPanel>
             </StackPanel>
         </GroupBox>

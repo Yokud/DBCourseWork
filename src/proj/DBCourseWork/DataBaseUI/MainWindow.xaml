@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DataBaseUI"
         mc:Ignorable="d"
         Title="Система прогнозирования цен на товары в магазинах" MinHeight="768" MinWidth="1366" Icon="Resources/chart_line_icon.png" >
-    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True" Background="DimGray">
         <DockPanel DockPanel.Dock="Top">
             <RadioButton x:Name="UserRB" IsChecked="True" Margin="3" Checked="UserRB_Checked">Пользователь</RadioButton>
             <RadioButton x:Name="AnalystRB" Margin="3" Checked="AnalystRB_Checked">Аналитик</RadioButton>
