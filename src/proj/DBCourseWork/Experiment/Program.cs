@@ -7,7 +7,25 @@ namespace Experiment
     {
         static void Main(string[] args)
         {
-            List<int> costs = new List<int>() { 16883, 17283, 15860, 17194, 20262, 16655, 16983, 13709, 19365, 17504, 18579, 14264, 14831, 19490, 16791, 22657, 21632, 18796 };
+            List<int> costs = new List<int>() { 69990,
+69990,
+69990,
+64990,
+52990,
+59990,
+64990,
+62990,
+67990,
+59990,
+69990,
+61990,
+61990,
+61990,
+61990,
+61990,
+61990,
+61990
+                                                 };
             List<Point> points = new List<Point>();
 
             for (int i = 0; i < costs.Count(); i++)
@@ -20,7 +38,7 @@ namespace Experiment
                 line.GetCoefs(points.GetRange(0, i + 1));
                 int val = (int)line.F(i + 1);
                 int real_val = (int)points[Math.Min(i + 1, points.Count() - 1)].Y;
-                Console.WriteLine($"{i + 1} {val} {real_val} {Math.Sqrt(Math.Pow(real_val - val, 2) / (real_val * real_val)) * 100}");
+                Console.WriteLine($"{i + 1} {val} {real_val} {Math.Abs(real_val - val) / (double)real_val * 100}");
             }
         }
     }
