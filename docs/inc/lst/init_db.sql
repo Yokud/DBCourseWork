@@ -54,9 +54,11 @@ create table CostStory
 
 create view Costs as
 	select T.AvailabilityID, Cost
-	from CostStory join (select AvailabilityID, max(make_date(Year, Month, 1)) as CostDate
-						from CostStory
-						group by AvailabilityID) as T on T.AvailabilityID = CostStory.AvailabilityID and T.CostDate = make_date(CostStory.Year, CostStory.Month,1);
+	from CostStory join 
+	(select AvailabilityID, max(make_date(Year, Month, 1)) as CostDate
+	from CostStory
+	group by AvailabilityID) 
+	as T on T.AvailabilityID = CostStory.AvailabilityID and T.CostDate = make_date(CostStory.Year, CostStory.Month,1);
 
 -- Триггерная функция, которая удаляет значение цены товара в магазине если она старше новой на более 18 месяцев
 create or replace function remove_too_old_coststory()
@@ -74,28 +76,28 @@ begin
 
 -- Самое старое значение цены товара
 	select min(make_date(prod_coststory.Year, prod_coststory.Month, 1)) into old_date
-	from (select * 
-		  from CostStory 
+	from (select *
+		  from CostStory
 		  where AvailabilityID = new_avail_id) as prod_coststory;
-		  
+
 	select prod_coststory.id into old_date_id
-	from (select * 
-		  from CostStory 
+	from (select *
+		  from CostStory
 		  where AvailabilityID = new_avail_id) as prod_coststory
 	where make_date(prod_coststory.Year, prod_coststory.Month, 1) = old_date;
 
 -- Самое новое значение цены товара
 	select max(make_date(prod_coststory.Year, prod_coststory.Month, 1)) into new_date
-	from (select * 
-		  from CostStory 
+	from (select *
+		  from CostStory
 		  where AvailabilityID = new_avail_id) as prod_coststory;
-		  
+
 	select prod_coststory.id into new_date_id
-	from (select * 
-		  from CostStory 
+	from (select *
+		  from CostStory
 		  where AvailabilityID = new_avail_id) as prod_coststory
 	where make_date(prod_coststory.Year, prod_coststory.Month, 1) = new_date;
-	
+
 	select (date_part('year', new_date) - date_part('year', old_date)) * 12 + (date_part('month', new_date) - date_part('month', old_date)) + 1
 	into months_diff;
 
@@ -135,8 +137,8 @@ create or replace function get_products_by_shopid(shop_id integer)
 returns table(ProdID integer, ProdName text, ProdType text, Cost float)
 as $$
 	select APC.ProductID, APC.Name, APC.ProductType, APC.Cost
-	from (((select Availability.ID as AvailID, Availability.ShopID, Availability.ProductID from Availability where Availability.ShopID = shop_id) as A 
-			join Products on A.ProductID = Products.ID) as AP join Costs on AP.AvailID = Costs.AvailabilityID) as APC;
+	from (((select Availability.ID as AvailID, Availability.ShopID, Availability.ProductID from Availability where Availability.ShopID = shop_id) as A
+	join Products on A.ProductID = Products.ID) as AP join Costs on AP.AvailID = Costs.AvailabilityID) as APC;
 $$ language sql;
 
 create or replace function get_coststory_by_shopid_prodid(shop_id integer, prod_id integer)
@@ -144,9 +146,10 @@ returns table(ID integer, Year integer, Month integer, Cost integer, Availabilit
 as $$
 	select CostStory.ID, CostStory.Year, CostStory.Month, CostStory.Cost, CostStory.AvailabilityID
 	from CostStory
-	where AvailabilityID = (select ID
-						   from Availability
-						   where ShopID = shop_id and ProductID = prod_id);
+	where AvailabilityID = 
+	(select ID
+	from Availability
+	where ShopID = shop_id and ProductID = prod_id);
 $$ language sql;
 
 create or replace function get_salereceipts_by_shopid(shop_id integer)
