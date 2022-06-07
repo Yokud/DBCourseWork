@@ -11,9 +11,9 @@ y_err_3 = [[0, 0, 0, 0, 0, 0.922, 0.691, 0.999, 0.538], [29.037, 58.074, 108.082
 # Построение графика
 plt.xlabel("Кол-во используемых значений для вычисления стоимости товара на следующий месяц", fontsize=18)
 plt.ylabel("Cреднее значение относительной погрешности", fontsize=18)
-plt.errorbar(x, y1, yerr=y_err_1, label = "Первый товар", capsize=3)
-plt.errorbar(x, y2, yerr=y_err_2, label = "Второй товар", capsize=3)
-plt.errorbar(x, y3, yerr=y_err_3, label = "Третий товар", capsize=3)
+plt.errorbar(x, y1, yerr=y_err_1, label = "Первый товар", capsize=7)
+plt.errorbar(x, y2, yerr=y_err_2, label = "Второй товар", capsize=7)
+plt.errorbar(x, y3, yerr=y_err_3, label = "Третий товар", capsize=7)
 plt.legend()
 plt.show()
 
