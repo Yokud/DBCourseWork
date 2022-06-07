@@ -128,6 +128,11 @@ namespace DataBaseUI
                     UserRB.IsChecked = true;
                 }
             }
+            else 
+            {
+                AnalystRB.IsChecked = false;
+                UserRB.IsChecked = true;
+            }
         }
 
         private void AdminRB_Checked(object sender, RoutedEventArgs e)
@@ -162,6 +167,11 @@ namespace DataBaseUI
                     AdminRB.IsChecked = false;
                     UserRB.IsChecked = true;
                 }
+            }
+            else
+            {
+                AdminRB.IsChecked = false;
+                UserRB.IsChecked = true;
             }
         }
     }
