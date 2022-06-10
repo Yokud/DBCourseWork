@@ -15,10 +15,10 @@ GoodsForecast.Planning |+|-|-
 Проект имеет минимальный функционал для прогнозирования цен на товары, разграничение прав доступа для разных типов пользователей и распространяется бесплатно с открытым исходным кодом
 
 ## Use-Case - диаграмма
-![](/docs/imgs/use_case.drawio.png)
+![](/docs/inc/img/use_case.drawio.png)
 
 ## ER-диаграмма сущностей
-![](/docs/imgs/ER.drawio.png)
+![](/docs/inc/img/ER.drawio.png)
 
 ## Архитектурные характеристики
 Архитектура проекта основана на паттерне MVVM
@@ -28,27 +28,27 @@ GoodsForecast.Planning |+|-|-
 * Технологический стек: C# 10, PostgreSQL, NpgSQL, Entity Framework Core 6, OxyPlot
 
 ## Диаграмма компонентов
-![](/docs/imgs/HighComponents.drawio.png)
+![](/docs/inc/img/HighComponents.drawio.png)
 
 ## UML диаграмма классов для компонента доступа к данным и компонента с бизнес-логикой
-![](/docs/imgs/DABL.png)
+![](/docs/inc/img/DABL.png)
 
 ## UML диаграммы «модельных» классов сущностей
 
 ### Сущности базы данных
-![](/docs/imgs/ModelClassesDB.png)
+![](/docs/inc/img/ModelClassesDB.png)
 
 ### Сущности системы
-![](/docs/imgs/SysEntities.png)
+![](/docs/inc/img/SysEntities.png)
 
 ### Транспортные сущности
-![](/docs/imgs/TranspEntities.png)
+![](/docs/inc/img/TranspEntities.png)
 
 ## UML-диаграмма классов для компонента/модуля, связывающего GUI и бизнес-логику и компонента/модуля GUI
-![](/docs/imgs/views.jpg)
+![](/docs/inc/img/views.jpg)
 
 ## UML-диаграмма классов для технологического UI ко всем функциям системы (консольное приложение)
-![](/docs/imgs/technic_ui.jpg)
+![](/docs/inc/img/technic_ui.jpg)
 
 ## UML-диаграмма всего проекта
-![](/docs/imgs/AllDiagram.jpg)
+![](/docs/inc/img/AllDiagram.jpg)
